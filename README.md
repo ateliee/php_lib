@@ -1,6 +1,13 @@
 #Overview
 this Framework is compatible with PHP 4/5
 
+##Example
+
+    include("init_lib.php");
+    
+    $TPL = new class_templates();
+
+
 ##Class View
 *Simple Templates Engin
 
