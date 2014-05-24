@@ -4,9 +4,10 @@ this Framework is compatible with PHP 4/5
 ##Example
 
     include("init_lib.php");
-    
-    $TPL = new class_templates();
+    $TPL = new class_template();
 
+    include("../php_lib/init_lib.php");
+    $TPL = new class_template();
 
 ##Class View
 *Simple Templates Engin
