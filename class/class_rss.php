@@ -176,7 +176,7 @@ class class_rss{
                         $data["title"] = strval($item["title"] ? $item["title"] : "");
                         $data["pubDate"] = strval($item["pubdate"] ? $item["pubdate"] : "");
                         $data["date"] = strtotime(strval($data["pubDate"]));
-                        if($type == SYSTEM_BLOG_WORDPRESS){
+                        if(isset($item["content:encoded"])){
                                 $data["description"] =strval($item["content:encoded"]);
                         }else{
                                 $data["description"] =strval($item["description"]);
