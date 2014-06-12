@@ -315,4 +315,25 @@ if (!function_exists('curl_setopt_array')) {
 if (!function_exists('hash_hmac')) {
     require dirname(__FILE__) .'/hash/hash_hmac.php';
 }
-?>
+//第一引数・・・最初のキーを取得したい配列
+//返り値・・・最初のキー
+function get_first_key($array){
+    reset($array);
+    return key($array);
+}
+//第一引数・・・最初の値を取得したい配列
+//返り値・・・最初の値
+function get_first_value($array){
+    return reset($array);
+}
+//第一引数・・・最後のキーを取得したい配列
+//返り値・・・最後のキー
+function get_last_key($array){
+    end($array);
+    return key($array);
+}
+//第一引数・・・最後の値を取得したい配列
+//返り値・・・最後の値
+function get_last_value($array){
+    return end($array);
+}
