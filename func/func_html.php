@@ -21,12 +21,9 @@ function makeUrlParameter($value,$null_key=null){
 //--------------------------------------------
 // チェックボックス補助
 //--------------------------------------------
-function htmlChecked($flag){
-      if($flag == true || $flag > 0){
-            return 'checked="checked"';
-      }
-      return '';
-}
+function htmlChecked($flag){ if($flag == true || $flag > 0){ return 'checked="checked"'; } return ''; }
+function htmlDisabled($flag){ if($flag == true || $flag > 0){ return 'disabled="disabled"'; } return ''; }
+function htmlReadonly($flag){ if($flag == true || $flag > 0){ return 'readonly="readonly"'; } return ''; }
 
 //--------------------------------------------
 // 数値のリストを取得
