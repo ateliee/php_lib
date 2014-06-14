@@ -64,7 +64,7 @@ Onry include "init_lib.php" file.
 #### php
     // database setup
     $DB = new class_mysql;
-    $DB->addDB($G_DB_SERVER,$G_DB_USERNAME,    $G_DB_PASSWORD);
+    $DB->addDB($G_DB_SERVER,$G_DB_USERNAME,$G_DB_PASSWORD);
     $DB->setCurrentDB(0);
     $DB->get()->setDBName($G_DB_NAME);
     $DB->get()->setCharset($G_DB_ENCODE);
