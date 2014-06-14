@@ -11,7 +11,12 @@ Onry include "init_lib.php" file.
     include_once(dir(__FILE__)."/php_lib/init_lib.php");
 
 
-### Template Engine(class_templates.php)
+## Example
+* [Template Engine](#tpl)
+* [Database Engine](#db)
+* [Mail Engine](#mail)
+
+### <a name="tpl">Template Engine(class_templates.php)
 * set variable(string,integer,double,associative array, array other)
 * nest support.
 * if,else,else if,foreach,for
@@ -65,7 +70,7 @@ Onry include "init_lib.php" file.
     name is <?number_format($name)?>
     name is <?count($name)?>
 
-### Database Engine(class_mysql.php)
+### <a name="db">Database Engine(class_mysql.php)
 * SELECT,CREATE,DELETE,INSERT,UPDATE Other
 
 #### php
@@ -88,7 +93,7 @@ Onry include "init_lib.php" file.
         $sv = $DB->fetchArray();
     }
 
-### Mail Engine(class_mail.php)
+### <a name="mail">Mail Engine(class_mail.php)
     $MAIL = new class_mail;
     // setting
     $MAIL->setFromName("sample",SYSTEM_MAIL_ENCODE,SYSTEM_PHP_ENCODE);
