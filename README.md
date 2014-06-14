@@ -189,5 +189,5 @@ Onry include "init_lib.php" file.
 **These are some functions.
 More convenient functions are varied.
 ====================================
-I recommend it to the person whom I want to easily employ without minding a version of php.**
+I recommend it to the person whom I want to easily employ without minding a version of php.
 ==================================================
