@@ -15,6 +15,7 @@ Onry include "init_lib.php" file.
 * [Template Engine](#tpl)
 * [Database Engine](#db)
 * [Mail Engine](#mail)
+* [Functions](#func)
 
 ### <a name="tpl">Template Engine(class_templates.php)
 * set variable(string,integer,double,associative array, array other)
@@ -107,6 +108,44 @@ Onry include "init_lib.php" file.
     $MAIL->addFile("/path/to/file.jpg","sample.jpg");
     // send mail
     $MAIL->send();
+
+### <a name="func">Functions(/func/)
+    // user agent check
+    is_mobile_docomo_agent();
+    is_mobile_kddi_agent();
+    is_mobile_softbank_agent();
+    is_mobile_willcom_agent();
+    is_iphone_agent();
+    is_ipad_agent();
+    is_ipod_agent();
+    is_android_agent();
+    is_tablet_agent();
+    // ip to mobile carrier
+    $carrier_id = get_ip_carrier();
+    // Basic Auth For PHP
+    AuthenticateUser(array("sample" => "sample"));
+    // checked put html
+    $html = htmlChecked(true);    // output checked="checked"
+    $html = htmlDisabled(true);    // output disabled="disabled"
+    $html = htmlReadonly(true);    // output readonly="readonly"
+    // select options output
+    $options = makeValueOpts(array("1" => "Tokyo"));
+    // pnkz html making
+    $pnkz = array();
+    $pnkz[] = makePnkz("home","http://sample.com/");
+    $pnkz[] = makePnkz("about","http://sample.com/about/");
+    $html = getPnkz($pnkz,array("mode" => "list"));
+    // function
+    d($value);   // <pre> and print_r()
+    h($value);   // html htmlspecialchars()
+    m($value);   // mysql mysql_real_escape_string()
+    m_pathinfo($value);  // pathinfo for php4,5
+    // array function
+    $first_key = get_first_key($ary);   // get array first key
+    $first_val = get_first_value($ary);   // get array first value
+    $last_key = get_last_key($ary);   // get array last key
+    $last_val = get_last_value($ary);   // get array last value
+    
 
 ## Other Class View
 *Social Plugins(Facebook/Twitter)
