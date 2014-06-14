@@ -1,25 +1,19 @@
 <?php
-//============================================
-// class_template.php
-//  11/10/28 : Smartyを参考に大幅修正
-//============================================
-
-//+++++++++++++++++++++++++++++
-// テンプレートクラス
-//+++++++++++++++++++++++++++++
+/**
+ * template class
+ * @copyright Copyright © 2014, ateliee
+ * @author ateliee
+ * @version 1.0
+ */
 class class_template{
         var $Template;
         var $Include;
         var $Vars;
         var $TemplateList;
-        // デリミタ
         var $left_delimiter = "<?";
         var $right_delimiter = "?>";
-        var $html_Encoding = "UTF-8";
-        var $system_Encoding = "UTF-8";
-        //-----------------------------
-        // コンストラクタ
-        //-----------------------------
+        var $html_Encoding;
+        var $system_Encoding;
         function class_template(){
                 $this->Template = "";
                 $this->TemplateList = array();
@@ -28,26 +22,29 @@ class class_template{
                 $this->html_Encoding = mb_internal_encoding();
                 $this->system_Encoding = mb_internal_encoding();
         }
-        // 文字コード設定
         function sethtmlEncoding($encode){
                 $this->html_Encoding = $encode;
         }
         function setSystemEncoding($encode){
                 $this->system_Encoding = $encode;
         }
-        //-----------------------------
-        // 取得
-        //-----------------------------
+		/**
+		 * get set template variable
+		 * set $name is namespace for set variable
+		 * @param object $name 
+		 * @return value
+		 */
         function get_template_var($name=null){
                 if(isset($name)){
                         return $this->Vars[$name];
                 }
                 return $this->Vars;
         }
-        //-----------------------------
-        // 設定
-        //-----------------------------
-        // ファイル読み込み
+		/**
+		 * set load html file
+		 * @param bool $filename(path)
+		 * @return bool
+		 */
         function load($filename){
                 $this->clear_all_assign();
                 $this->Template = "";
@@ -59,7 +56,11 @@ class class_template{
                 fclose($fp);
                 return true;
         }
-        // 出力
+		/**
+		 * set template and get html for string
+		 * @param bool $set 
+		 * @return string
+		 */
         function get_display_template($set=true){
                 $template = $this->Template;
                 if($set){
@@ -71,10 +72,21 @@ class class_template{
                 }
                 return $template;
         }
+		/**
+		 * set template and get html for string and print
+		 * @see get_display_template
+		 * @param bool $set 
+		 * @return null
+		 */
         function display($set=true){
                 print $this->get_display_template($set);
         }
-        // テンプレート読み込みの設定
+		/**
+		 * set template include file
+		 * @param string $id(namespace)
+		 * @param  string $filename
+		 * @return bool
+		 */
         function setIncludeFile($id,$filename){
                 if( !($fp = @fopen($filename,'rb')) ){
                         return false;
@@ -86,23 +98,37 @@ class class_template{
                 $this->Include[$id] = $template;
                 return true;
         }
-        // データ設定
+		/**
+		 * set template variable
+		 * @param string $id(namespace)
+		 * @return null
+		 */
         function assign($id,$val){
                 $this->Vars[$id] = $val;
         }
+		/**
+		 * set template variable
+		 * @see assign
+		 * @param array $value
+		 * @return null
+		 */
         function assign_vars($value){
                 foreach($value as $key => $val){
                         $this->assign($key,$val);
                 }
         }
-        // 全て初期化
+		/**
+		 * clear template variable
+		 * @return null
+		 */
         function clear_all_assign(){
                 $this->Vars = array();
         }
-        //-----------------------------
-        // 内部関数
-        //-----------------------------
-        // 属性値を取得
+		/**
+		 * get attribe
+		 * @return srting
+		 * @access private
+		 */
         function getAttr(&$attr,$str){
                 $attr = array();
                 // key=valueで分割
@@ -118,7 +144,11 @@ class class_template{
                 }
                 return $attr;
         }
-        // 文字列を評価
+		/**
+		 * set template conditional expression
+		 * @return srting
+		 * @access private
+		 */
         function evaString($str){
                 $str = trim($str);
                 // 条件式を取得
@@ -148,6 +178,11 @@ class class_template{
                 }
                 return $item;
         }
+		/**
+		 * set template function
+		 * @return srting
+		 * @access private
+		 */
         function convertString($str,$encode = true){
                 // 関数
                 $check = true;
@@ -221,7 +256,11 @@ class class_template{
                 return $result;
                 //return $this->left_delimiter.$str.$this->right_delimiter;
         }
-        // 読み込みテンプレートの設定
+		/**
+		 * set template include
+		 * @return srting $template
+		 * @access private
+		 */
         function setInclude($template){
                 //$preg_str = "/([\s\S]*?)".preg_quote($this->left_delimiter)."INCLUDE\s+([\s\S]+?)".preg_quote($this->right_delimiter)."([\s\S]*?)/i";
                 $preg_str = "/".preg_quote($this->left_delimiter,"/")."INCLUDE\s+([\s\S]+?)".preg_quote($this->right_delimiter,"/")."/i";
@@ -248,7 +287,11 @@ class class_template{
                 //return $template;
                 return $tmp;
         }
-        // テンプレートの設定
+		/**
+		 * set template value
+		 * @return srting $template
+		 * @access private
+		 */
         function setTemplatesVars($template){
                 $preg_str = "/".preg_quote($this->left_delimiter,"/")."([\s\S]+?)".preg_quote($this->right_delimiter,"/")."/";
                 // 文字列の分割
@@ -263,7 +306,6 @@ class class_template{
                 }
                 return $tmp;
         }
-        // タグの実装
         function _setTemplateTags(&$tmp,&$key,&$list,&$level,$check=false,$skip=false){
                 // 式を取得
                 $ptn = $list[$key];
@@ -322,7 +364,6 @@ class class_template{
                 }
                 return $check;
         }
-        // タグをスキップ
         function _skipIfTags(&$tmp,&$key,&$list,&$level){
                 $cnt = count($list);
                 $start_level = $level - 1;
@@ -336,7 +377,10 @@ class class_template{
                         }
                 }
         }
-        // forループを実装
+		/**
+		 * set template FOR
+		 * @access private
+		 */
         function _setForLoop($str,&$tmp,&$key,&$list,&$level){
                 // 要素を抽出
                 preg_match("/^\s*\\\$([\S]+)=([\S]+)\s+TO\s+(\S+)\s*((\S+)\s*)?$/i" ,$str ,$m);
@@ -383,7 +427,10 @@ class class_template{
                 }
         }
         
-        // foreachループを実装
+		/**
+		 * set template FOREACH
+		 * @access private
+		 */
         function _setForeachLoop($str,&$tmp,&$key,&$list,&$level){
                 // 要素を抽出
                 preg_match("/^\s*([\S]+)\s+AS\s+([\S\s]+?)\s*$/i" ,$str ,$m);
@@ -435,80 +482,10 @@ class class_template{
                         $tmp .= $list[$key + 1];
                 }
         }
-        /*
-        // セクションのループを実装
-        function _setSectionLoop($at,&$tmp,&$key,&$list,&$level){
-                // 属性値を取得
-                $attr = $this->getAttr($attr,$at);
-                // 属性値を評価
-                $name = $attr["NAME"];
-                $start = 0;
-                $step = 1;
-                $loop = 0;
-                $keys = array();
-                $set = "";
-                if(isset($attr["START"])){
-                        $start = intval($attr["START"]);
-                }
-                if(isset($attr["STEP"])){
-                        $step = intval($attr["STEP"]);
-                }
-                if(is_array($attr["LOOP"])){
-                        $loop = count($attr["LOOP"]);
-                        $keys = array_keys($attr["LOOP"]);
-                }else{
-                        $loop = intval($attr["LOOP"]) + $start;
-                        for($i=0;$i<$loop;$i++){
-                                $keys[] = $i;
-                        }
-                }
-                if(isset($attr["SET"])){
-                        $set = $attr["SET"];
-                }
-                // セクションの設定
-                $this->Vars[$name] = $start;
-                $start_key = $key;
-                $start_level = $level - 1;
-                $cnt = count($list);
-                $kcnt = count($keys);
-                if($start < $kcnt){
-                        //for($this->Vars[$name]=$start;$this->Vars[$name]<$loop,$this->Vars[$name]<$kcnt;$this->Vars[$name]+=$step){
-                        for($i=$start;$i<$kcnt;$i+=$step){
-                                $this->Vars[$name] = $keys[$i];
-                                // 変数セット
-                                if($set != ""){
-                                        $k = $this->Vars[$name];
-                                        if(is_array($attr["LOOP"])){
-                                                $this->assign($set,$attr["LOOP"][$k]);
-                                        }else{
-                                                $this->assign($set,$k);
-                                        }
-                                }
-                                $tmp .= $list[$key + 1];
-                                $key += 2;
-                                while($key < $cnt){
-                                        // タグの実装
-                                        $this->_setTemplateTags($tmp,$key,$list,$level);
-                                        // レベルチェック
-                                        if($level <= $start_level){
-                                                if(($i + $step) < $kcnt){
-                                                        // キー値を戻す
-                                                        $key = $start_key;
-                                                        $level ++;
-                                                }
-                                                break;
-                                        }
-                                        $key += 2;
-                                };
-                        }
-                        $tmp .= $list[$key + 1];
-                }else{
-                        // タグスキップ
-                        $this->_skipIfTags($tmp,$key,$list,$level);
-                        $tmp .= $list[$key + 1];
-                }
-        }*/
-        // if文を実装
+		/**
+		 * set template IF
+		 * @access private
+		 */
         function _setIf($str,&$tmp,&$key,&$list,&$level){
                 // if処理
                 $check = $this->_setIfExecute($str,$tmp,$key,$list,$level);
@@ -556,6 +533,10 @@ class class_template{
                         $loop ++;
                 }
         }
+		/**
+		 * set template IF/ELSEIF/ELSE
+		 * @access private
+		 */
         // if・elseif・else文を処理
         function _setIfExecute($str,&$tmp,&$key,&$list,&$level,$checked=false){
                 // チェック
@@ -576,234 +557,4 @@ class class_template{
                 }
                 return $check;
         }
-/*
-      var $var_cb = '';
-      var $tempValue = NULL;
-//-----------------------------
-// 取得関数
-//-----------------------------
-      // テンプレートの読み込み
-      function loadTemplate($filename){
-            if( !($fp = @fopen($filename,'rb')) ){
-                  return NULL;
-            }
-            $load = fread($fp,filesize($filename));
-            fclose($fp);
-            return $load;
-      }
-      // テンプレートエリアを置換
-      function replaceArea($template_start,$template_end,$template,$tmp){
-           // テンプレートエリアの取得
-           list($tmp_header,$tmp_body,$tmp_footer) = $this->getArea($template_start,$template_end,$template);
-           $template = $tmp_header.$tmp.$tmp_footer;
-           return $template;
-      }
-      // テンプレートエリアタグを削除
-      function removeAreaTag($template_start,$template_end,$template,$tmp){
-           // テンプレートエリアの取得
-           list($tmp_header,$tmp_body,$tmp_footer) = $this->getArea($template_start,$template_end,$template);
-           $template = $tmp_header.$tmp_body.$tmp_footer;
-           return $template;
-      }
-      // テンプレートエリアの取得
-      function getArea($template_start,$template_end,$template){
-            $preg_str = "/^([\s\S]*)".preg_quote($template_start,'/').'([\s\S]+?)'.preg_quote($template_end,'/')."([\s\S]*)\$/";
-            if( preg_match( $preg_str , $template , $tp , PREG_OFFSET_CAPTURE ) ){
-                  return array($tp[1][0],$tp[2][0],$tp[3][0]);
-            }
-            return NULL;
-      }
-      // テンプレートを読み込み設定
-      function setLoadTemplateParts($template,$var_name,$filename){
-            // テンプレートの読み込み
-            $tpl = $this->loadTemplate($filename);
-            // テンプレートに設定
-            return $this->setTemp($var_name,$tpl,$template);
-      }
-//-----------------------------
-// 設定関数
-//-----------------------------
-      // テンプレートに変数を当てはめる(簡易型)
-      function setTemp($v,$temp,$template){
-            $preg_str = "/<\?\s*".preg_quote($v,"/")."\s*\?>/";
-            $template = preg_replace($preg_str,$temp,$template);
-            return $template;
-      }
-      // テンプレートに変数を当てはめる
-      function setValue($valuelist,$template){
-            if(is_array($valuelist)){
-                  foreach($valuelist as $key => $val){
-                        $template = $this->setTemp($key,$val,$template);
-                  }
-            }
-            return $template;
-      }
-      // テンプレートに条件式を当てはめる(簡易型)
-      function _setIfTemp($template){
-            $preg_str = "/<\!--[\s]*if[\s]*\([\s]*([\s\S]*?)[\s]*\)[\s]*-->([\s\S]*?)<\!--[\s]*end[\s]*if[\s]*-->/";
-            $template = preg_replace_callback( $preg_str , array($this, '_temp_cb_if_func') , $template );
-            return $template;
-      }
-      function setIfTemp($v,$temp,$template){
-            $this->tempValue = array($v => $temp);
-            return $this->_setIfTemp($template);
-      }
-      // テンプレートに条件式を当てはめる
-      function setIf($valuelist,$template){
-            if(is_array($valuelist)){
-                  $this->tempValue = $valuelist;
-                  foreach($valuelist as $key => $val){
-                        $template = $this->_setIfTemp($template );
-                  }
-            }
-            return $template;
-      }
-      // テンプレートに多重判定式を当てはめる
-      function _setSwitchTemp($template){
-            $preg_str = "/<\!--[\s]*switch[\s]*\([\s]*([\s\S]*?)[\s]*\)[\s]*-->([\s\S]*?)<\!--[\s]*end[\s]*switch[\s]*-->/";
-            $template = preg_replace_callback( $preg_str , array($this, '_temp_cb_switch_func') , $template );
-            return $template;
-      }
-      function setSwitchTemp($v,$temp,$template){
-            $this->tempValue = array($v => $temp);
-            return $this->_setSwitchTemp($template);
-      }
-      function setSwitch($valuelist,$template){
-            if(is_array($valuelist)){
-                  $this->tempValue = $valuelist;
-                  foreach($valuelist as $key => $val){
-                        $template = $this->_setSwitchTemp($template );
-                  }
-            }
-            return $template;
-      }
-      // テンプレートにテンプレートプログラムを設定
-      function templateExec($valuelist,$template){
-            $template = $this->setSwitch($valuelist,$template);
-            $template = $this->setIf($valuelist,$template);
-            $template = $this->setValue($valuelist,$template);
-            return $template;
-      }
-      // テンプレートにテンプレートプログラムを設定(配列)
-      function templateExecArray($template_start,$template_end,$valuelist,$template){
-            while(list($tp_header,$tp_body,$tp_footer) = $this->getArea($template_start,$template_end,$template)){
-                  $tmp_body = '';
-                  foreach($valuelist as $list){
-                        // テンプレートに設定
-                        $tmp = $this->templateExec($list,$tp_body);
-                        $tmp_body .= $tmp;
-                  }
-                  $template = $tp_header.$tmp_body.$tp_footer;
-            }
-            return $template;
-      }
-//-----------------------------
-// 内部関数
-//-----------------------------
-      // 格納された変数を取得
-      function getTempValue($str){
-            if( preg_match( "/^\\$([0-9a-zA-Z_]+)$/" , $str , $tp , PREG_OFFSET_CAPTURE ) ){
-                  if(isset($this->tempValue[$tp[1][0]])){
-                        return $this->tempValue[$tp[1][0]];
-                  }else{
-                        return NULL;
-                  }
-            }
-            return $str;
-      }
-      function _getTempValueStr($args){
-            if( preg_match( "/^\\$([0-9a-zA-Z_]+)\$/" , $args , $tp , PREG_OFFSET_CAPTURE ) ){
-                  if(isset($this->tempValue[$tp[1][0]]) && is_null($this->tempValue[$tp[1][0]]) != true){
-                        return $this->tempValue[$tp[1][0]];
-                  }else{
-                        return NULL;
-                  }
-            }
-            return $args;
-      }
-      // if文コールバック関数
-      function _temp_cb_if_func($args){
-            $body = $args[2];
-            $else_body = "";
-            // if条件式と内容を分割
-            $preg_str = "/<\!--[\s]*else[\s]*if\([\s]*([\s\S]*?)[\s]*\)[\s]*-->/";
-            $result = preg_split($preg_str,$body,-1,PREG_SPLIT_DELIM_CAPTURE);
-            
-            $if_list = array();
-            $if_list[] = $args[1];
-            $last_body = array_pop($result);
-            foreach($result as $val){
-                $if_list[] = $val;
-            }
-            // else文検出
-            $preg_str = "/^([\s\S]*?)<\!--[\s]*else[\s]*-->([\s\S]*)/";
-            if(preg_match($preg_str,$last_body,$result)){
-                $if_list[] = $result[1];
-                $else_body = $result[2];
-            }else{
-                $if_list[] = $last_body;
-            }
-            // 条件式を取得
-            $cnt = count($if_list);
-            for($i=0;$i<$cnt;$i+=2){
-                $success = false;
-                // 条件式を取得
-                $preg_str = "/(\S+)\s*([\!\<\>=]+)\s*(\S+)/";
-                if( preg_match( $preg_str , $if_list[$i] , $tp , PREG_OFFSET_CAPTURE )){
-                        $i1 = $this->_getTempValueStr($tp[1][0]);
-                        $is = $tp[2][0];
-                        $i2 = $this->_getTempValueStr($tp[3][0]);
-                        if(!is_null($i1) && !is_null($i2)){
-                                switch((string)$is){
-                                case '==':      if($i1 === $i2) $success = true;       break;
-                                case '<=':      if($i1 <= $i2)  $success = true;       break;
-                                case '>=':      if($i1 >= $i2)  $success = true;       break;
-                                case '<':       if($i1 < $i2)   $success = true;       break;
-                                case '>':       if($i1 > $i2)   $success = true;       break;
-                                case '!=':      if($i1 != $i2)  $success = true;       break;
-                                }
-                        }
-                }else{
-                        $item = $this->_getTempValueStr($if_str);
-                        if($item != NULL){
-                                if(is_numeric($item)){
-                                        $item = intval($item);
-                                }
-                                if($item){
-                                        $success = true;
-                                }
-                        }
-                }
-                if($success){
-                        break;
-                }
-            }
-            // else文を取得
-            $template = "";
-            if($i < $cnt){
-                $template = $if_list[$i + 1];
-            }else{
-                $template = $else_body;
-            }
-            return $template;
-      }
-      // switch文コールバック関数
-      function _temp_cb_switch_func($args){
-            $preg_str = "/<\!--[\s]*case[\s]*([\$a-zA-Z0-9]+)[\s]*-->/";
-            $result = preg_split($preg_str,$args[2],-1,PREG_SPLIT_DELIM_CAPTURE);
-            if(($value = $this->getTempValue($args[1])) !== NULL){
-                    $cnt = count($result);
-                    $template = "";
-                    for($i=1;$i<$cnt;$i+=2){
-                        if($result[$i] == $value){
-                                $template = $result[$i+1];
-                                break;
-                        }
-                    }
-                return $template;
-            }
-            return $args[0];
-      }*/
 }
-
-?>
