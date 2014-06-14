@@ -28,6 +28,11 @@ Onry include "init_lib.php" file.
     $TPL->assign("human",$value);
     $value = "test";
     $TPL->assign("name",$value);
+    
+    // set asssociative array
+    $TPL->assign_vars(array("test" => "string","ary" => array(1 => "test")));
+    // get template to string
+    $html_str = $TPL->get_display_template();
 
 #### html(index.html)
     <!-- set template parts file -->
@@ -83,10 +88,23 @@ Onry include "init_lib.php" file.
         $sv = $DB->fetchArray();
     }
 
+### Mail Engine(class_mail.php)
+    $MAIL = new class_mail;
+    // setting
+    $MAIL->setFromName("sample",SYSTEM_MAIL_ENCODE,SYSTEM_PHP_ENCODE);
+    $MAIL->setFrom("example@sample.com");
+    $MAIL->setSubject("sample mail",SYSTEM_MAIL_ENCODE,SYSTEM_PHP_ENCODE);
+    $MAIL->setBody($body);
+    $MAIL->setTo("test@sample.com");
+    $MAIL->addCCMail("test2@sample.com");
+    $MAIL->addBCCMail("test2@sample.com");
+    // attribe file
+    $MAIL->addFile("/path/to/file.jpg","sample.jpg");
+    // send mail
+    $MAIL->send();
+
 ## Other Class View
 *Social Plugins(Facebook/Twitter)
-
-*Mail(Attatible)
 
 *iPhone/Android Push(push notification)
 
