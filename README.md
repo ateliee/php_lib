@@ -207,8 +207,6 @@ Onry include "init_lib.php" file.
 ## Other Class View
 *Social Plugins(Facebook/Twitter)
 
-*iPhone/Android Push(push notification)
-
 *Blog Post(Wordpress/Ameba/FC2)
 
 *Create Calender
