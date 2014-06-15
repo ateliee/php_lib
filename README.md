@@ -116,43 +116,46 @@ Onry include "init_lib.php" file.
 ### <a name="apns">APNS Server Side(class_apns.php)
 
 * APNS is iPhone App Push Notifications On Server Side.
-+ single push support(multible is next update)
+* single push support(multible is next update)
 
-        $APNS = new class_apns;
-        // setting
-        $APNS->init($APNS_ID,$APNS_PASS);
-        // set debug mode
-        $APNS->setDebug(true);
-        // send device token
-        $APNS->setDeviceToken($token);
-        // set message(options)
-        $APNS->setBody(array(
-            'alert' => $message,
-            "badge" => 1,
-            'sound' => 'default',
-            'content-available' => 1
-        ));
-        // send
-        $APNS->pushMessage();
+#### php
+    $APNS = new class_apns;
+    // setting
+    $APNS->init($APNS_ID,$APNS_PASS);
+    // set debug mode
+    $APNS->setDebug(true);
+    // send device token
+    $APNS->setDeviceToken($token);
+    // set message(options)
+    $APNS->setBody(array(
+        'alert' => $message,
+        "badge" => 1,
+        'sound' => 'default',
+        'content-available' => 1
+    ));
+    // send
+    $APNS->pushMessage();
 
 ### <a name="gcm">GCM Server Side(class_gcm.php)
 * single and multible Push Notifications
 
-        $GCM = new class_gcm;
-        // setting
-        $GCM->init($API_KEY);
-        // send device
-        $GCM->setRegistrationIDs($IDS);
-        // options
-        $GCM->setData(array(
-            'collapse_key' => "update",  //  オンライン復活時に表示する文字列
-            'time_to_live' => 60 * 60 * 24 * 28,  // クライアント端末がオフラインであった場合に、いつまでメッセージを保持するか。秒単位で指定。
-            'delay_while_idle' => false,  // 端末がidle時はactiveになるまで送信を待つ
-            'dry_run' => false,  //  true:実際にはメッセージを送信しない。開発時のテスト用。
-            'data' => array('message' => $message)       // ペイロード
-        ));
-        // send message
-        $GCM->pushMessage();
+#### php
+
+    $GCM = new class_gcm;
+    // setting
+    $GCM->init($API_KEY);
+    // send device
+    $GCM->setRegistrationIDs($IDS);
+    // options
+    $GCM->setData(array(
+        'collapse_key' => "update",  //  オンライン復活時に表示する文字列
+        'time_to_live' => 60 * 60 * 24 * 28,  // クライアント端末がオフラインであった場合に、いつまでメッセージを保持するか。秒単位で指定。
+        'delay_while_idle' => false,  // 端末がidle時はactiveになるまで送信を待つ
+        'dry_run' => false,  //  true:実際にはメッセージを送信しない。開発時のテスト用。
+        'data' => array('message' => $message)       // ペイロード
+    ));
+    // send message
+    $GCM->pushMessage();
 
 ### <a name="func">Functions(/func/)
     // user agent check
