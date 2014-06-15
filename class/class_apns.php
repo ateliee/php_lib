@@ -113,4 +113,3 @@ class class_apns{
                 return $result_list;
         }
 }
-?>

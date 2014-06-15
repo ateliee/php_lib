@@ -15,7 +15,10 @@ Onry include "init_lib.php" file.
 * [Template Engine](#tpl)
 * [Database Engine](#db)
 * [Mail Engine](#mail)
+* [APNS Server Side](#apns)
+* [GCM Server Side](#gcm)
 * [Functions](#func)
+* [Define](#define)
 
 ### <a name="tpl">Template Engine(class_templates.php)
 * set variable(string,integer,double,associative array, array other)
@@ -73,6 +76,7 @@ Onry include "init_lib.php" file.
 
 ### <a name="db">Database Engine(class_mysql.php)
 * SELECT,CREATE,DELETE,INSERT,UPDATE Other
+* PHP5 is MYSQLI,PHP4 is mysql_***() function
 
 #### php
     // database setup
@@ -108,6 +112,47 @@ Onry include "init_lib.php" file.
     $MAIL->addFile("/path/to/file.jpg","sample.jpg");
     // send mail
     $MAIL->send();
+
+### <a name="apns">APNS Server Side(class_apns.php)
+
+* APNS is iPhone App Push Notifications On Server Side.
++ single push support(multible is next update)
+
+        $APNS = new class_apns;
+        // setting
+        $APNS->init($APNS_ID,$APNS_PASS);
+        // set debug mode
+        $APNS->setDebug(true);
+        // send device token
+        $APNS->setDeviceToken($token);
+        // set message(options)
+        $APNS->setBody(array(
+            'alert' => $message,
+            "badge" => 1,
+            'sound' => 'default',
+            'content-available' => 1
+        ));
+        // send
+        $APNS->pushMessage();
+
+### <a name="gcm">GCM Server Side(class_gcm.php)
+* single and multible Push Notifications
+
+        $GCM = new class_gcm;
+        // setting
+        $GCM->init($API_KEY);
+        // send device
+        $GCM->setRegistrationIDs($IDS);
+        // options
+        $GCM->setData(array(
+            'collapse_key' => "update",  //  オンライン復活時に表示する文字列
+            'time_to_live' => 60 * 60 * 24 * 28,  // クライアント端末がオフラインであった場合に、いつまでメッセージを保持するか。秒単位で指定。
+            'delay_while_idle' => false,  // 端末がidle時はactiveになるまで送信を待つ
+            'dry_run' => false,  //  true:実際にはメッセージを送信しない。開発時のテスト用。
+            'data' => array('message' => $message)       // ペイロード
+        ));
+        // send message
+        $GCM->pushMessage();
 
 ### <a name="func">Functions(/func/)
     // user agent check
@@ -146,7 +191,7 @@ Onry include "init_lib.php" file.
     $last_key = get_last_key($ary);   // get array last key
     $last_val = get_last_value($ary);   // get array last value
     
-### <a name="define">Defines(/conf/)
+### <a name="define">Define(/conf/)
     $G_SYSTEM_PREF;   // Japan Ken
     $G_SYSTEM_CONSTELLATIONS;    // constellation
     $G_SYSTEM_BLOOD;   // blood
