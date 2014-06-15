@@ -146,6 +146,15 @@ Onry include "init_lib.php" file.
     $last_key = get_last_key($ary);   // get array last key
     $last_val = get_last_value($ary);   // get array last value
     
+### <a name="define">Defines(/conf/)
+    $G_SYSTEM_PREF;   // Japan Ken
+    $G_SYSTEM_CONSTELLATIONS;    // constellation
+    $G_SYSTEM_BLOOD;   // blood
+    $G_SYSTEM_COUNTRY;   // country
+    SYSTEM_CARRIER_PC,SYSTEM_CARRIER_DOCOMOSYSTEM_CARRIER_AU,SYSTEM_CARRIER_KDDI,SYSTEM_CARRIER_SOFTBANK,SYSTEM_CARRIER_WILLCOM;   // carrier
+    SYSTEM_TIME_1MINUTES;   // 1 minutes timestamp(60)
+    SYSTEM_TIME_1HOUR;   // 1 minutes timestamp(3600)
+    etc.
 
 ## Other Class View
 *Social Plugins(Facebook/Twitter)
