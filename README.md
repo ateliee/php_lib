@@ -18,6 +18,10 @@ Onry include "init_lib.php" file.
 * [Template Engine](#tpl)
 * [Database Engine](#db)
 * [Mail Engine](#mail)
+* [Session Manager](#session)
+* [Cookie Manager](#cookie)
+* [FTP Maganer](#FTP)
+* [File Manager](#file)
 * [APNS Server Side](#apns)
 * [GCM Server Side](#gcm)
 * [Functions](#func)
@@ -115,6 +119,46 @@ Onry include "init_lib.php" file.
     $MAIL->addFile("/path/to/file.jpg","sample.jpg");
     // send mail
     $MAIL->send();
+
+### <a name="session">Session Manager(class_session.php)
+
+    $SESSION = new class_session;
+    // settiong namespace
+    $SESSION->start();
+    $SESSION->SELECT($NAMESCAPE);
+
+    $SESSION->set($NAME,$VALUE);
+    $value = $SESSION->get($NAME);
+
+### <a name="cookie">Cookie Manager(class_cookie.php)
+
+    $COOKIE = new class_cookie;
+    $COOKIE->init($COOKIENAME,$PERIOD);
+    $COOKIE->set($NAME,$VALUE);
+    $value = $COOKIE->get($NAME);
+
+### <a name="ftp">FTP Manager(class_ftp.php)
+
+    $FTP = new class_ftp;
+    $FTP->ftp_server = "localhost";
+    $FTP->user_name = "user_name";
+    $FTP->user_pass = "password";
+    $FTP->pasv(true);
+    // connect FTP
+    $result = $FTP->connect();
+    // connect SSL
+    $result = $FTP->ssl_connect();
+    // close
+    $FTP->close();
+
+### <a name="file">File Manager(class_file.php)
+    
+    $FILE = new class_file;
+    $FILE->setDir($DIR);
+    // read
+    $FILE->readArray($filename);
+    $FILE->readAll($filename);
+    $FILE->readDirAll($filename);
 
 ### <a name="apns">APNS Server Side(class_apns.php)
 
@@ -214,15 +258,7 @@ Onry include "init_lib.php" file.
 
 *Create Calender
 
-*Cookie Manager
-
-*Session Manager
-
-*File Manager
-
 *Flickr API
-
-*FTP Manager
 
 *IMAP Class
 
