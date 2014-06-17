@@ -252,35 +252,24 @@ Onry include "init_lib.php" file.
     etc.
 
 ## Other Class View
-*Social Plugins(Facebook/Twitter)
 
-*Blog Post(Wordpress/Ameba/FC2)
-
-*Create Calender
-
-*Flickr API
-
-*IMAP Class
-
-*Mobile Class
-
-*PDF Class
-
-*Rakuten API
-
-*RSS Class
-
-*wiki API
-
-*XML Class
-
-*YAhoo API
-
-*Zip Class
+* Social Plugins(Facebook/Twitter)
+* Blog Post(Wordpress/Ameba/FC2)
+* Create Calender
+* Flickr API
+* IMAP Class
+* Mobile Class
+* PDF Class
+* Rakuten API
+* RSS Class
+* wiki API
+* XML Class
+* YAhoo API
+* Zip Class
 
 
 
 
 **These are some functions.
-More convenient functions are varied.
+More convenient functions are varied. 
 I recommend it to the person whom I want to easily employ without minding a version of php.**
