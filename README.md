@@ -11,8 +11,9 @@ support PHP version 4/5
 Onry include "init_lib.php" file.
 (setup init_lib.php)
 
-    include_once(dir(__FILE__)."/php_lib/init_lib.php");
-
+``` php
+include_once(dir(__FILE__)."/php_lib/init_lib.php");
+```
 
 ## Example
 * [Template Engine](#tpl)
@@ -287,18 +288,18 @@ etc.
 
 ## Useing Library
 
-* upgrade.php(http://include-once.org/p/upgradephp/)
-* QRcode Perl CGI & PHP scripts(http://www.swetake.com/qrcode/qr_cgi.html)
-* facebook-sdk(https://developers.facebook.com/docs/reference/php/4.0.0)
-* FPDI(http://www.setasign.com/products/fpdi/about/)
-* magpierss(http://magpierss.sourceforge.net/)
-* google-api-php-client(https://github.com/google/google-api-php-client)
-* OpenSlopeOne(https://code.google.com/p/openslopeone/)
-* PEAR(http://pear.php.net/manual/ja/)
-* qdmail_receiver(http://hal456.net/qdmail_rec/)
-* simplehtmldom(http://simplehtmldom.sourceforge.net/)
-* TCPDF(http://www.tcpdf.org/)
-* twitteroauth(https://github.com/abraham/twitteroauth)
+* [upgrade.php](http://include-once.org/p/upgradephp/)
+* [QRcode Perl CGI & PHP scripts](http://www.swetake.com/qrcode/qr_cgi.html)
+* [facebook-sdk](https://developers.facebook.com/docs/reference/php/4.0.0)
+* [FPDI](http://www.setasign.com/products/fpdi/about/)
+* [magpierss](http://magpierss.sourceforge.net/)
+* [google-api-php-client](https://github.com/google/google-api-php-client)
+* [OpenSlopeOne](https://code.google.com/p/openslopeone/)
+* [PEAR](http://pear.php.net/manual/ja/)
+* [qdmail_receiver](http://hal456.net/qdmail_rec/)
+* [simplehtmldom](http://simplehtmldom.sourceforge.net/)
+* [TCPDF](http://www.tcpdf.org/)
+* [twitteroauth](https://github.com/abraham/twitteroauth)
 
 
 **These are some functions.
