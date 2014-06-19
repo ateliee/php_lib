@@ -1,5 +1,5 @@
 # PHP LIB
-![image](/src/example/images/icon.png)
+![image](/example/images/icon.png)
 
 PHP LIB is a rapid development framework for PHP.
 support PHP version 4/5
