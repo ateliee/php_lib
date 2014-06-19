@@ -1,0 +1,21 @@
+{
+"name": "ateliee/php_lib",
+"type": "library",
+"description": "php4/5 library",
+"keywords": [],
+"homepage": "https://github.com/ateliee/php_lib",
+"version": "1.0.0",
+"license": "MIT",
+"authors": [
+{
+"name": "ateliee",
+"email": "ateliee@gmail.com"
+}
+],
+"require": {
+"php": ">=4.4.0"
+},
+"autoload": {
+"psr-0": { "Volcanus\\Validation": "src/" }
+}
+}
