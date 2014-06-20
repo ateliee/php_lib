@@ -5,99 +5,111 @@
 
 //$L_PROTOCOL = (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == "on")) ? "https://" : "http://";
 $L_PROTOCOL = "http://";
-$L_SELF_DIR = preg_replace("/^".preg_quote($_SERVER["DOCUMENT_ROOT"],"/")."(.*)/","$1",preg_replace("/\\\/","/",dirname(__FILE__)));
-$L_URL = $L_PROTOCOL.$_SERVER["HTTP_HOST"].$L_SELF_DIR;
-$L_LIB_PATH = $L_URL."/../exe/qr_img0.50i/php/qr_img.php";
+$L_SELF_DIR = preg_replace("/^" . preg_quote($_SERVER["DOCUMENT_ROOT"], "/") . "(.*)/", "$1", preg_replace("/\\\/", "/", dirname(__FILE__)));
+$L_URL = $L_PROTOCOL . $_SERVER["HTTP_HOST"] . $L_SELF_DIR;
+$L_LIB_PATH = $L_URL . "/../exe/qr_img0.50i/php/qr_img.php";
 //+++++++++++++++++++++++++++++
-// QRƒR[ƒhì¬ƒNƒ‰ƒX
+// QRï¿½Rï¿½[ï¿½hï¿½ì¬ï¿½Nï¿½ï¿½ï¿½X
 //+++++++++++++++++++++++++++++
-class class_qr{
-      // “§‰ßF
-      var $transparent = 0xffffffff;
-      
-      // ƒJƒ‰[î•ñ‚ğ¶¬
-      function RGB($r,$g,$b){
-            return (0xff << 24) | (($r & 0xff) << 16) | (($g & 0xff) << 8) | ($b & 0xff);
-      }
-      function getRGB($rgb){
-            $r = ((0x00ff0000 & $rgb) >> 16);
-            $g = ((0x0000ff00 & $rgb) >> 8);
-            $b = ((0x000000ff & $rgb) >> 0);
-            return array($r,$g,$b);
-      }
-      // QRƒR[ƒh‰æ‘œ‚ğì¬‚·‚é
-      function createQRCoodImage($dest,$souce,$size=100,$options = array()){
-      GLOBAL $L_LIB_PATH;
-            $pathinfo = pathinfo($dest);
-            // •Û‘¶‚·‚éƒtƒ@ƒCƒ‹–¼
-            $filename = $pathinfo["basename"];
-            // ƒtƒH[ƒ}ƒbƒg
-            $format = $pathinfo["extension"];
-            
-            // “§‰ßF‚É‚·‚éF‚Ìw’è
-            // RGB‚Å0‚©‚ç255‚Ì”’l‚Åw’è
-            // 0,0,0‚Í•255,255,255‚Í”’‚É‚È‚è‚Ü‚·
-            // ƒTƒ“ƒvƒ‹‚Í”’‚Ì•”•ª‚ğ“§‰ßF‚É‚µ‚Ü‚·
-            // •‘¤‚ğ“§‰ß‚É‚µ‚½‚¢ê‡‚Í‚·‚×‚Ä‚É0‚ğw’è‚µ‚Ü‚·
-            list($trns_red,$trns_green,$trns_blue) = $this->getRGB($this->transparent);
-            // ¶¬‚³‚ê‚é‰æ‘œ‚ÌƒTƒCƒY‚ğw’è
-            // QRƒR[ƒh‚Í³•ûŒ`‚È‚Ì‚Åc‰¡ŒÂ•Êİ’è‚Í‚µ‚Ü‚¹‚ñ
-            $img_size = $size;
-            
-            // qr_img.php‚ª‚ ‚éêŠ‚ÌURL
-            $url = $L_LIB_PATH;
-            // qr_img.php‚ÌƒIƒvƒVƒ‡ƒ“‚Ås=(ƒTƒCƒYw’è)‚Íw’è‚µ‚È‚¢‚Å‚­‚¾‚³‚¢
-            // w’è‚·‚é‚ÆƒTƒCƒYˆ³kˆ—‚Å¶¬QRƒR[ƒh‚É”’‚Æ•ˆÈŠO‚ÌF‚ª¬“ü‚µ‚Ü‚·
-            // QRƒR[ƒh‚ğJPEGŒ`®‚Å¶¬‚³‚¹‚Ü‚·
-            $options["t"] = "J";
-            $img_src = $url."?d=".urlencode($souce)."&".http_build_query($options);
-            
-            // QRƒR[ƒh‚ğ¶¬
-            $curlHandler = curl_init($img_src);
-            $optionSet = array(
-                CURLOPT_TIMEOUT             => 30,
-                CURLOPT_RETURNTRANSFER      => true,
-            );
-            curl_setopt_array($curlHandler, $optionSet);
-            $result = curl_exec($curlHandler);
-            curl_close($curlHandler);
-            if (!$result || curl_errno($curlHandler)) {
-                return null;
-            }
-            // ¶¬ˆ—‚ÍJPEGŒÄ‚Ño‚µ‚ÅŒÅ’è
-            //$im_src = imagecreatefromjpeg($img_src);
-            $im_src = imagecreatefromstring($result);
-            // ¶¬¸”sˆ—
-            if(!$im_src){
-                  fputs("QRƒR[ƒh¶¬¸”s");
-                  return false;
-            }
-            $width = imagesx($im_src);
-            $height = imagesy($im_src);
-            // w’èƒTƒCƒY‚ÌQRƒR[ƒh‚ğ¶¬‚·‚é‚½‚ß‚ÌV‚µ‚¢ƒCƒ[ƒWEƒŠƒ\[ƒX
-            $im_dist = imagecreate($img_size,$img_size);
-            imagecolorallocate($im_dist,255,255,255);
-            // Œ³‚ÌQRƒR[ƒh‚ğƒRƒs[
-            imagecopyresized($im_dist,$im_src,0, 0, 0, 0, $img_size,$img_size,$width,$height);
-            
-            // “§‰ßˆ—
-            // GIF‚©PNG‚Å‚Ì‚İ—LŒø
-            if($format=="gif" || $format=="png"){
-                  // w’èF(‚ÉÅ‚à‹ß‚¢F)‚ğ“§‰ßİ’è
-                  imagecolortransparent ($im_dist,imagecolorclosest ($im_dist,$trns_red,$trns_green,$trns_blue));
-            }
-            // •Û‘¶—pŠÖ”‚ªˆá‚¤‚Ì‚Åswitch•ªŠò
-            switch($format){
-            case("gif"):        imagegif($im_dist,$dest);       break;
+class class_qr
+{
+    // ï¿½ï¿½ï¿½ßF
+    var $transparent = 0xffffffff;
+
+    // ï¿½Jï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ğ¶ï¿½
+    function RGB($r, $g, $b)
+    {
+        return (0xff << 24) | (($r & 0xff) << 16) | (($g & 0xff) << 8) | ($b & 0xff);
+    }
+
+    function getRGB($rgb)
+    {
+        $r = ((0x00ff0000 & $rgb) >> 16);
+        $g = ((0x0000ff00 & $rgb) >> 8);
+        $b = ((0x000000ff & $rgb) >> 0);
+        return array($r, $g, $b);
+    }
+
+    // QRï¿½Rï¿½[ï¿½hï¿½æ‘œï¿½ï¿½ï¿½ì¬ï¿½ï¿½ï¿½ï¿½
+    function createQRCoodImage($dest, $souce, $size = 100, $options = array())
+    {
+        GLOBAL $L_LIB_PATH;
+        $pathinfo = pathinfo($dest);
+        // ï¿½Û‘ï¿½ï¿½ï¿½ï¿½ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½
+        $filename = $pathinfo["basename"];
+        // ï¿½tï¿½Hï¿½[ï¿½}ï¿½bï¿½g
+        $format = $pathinfo["extension"];
+
+        // ï¿½ï¿½ï¿½ßFï¿½É‚ï¿½ï¿½ï¿½Fï¿½Ìwï¿½ï¿½
+        // RGBï¿½ï¿½0ï¿½ï¿½ï¿½ï¿½255ï¿½Ìï¿½ï¿½lï¿½Åwï¿½ï¿½
+        // 0,0,0ï¿½Íï¿½255,255,255ï¿½Í”ï¿½ï¿½É‚È‚ï¿½Ü‚ï¿½
+        // ï¿½Tï¿½ï¿½ï¿½vï¿½ï¿½ï¿½Í”ï¿½ï¿½Ì•ï¿½ï¿½ï¿½ï¿½ğ“§‰ßFï¿½É‚ï¿½ï¿½Ü‚ï¿½
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ğ“§‰ß‚É‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‡ï¿½Í‚ï¿½ï¿½×‚Ä‚ï¿½0ï¿½ï¿½ï¿½wï¿½è‚µï¿½Ü‚ï¿½
+        list($trns_red, $trns_green, $trns_blue) = $this->getRGB($this->transparent);
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ‘œï¿½ÌƒTï¿½Cï¿½Yï¿½ï¿½ï¿½wï¿½ï¿½
+        // QRï¿½Rï¿½[ï¿½hï¿½Íï¿½ï¿½ï¿½`ï¿½È‚Ì‚Åcï¿½ï¿½ï¿½Â•Êİ’ï¿½Í‚ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½
+        $img_size = $size;
+
+        // qr_img.phpï¿½ï¿½ï¿½ï¿½ï¿½ï¿½êŠï¿½ï¿½URL
+        $url = $L_LIB_PATH;
+        // qr_img.phpï¿½ÌƒIï¿½vï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½s=(ï¿½Tï¿½Cï¿½Yï¿½wï¿½ï¿½)ï¿½Íwï¿½è‚µï¿½È‚ï¿½ï¿½Å‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        // ï¿½wï¿½è‚·ï¿½ï¿½ÆƒTï¿½Cï¿½Yï¿½ï¿½ï¿½kï¿½ï¿½ï¿½ï¿½ï¿½Åï¿½ï¿½ï¿½QRï¿½Rï¿½[ï¿½hï¿½É”ï¿½ï¿½Æï¿½ï¿½ÈŠOï¿½ÌFï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½
+        // QRï¿½Rï¿½[ï¿½hï¿½ï¿½JPEGï¿½`ï¿½ï¿½ï¿½Åï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½
+        $options["t"] = "J";
+        $img_src = $url . "?d=" . urlencode($souce) . "&" . http_build_query($options);
+
+        // QRï¿½Rï¿½[ï¿½hï¿½ğ¶ï¿½
+        $curlHandler = curl_init($img_src);
+        $optionSet = array(
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_RETURNTRANSFER => true,
+        );
+        curl_setopt_array($curlHandler, $optionSet);
+        $result = curl_exec($curlHandler);
+        curl_close($curlHandler);
+        if (!$result || curl_errno($curlHandler)) {
+            return null;
+        }
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½JPEGï¿½Ä‚Ñoï¿½ï¿½ï¿½ÅŒÅ’ï¿½
+        //$im_src = imagecreatefromjpeg($img_src);
+        $im_src = imagecreatefromstring($result);
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        if (!$im_src) {
+            fputs("QRï¿½Rï¿½[ï¿½hï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½s");
+            return false;
+        }
+        $width = imagesx($im_src);
+        $height = imagesy($im_src);
+        // ï¿½wï¿½ï¿½Tï¿½Cï¿½Yï¿½ï¿½QRï¿½Rï¿½[ï¿½hï¿½ğ¶ï¿½ï¿½ï¿½ï¿½é‚½ï¿½ß‚ÌVï¿½ï¿½ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Wï¿½Eï¿½ï¿½ï¿½\ï¿½[ï¿½X
+        $im_dist = imagecreate($img_size, $img_size);
+        imagecolorallocate($im_dist, 255, 255, 255);
+        // ï¿½ï¿½ï¿½ï¿½QRï¿½Rï¿½[ï¿½hï¿½ï¿½ï¿½Rï¿½sï¿½[
+        imagecopyresized($im_dist, $im_src, 0, 0, 0, 0, $img_size, $img_size, $width, $height);
+
+        // ï¿½ï¿½ï¿½ßï¿½ï¿½ï¿½
+        // GIFï¿½ï¿½PNGï¿½Å‚Ì‚İ—Lï¿½ï¿½
+        if ($format == "gif" || $format == "png") {
+            // ï¿½wï¿½ï¿½F(ï¿½ÉÅ‚ï¿½ï¿½ß‚ï¿½ï¿½F)ï¿½ğ“§‰ßİ’ï¿½
+            imagecolortransparent($im_dist, imagecolorclosest($im_dist, $trns_red, $trns_green, $trns_blue));
+        }
+        // ï¿½Û‘ï¿½ï¿½pï¿½Öï¿½ï¿½ï¿½ï¿½á‚¤ï¿½Ì‚ï¿½switchï¿½ï¿½ï¿½ï¿½
+        switch ($format) {
+            case("gif"):
+                imagegif($im_dist, $dest);
+                break;
             case("jpg"):
-            case("jpeg"):       imagejpeg($im_dist,$dest);      break;
-            case("png"):        imagepng($im_dist,$dest);       break;
-            }
-            //ƒCƒ[ƒWEƒŠƒ\[ƒX‚Ì”jŠü
-            imagedestroy($im_src);
-            imagedestroy($im_dist);
-            return true;
-      }
+            case("jpeg"):
+                imagejpeg($im_dist, $dest);
+                break;
+            case("png"):
+                imagepng($im_dist, $dest);
+                break;
+        }
+        //ï¿½Cï¿½ï¿½ï¿½[ï¿½Wï¿½Eï¿½ï¿½ï¿½\ï¿½[ï¿½Xï¿½Ì”jï¿½ï¿½
+        imagedestroy($im_src);
+        imagedestroy($im_dist);
+        return true;
+    }
 }
 
 ?>

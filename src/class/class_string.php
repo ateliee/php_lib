@@ -6,66 +6,85 @@
 //+++++++++++++++++++++++++++++
 // 文字列クラス
 //+++++++++++++++++++++++++++++
-class class_string{
-      // HTMLの文字列をエスケープ
-      function htmlEscape($str){
-            return htmlspecialchars($str);
-      }
-      function htmlEscapeArray($ary){
-            $tmp = $ary;
-            if(is_array($tmp)){
-                  foreach($tmp as $key => $val){
-                        $tmp[$key] = $this->htmlEscapeArray($val);
-                  }
-            }else{
-                  $tmp = $this->htmlEscape($tmp);
+class class_string
+{
+    // HTMLの文字列をエスケープ
+    function htmlEscape($str)
+    {
+        return htmlspecialchars($str);
+    }
+
+    function htmlEscapeArray($ary)
+    {
+        $tmp = $ary;
+        if (is_array($tmp)) {
+            foreach ($tmp as $key => $val) {
+                $tmp[$key] = $this->htmlEscapeArray($val);
             }
-            return $tmp;
-      }
-      // HTMLおよびPHPタグの取り除き
-      function stripTags($str,$allowable_tags = ''){
-            return strip_tags($str,$allowable_tags);
-      }
-      // URLをエンコード
-      function urlEncode($str){
-            return urlencode($str);
-      }
-      function urlDecode($str){
-            return urldecode($str);
-      }
-      // 正規表現のエスケープ
-      function pregEncode($str){
-            return preg_quote($str,"/");
-      }
-      // 文字を変換する
-      function convertKana( $str , $option , $encoding = 'auto' ){
-            if(is_array($str)){
-                foreach($str as $key => $val){
-                    $str[$key] = $this->convertKana($val, $option, $encoding);
-                }
-            }else{
-                return mb_convert_kana($str, $option, $encoding);
+        } else {
+            $tmp = $this->htmlEscape($tmp);
+        }
+        return $tmp;
+    }
+
+    // HTMLおよびPHPタグの取り除き
+    function stripTags($str, $allowable_tags = '')
+    {
+        return strip_tags($str, $allowable_tags);
+    }
+
+    // URLをエンコード
+    function urlEncode($str)
+    {
+        return urlencode($str);
+    }
+
+    function urlDecode($str)
+    {
+        return urldecode($str);
+    }
+
+    // 正規表現のエスケープ
+    function pregEncode($str)
+    {
+        return preg_quote($str, "/");
+    }
+
+    // 文字を変換する
+    function convertKana($str, $option, $encoding = 'auto')
+    {
+        if (is_array($str)) {
+            foreach ($str as $key => $val) {
+                $str[$key] = $this->convertKana($val, $option, $encoding);
             }
-            return $str;
-      }
-      // 文字コードを変換する
-      function convertEncode( $str , $to_encoding , $from_encoding = 'auto' ){
-            if(is_array($str)){
-                foreach($str as $key => $val){
-                    $str[$key] = $this->convertEncode($val, $to_encoding, $from_encoding);
-                }
-            }else{
-                return mb_convert_encoding($str, $to_encoding, $from_encoding);
+        } else {
+            return mb_convert_kana($str, $option, $encoding);
+        }
+        return $str;
+    }
+
+    // 文字コードを変換する
+    function convertEncode($str, $to_encoding, $from_encoding = 'auto')
+    {
+        if (is_array($str)) {
+            foreach ($str as $key => $val) {
+                $str[$key] = $this->convertEncode($val, $to_encoding, $from_encoding);
             }
-            return $str;
-      }
-      // 文字列を単語で分解
-      function parsingWord( $str ){
-            if( preg_match( "/\B/" , $str , $words )){
-                  return $words;
-            }
-      }
+        } else {
+            return mb_convert_encoding($str, $to_encoding, $from_encoding);
+        }
+        return $str;
+    }
+
+    // 文字列を単語で分解
+    function parsingWord($str)
+    {
+        if (preg_match("/\B/", $str, $words)) {
+            return $words;
+        }
+    }
 }
+
 // $str = array_map('trim', $arr);
 /*
 $charset = $_REQUEST['charset'];

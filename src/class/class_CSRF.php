@@ -1,65 +1,64 @@
 <?php
 //============================================
 // class_CSRF.php
-// CSRF:ƒNƒƒXƒTƒCƒgƒŠƒNƒGƒXƒgƒtƒH[ƒWƒFƒŠ(Cross-Site Request Forgeries)
-// CSR:“Á’è‚ÌƒTƒCƒg‚Ì³‹K‚Ìƒ†[ƒU‚ÌŒ ŒÀ‚ğˆ«—p‚µ‚ÄA³‹K‚Ìƒ†[ƒU‚ªˆÓ}‚µ‚Ä‚¢‚È‚¢ˆ—‚ğ‹­§‚³‚¹‚éUŒ‚
+// CSRF:ï¿½Nï¿½ï¿½ï¿½Xï¿½Tï¿½Cï¿½gï¿½ï¿½ï¿½Nï¿½Gï¿½Xï¿½gï¿½tï¿½Hï¿½[ï¿½Wï¿½Fï¿½ï¿½(Cross-Site Request Forgeries)
+// CSR:ï¿½ï¿½ï¿½ï¿½ÌƒTï¿½Cï¿½gï¿½Ìï¿½ï¿½Kï¿½Ìƒï¿½ï¿½[ï¿½Uï¿½ÌŒï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½pï¿½ï¿½ï¿½ÄAï¿½ï¿½ï¿½Kï¿½Ìƒï¿½ï¿½[ï¿½Uï¿½ï¿½ï¿½Ó}ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Uï¿½ï¿½
 //============================================
 
 //+++++++++++++++++++++++++++++
-// class_CSRFƒNƒ‰ƒX
+// class_CSRFï¿½Nï¿½ï¿½ï¿½X
 //+++++++++++++++++++++++++++++
 class class_CSRF
 {
     var $ttl;
     var $name;
 
-    function Token( $name = 'tokens', $ttl = 1800 )
+    function Token($name = 'tokens', $ttl = 1800)
     {
-      // CSRF ŒŸoƒg[ƒNƒ“Å‘å—LŒøŠúŒÀ(•b)
-      // Å¬ŠúŒÀ‚Í‚±‚Ì’l‚Ì 1/2 (1800 ‚Ìê‡‚ÍA900•bŠÔ‚ÍÅ’á•Û‚³‚ê‚é)
-      $this->ttl = (int)$ttl;
+        // CSRF ï¿½ï¿½ï¿½oï¿½gï¿½[ï¿½Nï¿½ï¿½ï¿½Å‘ï¿½Lï¿½ï¿½ï¿½ï¿½(ï¿½b)
+        // ï¿½Åï¿½ï¿½ï¿½ï¿½ï¿½Í‚ï¿½ï¿½Ì’lï¿½ï¿½ 1/2 (1800 ï¿½Ìê‡ï¿½ÍA900ï¿½bï¿½Ô‚ÍÅ’ï¿½Ûï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
+        $this->ttl = (int)$ttl;
 
-      // ƒZƒbƒVƒ‡ƒ“‚É“o˜^‚·‚éƒg[ƒNƒ“”z—ñ‚Ì–¼Ì
-      $this->name = $name;
+        // ï¿½Zï¿½bï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½É“oï¿½^ï¿½ï¿½ï¿½ï¿½gï¿½[ï¿½Nï¿½ï¿½ï¿½zï¿½ï¿½Ì–ï¿½ï¿½ï¿½
+        $this->name = $name;
     }
 
     /**
-     * ƒg[ƒNƒ“‚ğ¶¬
+     * ï¿½gï¿½[ï¿½Nï¿½ï¿½ï¿½ğ¶ï¿½
      */
     function createToken()
     {
-      $curr = time();
-      $tokens = isset( $_SESSION[$this->name] ) ? $_SESSION[$this->name] : array();
-      foreach ( $tokens as $id => $time ) {
-          // —LŒøŠúŒÀØ‚ê‚Ìê‡‚ÍƒŠƒXƒg‚©‚çíœ
-          if ( $time < $curr - $this->ttl ) {
-            unset( $tokens[$id] );
-          }
-          else {
-            $uniq_id = $id;
-          }
-      }
-      if ( count( $tokens ) < 2 ) {
-          if ( ! $tokens || ( $curr - (int)( $this->ttl / 2 ) ) >= max( $tokens ) ) {
-            $uniq_id = sha1( uniqid( rand(), TRUE ) );
-            $tokens[$uniq_id] = time();
-          }
-      }
-      // ƒŠƒXƒg‚ğƒZƒbƒVƒ‡ƒ“‚É“o˜^
-      $_SESSION[$this->name] = $tokens;
-      return $uniq_id;
+        $curr = time();
+        $tokens = isset($_SESSION[$this->name]) ? $_SESSION[$this->name] : array();
+        foreach ($tokens as $id => $time) {
+            // ï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½Ø‚ï¿½Ìê‡ï¿½Íƒï¿½ï¿½Xï¿½gï¿½ï¿½ï¿½ï¿½íœ
+            if ($time < $curr - $this->ttl) {
+                unset($tokens[$id]);
+            } else {
+                $uniq_id = $id;
+            }
+        }
+        if (count($tokens) < 2) {
+            if (!$tokens || ($curr - (int)($this->ttl / 2)) >= max($tokens)) {
+                $uniq_id = sha1(uniqid(rand(), TRUE));
+                $tokens[$uniq_id] = time();
+            }
+        }
+        // ï¿½ï¿½ï¿½Xï¿½gï¿½ï¿½ï¿½Zï¿½bï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½É“oï¿½^
+        $_SESSION[$this->name] = $tokens;
+        return $uniq_id;
     }
 
     /**
-     * ƒZƒbƒVƒ‡ƒ“‚ÌƒŠƒXƒg‚Éƒg[ƒNƒ“‚ª‘¶İ‚µAƒg[ƒNƒ“‚ª—LŒøŠúŒÀ“à‚Ìê‡‚Í FALSE ‚ğ•Ô‚·
+     * ï¿½Zï¿½bï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Ìƒï¿½ï¿½Xï¿½gï¿½Éƒgï¿½[ï¿½Nï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ‚ï¿½ï¿½Aï¿½gï¿½[ï¿½Nï¿½ï¿½ï¿½ï¿½ï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìê‡ï¿½ï¿½ FALSE ï¿½ï¿½Ô‚ï¿½
      */
-    function isCSRF( $token )
+    function isCSRF($token)
     {
-      $tokens = $_SESSION[$this->name];
-      if ( isset( $tokens[$token] ) && $tokens[$token] > time() - $this->ttl ) {
-          return FALSE;
-      }
-      return TRUE;
+        $tokens = $_SESSION[$this->name];
+        if (isset($tokens[$token]) && $tokens[$token] > time() - $this->ttl) {
+            return FALSE;
+        }
+        return TRUE;
     }
 }
 

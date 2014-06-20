@@ -52,23 +52,23 @@ function php_compat_sha256($str, $raw_output = false)
         $w = array();
         for ($j = 0; $j < 16; ++$j) {
             $index = $i + $j * 4;
-            $w[$j] = ord($str[$index])     << 24
-                   | ord($str[$index + 1]) << 16
-                   | ord($str[$index + 2]) << 8
-                   | ord($str[$index + 3]);
+            $w[$j] = ord($str[$index]) << 24
+                | ord($str[$index + 1]) << 16
+                | ord($str[$index + 2]) << 8
+                | ord($str[$index + 3]);
         }
         for ($j = 16; $j < 64; ++$j) {
-            $s0 = php_compat_sha256_rotr_helper($w[$j - 15],  7)
+            $s0 = php_compat_sha256_rotr_helper($w[$j - 15], 7)
                 ^ php_compat_sha256_rotr_helper($w[$j - 15], 18)
-                ^ php_compat_sha256_shr_helper ($w[$j - 15],  3);
+                ^ php_compat_sha256_shr_helper($w[$j - 15], 3);
 
             $s1 = php_compat_sha256_rotr_helper($w[$j - 2], 17)
                 ^ php_compat_sha256_rotr_helper($w[$j - 2], 19)
-                ^ php_compat_sha256_shr_helper ($w[$j - 2], 10);
+                ^ php_compat_sha256_shr_helper($w[$j - 2], 10);
 
             $w[$j] = php_compat_sha256_add32_helper(
-                     php_compat_sha256_add32_helper(
-                     php_compat_sha256_add32_helper($w[$j - 16], $s0), $w[$j - 7]), $s1);
+                php_compat_sha256_add32_helper(
+                    php_compat_sha256_add32_helper($w[$j - 16], $s0), $w[$j - 7]), $s1);
         }
 
         $a = $h0;
@@ -81,22 +81,22 @@ function php_compat_sha256($str, $raw_output = false)
         $h = $h7;
 
         for ($j = 0; $j < 64; ++$j) {
-            $s1 = php_compat_sha256_rotr_helper($e,  6)
+            $s1 = php_compat_sha256_rotr_helper($e, 6)
                 ^ php_compat_sha256_rotr_helper($e, 11)
                 ^ php_compat_sha256_rotr_helper($e, 25);
 
             $ch = ($e & $f) ^ (~$e & $g);
 
-            $s0 = php_compat_sha256_rotr_helper($a,  2)
+            $s0 = php_compat_sha256_rotr_helper($a, 2)
                 ^ php_compat_sha256_rotr_helper($a, 13)
                 ^ php_compat_sha256_rotr_helper($a, 22);
 
             $maj = ($a & $b) ^ ($a & $c) ^ ($b & $c);
 
             $t1 = php_compat_sha256_add32_helper(
-                  php_compat_sha256_add32_helper(
-                  php_compat_sha256_add32_helper(
-                  php_compat_sha256_add32_helper($h, $s1), $ch), $k[$j]), $w[$j]);
+                php_compat_sha256_add32_helper(
+                    php_compat_sha256_add32_helper(
+                        php_compat_sha256_add32_helper($h, $s1), $ch), $k[$j]), $w[$j]);
 
             $t2 = php_compat_sha256_add32_helper($s0, $maj);
 

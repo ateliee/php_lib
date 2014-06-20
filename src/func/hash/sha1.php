@@ -31,10 +31,10 @@ function php_compat_sha1($str, $raw_output = false)
         $w = array();
         for ($j = 0; $j < 16; ++$j) {
             $index = $i + $j * 4;
-            $w[$j] = ord($str[$index])     << 24
-                   | ord($str[$index + 1]) << 16
-                   | ord($str[$index + 2]) << 8
-                   | ord($str[$index + 3]);
+            $w[$j] = ord($str[$index]) << 24
+                | ord($str[$index + 1]) << 16
+                | ord($str[$index + 2]) << 8
+                | ord($str[$index + 3]);
         }
         for ($j = 16; $j < 80; ++$j) {
             $w[$j] = php_compat_sha1_rotl_helper($w[$j - 3] ^ $w[$j - 8] ^ $w[$j - 14] ^ $w[$j - 16], 1);
@@ -62,10 +62,10 @@ function php_compat_sha1($str, $raw_output = false)
             }
 
             $t = php_compat_sha1_add32_helper(
-                 php_compat_sha1_add32_helper(
-                 php_compat_sha1_add32_helper(
-                 php_compat_sha1_add32_helper(
-                 php_compat_sha1_rotl_helper($a, 5), $f), $e), $k), $w[$j]);
+                php_compat_sha1_add32_helper(
+                    php_compat_sha1_add32_helper(
+                        php_compat_sha1_add32_helper(
+                            php_compat_sha1_rotl_helper($a, 5), $f), $e), $k), $w[$j]);
 
             $e = $d;
             $d = $c;

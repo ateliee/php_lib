@@ -1,54 +1,56 @@
 <?php
 
 //+++++++++++++++++++++++++++++
-// zipƒNƒ‰ƒX(phpmyadmin‚Ìzip.lib.php‚ğg—p)
+// zipï¿½Nï¿½ï¿½ï¿½X(phpmyadminï¿½ï¿½zip.lib.phpï¿½ï¿½ï¿½gï¿½p)
 //+++++++++++++++++++++++++++++
-class class_zip{
-    var $datasec      = array();
-    var $ctrl_dir     = array();
+class class_zip
+{
+    var $datasec = array();
+    var $ctrl_dir = array();
     var $eof_ctrl_dir = "\x50\x4b\x05\x06\x00\x00\x00\x00";
-    var $old_offset   = 0;
-    
-    function unix2DosTime($unixtime = 0) {
+    var $old_offset = 0;
+
+    function unix2DosTime($unixtime = 0)
+    {
         $timearray = ($unixtime == 0) ? getdate() : getdate($unixtime);
         if ($timearray['year'] < 1980) {
-            $timearray['year']    = 1980;
-            $timearray['mon']     = 1;
-            $timearray['mday']    = 1;
-            $timearray['hours']   = 0;
+            $timearray['year'] = 1980;
+            $timearray['mon'] = 1;
+            $timearray['mday'] = 1;
+            $timearray['hours'] = 0;
             $timearray['minutes'] = 0;
             $timearray['seconds'] = 0;
         } // end if
         return (($timearray['year'] - 1980) << 25) | ($timearray['mon'] << 21) | ($timearray['mday'] << 16) |
-                ($timearray['hours'] << 11) | ($timearray['minutes'] << 5) | ($timearray['seconds'] >> 1);
+        ($timearray['hours'] << 11) | ($timearray['minutes'] << 5) | ($timearray['seconds'] >> 1);
     }
-    
+
     function addFile($data, $name, $time = 0)
     {
-        $name     = str_replace('\\', '/', $name);
-        $dtime    = dechex($this->unix2DosTime($time));
+        $name = str_replace('\\', '/', $name);
+        $dtime = dechex($this->unix2DosTime($time));
         $hexdtime = '\x' . $dtime[6] . $dtime[7]
-                  . '\x' . $dtime[4] . $dtime[5]
-                  . '\x' . $dtime[2] . $dtime[3]
-                  . '\x' . $dtime[0] . $dtime[1];
+            . '\x' . $dtime[4] . $dtime[5]
+            . '\x' . $dtime[2] . $dtime[3]
+            . '\x' . $dtime[0] . $dtime[1];
         eval('$hexdtime = "' . $hexdtime . '";');
-        $fr   = "\x50\x4b\x03\x04";
-        $fr   .= "\x14\x00";            // ver needed to extract
-        $fr   .= "\x00\x00";            // gen purpose bit flag
-        $fr   .= "\x08\x00";            // compression method
-        $fr   .= $hexdtime;             // last mod time and date
+        $fr = "\x50\x4b\x03\x04";
+        $fr .= "\x14\x00"; // ver needed to extract
+        $fr .= "\x00\x00"; // gen purpose bit flag
+        $fr .= "\x08\x00"; // compression method
+        $fr .= $hexdtime; // last mod time and date
         // "local file header" segment
         $unc_len = strlen($data);
-        $crc     = crc32($data);
-        $zdata   = gzcompress($data);
-        $zdata   = substr(substr($zdata, 0, strlen($zdata) - 4), 2); // fix crc bug
-        $c_len   = strlen($zdata);
-        $fr      .= pack('V', $crc);             // crc32
-        $fr      .= pack('V', $c_len);           // compressed filesize
-        $fr      .= pack('V', $unc_len);         // uncompressed filesize
-        $fr      .= pack('v', strlen($name));    // length of filename
-        $fr      .= pack('v', 0);                // extra field length
-        $fr      .= $name;
+        $crc = crc32($data);
+        $zdata = gzcompress($data);
+        $zdata = substr(substr($zdata, 0, strlen($zdata) - 4), 2); // fix crc bug
+        $c_len = strlen($zdata);
+        $fr .= pack('V', $crc); // crc32
+        $fr .= pack('V', $c_len); // compressed filesize
+        $fr .= pack('V', $unc_len); // uncompressed filesize
+        $fr .= pack('v', strlen($name)); // length of filename
+        $fr .= pack('v', 0); // extra field length
+        $fr .= $name;
         // "file data" segment
         $fr .= $zdata;
         // "data descriptor" segment (optional but necessary if archive is not
@@ -59,78 +61,79 @@ class class_zip{
         //$fr .= pack('V', $c_len);               // compressed filesize
         //$fr .= pack('V', $unc_len);             // uncompressed filesize
         // add this entry to array
-        $this -> datasec[] = $fr;
+        $this->datasec[] = $fr;
         // now add to central directory record
         $cdrec = "\x50\x4b\x01\x02";
-        $cdrec .= "\x00\x00";                // version made by
-        $cdrec .= "\x14\x00";                // version needed to extract
-        $cdrec .= "\x00\x00";                // gen purpose bit flag
-        $cdrec .= "\x08\x00";                // compression method
-        $cdrec .= $hexdtime;                 // last mod time & date
-        $cdrec .= pack('V', $crc);           // crc32
-        $cdrec .= pack('V', $c_len);         // compressed filesize
-        $cdrec .= pack('V', $unc_len);       // uncompressed filesize
+        $cdrec .= "\x00\x00"; // version made by
+        $cdrec .= "\x14\x00"; // version needed to extract
+        $cdrec .= "\x00\x00"; // gen purpose bit flag
+        $cdrec .= "\x08\x00"; // compression method
+        $cdrec .= $hexdtime; // last mod time & date
+        $cdrec .= pack('V', $crc); // crc32
+        $cdrec .= pack('V', $c_len); // compressed filesize
+        $cdrec .= pack('V', $unc_len); // uncompressed filesize
         $cdrec .= pack('v', strlen($name)); // length of filename
-        $cdrec .= pack('v', 0);             // extra field length
-        $cdrec .= pack('v', 0);             // file comment length
-        $cdrec .= pack('v', 0);             // disk number start
-        $cdrec .= pack('v', 0);             // internal file attributes
-        $cdrec .= pack('V', 32);            // external file attributes - 'archive' bit set
-        $cdrec .= pack('V', $this -> old_offset); // relative offset of local header
-        $this -> old_offset += strlen($fr);
+        $cdrec .= pack('v', 0); // extra field length
+        $cdrec .= pack('v', 0); // file comment length
+        $cdrec .= pack('v', 0); // disk number start
+        $cdrec .= pack('v', 0); // internal file attributes
+        $cdrec .= pack('V', 32); // external file attributes - 'archive' bit set
+        $cdrec .= pack('V', $this->old_offset); // relative offset of local header
+        $this->old_offset += strlen($fr);
         $cdrec .= $name;
         // optional extra field, file comment goes here
         // save to central directory
-        $this -> ctrl_dir[] = $cdrec;
+        $this->ctrl_dir[] = $cdrec;
     }
-    
+
     function file()
     {
-        $data    = implode('', $this -> datasec);
-        $ctrldir = implode('', $this -> ctrl_dir);
+        $data = implode('', $this->datasec);
+        $ctrldir = implode('', $this->ctrl_dir);
         return
             $data .
             $ctrldir .
-            $this -> eof_ctrl_dir .
-            pack('v', sizeof($this -> ctrl_dir)) .  // total # of entries "on this disk"
-            pack('v', sizeof($this -> ctrl_dir)) .  // total # of entries overall
-            pack('V', strlen($ctrldir)) .           // size of central dir
-            pack('V', strlen($data)) .              // offset to start of central dir
-            "\x00\x00";                             // .zip file comment length
+            $this->eof_ctrl_dir .
+            pack('v', sizeof($this->ctrl_dir)) . // total # of entries "on this disk"
+            pack('v', sizeof($this->ctrl_dir)) . // total # of entries overall
+            pack('V', strlen($ctrldir)) . // size of central dir
+            pack('V', strlen($data)) . // offset to start of central dir
+            "\x00\x00"; // .zip file comment length
     }
 
 }
+
 /*
 require_once('zip.lib.php');
-//zipƒIƒuƒWƒFƒNƒgì¬
+//zipï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½ì¬
 $zipFile = new zipfile();
 
-//windows‚ÍƒoƒCƒiƒŠƒ‚[ƒhƒIƒ“I
+//windowsï¿½Íƒoï¿½Cï¿½iï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½hï¿½Iï¿½ï¿½ï¿½I
 $handle = fopen("./hoge".$fileName, "rb");
 $targetFile = fread($handle,filesize("./hoge".$fileName));
 fclose($handle);
-//ƒtƒ@ƒCƒ‹‚ğƒA[ƒJƒCƒu‚É’Ç‰Á
+//ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½Aï¿½[ï¿½Jï¿½Cï¿½uï¿½É’Ç‰ï¿½
 $zipFile -> addFile($targetFile, "./files/".$fileName);
 
-addFile‚Ì‘æ“ñˆø”‚Éƒtƒ@ƒCƒ‹–¼‚Ì‚İw’è‚·‚é‚ÆA‰ğ“€Œã‚ÉƒtƒHƒ‹ƒ_–³‚µ‚Å“WŠJ‚³‚ê‚é‚Ì‚ÅA‚±‚±‚Å‚Íƒtƒ@ƒCƒ‹–¼‚ğƒpƒXw’è‚µ‚ÄƒtƒHƒ‹ƒ_‚É“WŠJ‚³‚ê‚é‚æ‚¤‚É‚µ‚Ä‚¢‚éB
-£ ¥
-ƒtƒ@ƒCƒ‹‚Æ‚µ‚Ä•Û‘¶‚·‚é Edit
+addFileï¿½Ì‘ï¿½ï¿½ï¿½Éƒtï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½Ì‚İwï¿½è‚·ï¿½ï¿½ÆAï¿½ğ“€Œï¿½Éƒtï¿½Hï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Å“Wï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½Ì‚ÅAï¿½ï¿½ï¿½ï¿½ï¿½Å‚Íƒtï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½pï¿½Xï¿½wï¿½è‚µï¿½Äƒtï¿½Hï¿½ï¿½ï¿½_ï¿½É“Wï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½æ‚¤ï¿½É‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½B
+ï¿½ï¿½ ï¿½ï¿½
+ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Æ‚ï¿½ï¿½Ä•Û‘ï¿½ï¿½ï¿½ï¿½ï¿½ Edit
 
-//ˆ³k‚³‚ê‚½‚à‚Ì‚ğƒoƒCƒg—ñ‚Åæ‚èo‚·
+//ï¿½ï¿½ï¿½kï¿½ï¿½ï¿½ê‚½ï¿½ï¿½ï¿½Ì‚ï¿½ï¿½oï¿½Cï¿½gï¿½ï¿½Åï¿½ï¿½oï¿½ï¿½
 $zipCompByte = $zipFile->file();
 
-//ƒtƒ@ƒCƒ‹‚ÉƒoƒCƒg—ñ‚Æ‚µ‚Ä‘‚«‚Ş
+//ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Éƒoï¿½Cï¿½gï¿½ï¿½Æ‚ï¿½ï¿½Äï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 $handle = fopen("hoge.zip", "wb");
 fwrite($handle, $zipCompByte);
 fclose($handle);
 
-£ ¥
-ƒXƒgƒŠ[ƒ€‚Æ‚µ‚Äƒ_ƒEƒ“ƒ[ƒh‚³‚¹‚é Edit
+ï¿½ï¿½ ï¿½ï¿½
+ï¿½Xï¿½gï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½Äƒ_ï¿½Eï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½hï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Edit
 
-//ˆ³k‚³‚ê‚½‚à‚Ì‚ğƒoƒCƒg—ñ‚Åæ‚èo‚·
+//ï¿½ï¿½ï¿½kï¿½ï¿½ï¿½ê‚½ï¿½ï¿½ï¿½Ì‚ï¿½ï¿½oï¿½Cï¿½gï¿½ï¿½Åï¿½ï¿½oï¿½ï¿½
 $zipCompByte = $zipFile->file();
 
-//ƒwƒbƒ_[w’è‚Å“f‚«o‚·
+//ï¿½wï¿½bï¿½_ï¿½[ï¿½wï¿½ï¿½Å“fï¿½ï¿½ï¿½oï¿½ï¿½
 header("Content-Type: application/octet-stream");
 header("Content-Disposition: attachment; filename=\"hoge.zip\"");
 print $zipCompByte

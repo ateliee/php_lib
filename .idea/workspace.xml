@@ -1,0 +1,856 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="9fc58617-5f32-4084-907f-0d5d9560a1dc" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/REST/10.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/REST/10.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/REST/11.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/REST/11.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/REST/13.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/REST/13.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/2dbarcodes.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/2dbarcodes.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Adapter/Abstract.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Adapter/Abstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Adapter/Pdo/Abstract.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Adapter/Pdo/Abstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Table/Abstract.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Table/Abstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Table/Row/Abstract.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Table/Row/Abstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Table/Rowset/Abstract.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Table/Rowset/Abstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/test/buzz/ActivitiesTest.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/test/buzz/ActivitiesTest.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/examples/adsense/AdSenseAuth.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/examples/adsense/AdSenseAuth.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/test/pagespeed/AllPageSpeedTests.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/test/pagespeed/AllPageSpeedTests.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/test/tasks/AllTasksTests.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/test/tasks/AllTasksTests.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/test/AllTests.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/test/AllTests.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/test/urlshortener/AllUrlShortenerTests.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/test/urlshortener/AllUrlShortenerTests.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/test/general/ApiClientTest.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/test/general/ApiClientTest.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Auth.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Auth.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Auth.xml" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Auth.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/test/general/AuthTest.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/test/general/AuthTest.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Autoloader.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Autoloader.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/examples/adsense/BaseExample.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/examples/adsense/BaseExample.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Build.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Build.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Build.xml" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Build.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Builder.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Builder.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/test/buzz/BuzzTests.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/test/buzz/BuzzTests.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Frontend/CLI.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Frontend/CLI.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/test/general/CacheTest.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/test/general/CacheTest.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Cfg.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Cfg.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Cfg.xml" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Cfg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/ChannelFile.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/ChannelFile.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Channels.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Channels.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Channels.xml" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Channels.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/test/buzz/CommentsTest.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/test/buzz/CommentsTest.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Common.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Common.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Common.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Common.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Common.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Common.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Task/Common.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Task/Common.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Config.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Config.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Config.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Config.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Config.xml" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Config.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Data.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Data.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Data.xml" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Data.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Adapter/Db2.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Adapter/Db2.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Adapter/Pdo/Ibm/Db2.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Adapter/Pdo/Ibm/Db2.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Statement/Db2.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Statement/Db2.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Dependency2.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Dependency2.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/DependencyDB.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/DependencyDB.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Doc.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Doc.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Doc.xml" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Doc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Downloader.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Downloader.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/XML/RPC/Dump.php" afterPath="$PROJECT_DIR$/src/library/XML/RPC/Dump.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/ErrorStack.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/ErrorStack.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Exception.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Exception.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Adapter/Db2/Exception.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Adapter/Db2/Exception.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Adapter/Oracle/Exception.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Adapter/Oracle/Exception.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Select/Exception.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Select/Exception.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Statement/Db2/Exception.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Statement/Db2/Exception.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Statement/Mysqli/Exception.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Statement/Mysqli/Exception.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Statement/Oracle/Exception.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Statement/Oracle/Exception.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Table/Select/Exception.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Table/Select/Exception.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Loader/Exception.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Loader/Exception.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Exception.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Exception.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Expr.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Expr.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Ext.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Ext.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Ext.xml" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Ext.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/test/buzz/FeedsTest.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/test/buzz/FeedsTest.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/filters/FilterASCII85.php" afterPath="$PROJECT_DIR$/src/library/filters/FilterASCII85.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/filters/FilterASCII85_FPDI.php" afterPath="$PROJECT_DIR$/src/library/filters/FilterASCII85_FPDI.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/filters/FilterLZW.php" afterPath="$PROJECT_DIR$/src/library/filters/FilterLZW.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/filters/FilterLZW_FPDI.php" afterPath="$PROJECT_DIR$/src/library/filters/FilterLZW_FPDI.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Profiler/Firebug.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Profiler/Firebug.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/FixPHP5PEARWarnings.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/FixPHP5PEARWarnings.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Frontend.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Frontend.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/test/general/GeneralTests.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/test/general/GeneralTests.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/examples/adsense/examples/GenerateReport.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/examples/adsense/examples/GenerateReport.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/examples/adsense/examples/GenerateReportWithPaging.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/examples/adsense/examples/GenerateReportWithPaging.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/test/general/GeneratorTest.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/test/general/GeneratorTest.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/examples/adsense/examples/GetAllAdClients.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/examples/adsense/examples/GetAllAdClients.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/examples/adsense/examples/GetAllAdUnits.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/examples/adsense/examples/GetAllAdUnits.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/examples/adsense/examples/GetAllCustomChannels.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/examples/adsense/examples/GetAllCustomChannels.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/examples/adsense/examples/GetAllUrlChannels.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/examples/adsense/examples/GetAllUrlChannels.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/test/buzz/GroupsTest.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/test/buzz/GroupsTest.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/OS/Guess.php" afterPath="$PROJECT_DIR$/src/library/PEAR/OS/Guess.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Adapter/Pdo/Ibm.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Adapter/Pdo/Ibm.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Statement/Pdo/Ibm.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Statement/Pdo/Ibm.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Adapter/Pdo/Ibm/Ids.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Adapter/Pdo/Ibm/Ids.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Install.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Install.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Install.xml" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Install.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Statement/Interface.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Statement/Interface.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Loader/PluginLoader/Interface.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Loader/PluginLoader/Interface.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/test/general/IoTest.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/test/general/IoTest.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/HTTP_Request/Request/Listener.php" afterPath="$PROJECT_DIR$/src/library/PEAR/HTTP_Request/Request/Listener.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Loader.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Loader.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Mirror.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Mirror.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Mirror.xml" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Mirror.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Adapter/Pdo/Mssql.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Adapter/Pdo/Mssql.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Adapter/Pdo/Mysql.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Adapter/Pdo/Mysql.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Adapter/Mysqli.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Adapter/Mysqli.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Statement/Mysqli.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Statement/Mysqli.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/external/OAuth.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/external/OAuth.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/twitteroauth/OAuth.php" afterPath="$PROJECT_DIR$/src/library/twitteroauth/OAuth.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/test/general/OAuthHelper.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/test/general/OAuthHelper.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Adapter/Pdo/Oci.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Adapter/Pdo/Oci.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/OpenSlopeOne.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/OpenSlopeOne.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Adapter/Oracle.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Adapter/Oracle.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Statement/Oracle.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Statement/Oracle.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR5.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR5.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Validator/PECL.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Validator/PECL.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Package.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Package.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Downloader/Package.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Downloader/Package.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Package.xml" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Package.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/PackageFile.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/PackageFile.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Packager.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Packager.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/test/pagespeed/PageSpeedTest.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/test/pagespeed/PageSpeedTest.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/ChannelFile/Parser.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/ChannelFile/Parser.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Statement/Pdo.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Statement/Pdo.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/test/buzz/PeopleTest.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/test/buzz/PeopleTest.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Adapter/Pdo/Pgsql.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Adapter/Pdo/Pgsql.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Php.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Php.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Php.xml" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Php.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Pickle.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Pickle.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Pickle.xml" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Pickle.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Loader/PluginLoader.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Loader/PluginLoader.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Task/Postinstallscript.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Task/Postinstallscript.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Profiler.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Profiler.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Profiler/Query.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Profiler/Query.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/REST.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/REST.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/XML/RPC.php" afterPath="$PROJECT_DIR$/src/library/XML/RPC.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Registry.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Registry.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Registry.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Registry.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Registry.xml" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Registry.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/test/buzz/RelatedTest.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/test/buzz/RelatedTest.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Remote.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Remote.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Remote.xml" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Remote.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Task/Replace.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Task/Replace.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/HTTP_Request/Request.php" afterPath="$PROJECT_DIR$/src/library/PEAR/HTTP_Request/Request.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/test/general/RestTest.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/test/general/RestTest.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/RunTest.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/RunTest.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Script.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Script.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Script.xml" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Script.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Select.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Select.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Table/Select.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Table/Select.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/XML/RPC/Server.php" afterPath="$PROJECT_DIR$/src/library/XML/RPC/Server.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/test/general/ServiceTest.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/test/general/ServiceTest.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/magpierss/extlib/Snoopy.class.inc" afterPath="$PROJECT_DIR$/src/library/magpierss/extlib/Snoopy.class.inc" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/Net/Socket.php" afterPath="$PROJECT_DIR$/src/library/PEAR/Net/Socket.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Adapter/Pdo/Sqlite.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Adapter/Pdo/Sqlite.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Src.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Src.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Src.xml" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Src.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Statement.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/inc/Zend/Db/Statement.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/System.php" afterPath="$PROJECT_DIR$/src/library/PEAR/System.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/test/tasks/TasksTest.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/test/tasks/TasksTest.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Test.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Test.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Test.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Test.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Test.xml" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Command/Test.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Test.xml" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Test.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/external/URITemplateParser.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/external/URITemplateParser.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/Net/URL.php" afterPath="$PROJECT_DIR$/src/library/PEAR/Net/URL.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Task/Unixeol.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Task/Unixeol.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/test/urlshortener/UrlShortenerTests.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/test/urlshortener/UrlShortenerTests.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Validate.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Validate.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/PackageFile/v2/Validator.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/PackageFile/v2/Validator.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Task/Windowseol.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Task/Windowseol.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Www.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Www.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Www.xml" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Installer/Role/Www.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/XMLParser.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/XMLParser.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/aealarabiya.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/aealarabiya.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/aefurat.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/aefurat.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiAdsenseService.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiAdsenseService.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/cache/apiApcCache.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/cache/apiApcCache.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/auth/apiAuth.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/auth/apiAuth.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/auth/apiAuthNone.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/auth/apiAuthNone.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/service/apiBatch.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/service/apiBatch.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiBloggerService.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiBloggerService.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiBooksService.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiBooksService.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/test/buzz/apiBuzzTest.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/test/buzz/apiBuzzTest.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/cache/apiCache.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/cache/apiCache.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiCalendarService.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiCalendarService.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/apiClient.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/apiClient.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/io/apiCurlIO.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/io/apiCurlIO.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiCustomsearchService.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiCustomsearchService.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/cache/apiFileCache.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/cache/apiFileCache.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiFreebaseService.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiFreebaseService.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/io/apiHttpRequest.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/io/apiHttpRequest.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/io/apiIO.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/io/apiIO.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiLatitudeService.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiLatitudeService.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/auth/apiLoginTicket.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/auth/apiLoginTicket.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/cache/apiMemcacheCache.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/cache/apiMemcacheCache.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/service/apiModel.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/service/apiModel.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiModeratorService.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiModeratorService.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/auth/apiOAuth.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/auth/apiOAuth.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/auth/apiOAuth2.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/auth/apiOAuth2.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiOrkutService.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiOrkutService.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/auth/apiP12Signer.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/auth/apiP12Signer.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiPagespeedonlineService.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiPagespeedonlineService.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/auth/apiPemVerifier.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/auth/apiPemVerifier.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiPlusService.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiPlusService.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiPredictionService.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiPredictionService.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/io/apiREST.orig..php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/io/apiREST.orig..php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/io/apiREST.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/io/apiREST.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/io/apiRPC.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/io/apiRPC.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/service/apiService.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/service/apiService.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/service/apiServiceRequest.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/service/apiServiceRequest.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/service/apiServiceResource.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/service/apiServiceResource.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiShoppingService.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiShoppingService.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/auth/apiSigner.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/auth/apiSigner.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiSiteVerificationService.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiSiteVerificationService.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiTasksService.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiTasksService.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiTranslateService.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiTranslateService.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiUrlshortenerService.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiUrlshortenerService.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/service/apiUtils.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/service/apiUtils.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/auth/apiVerifier.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/auth/apiVerifier.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiWebfontsService.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/contrib/apiWebfontsService.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/barcodes.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/barcodes.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/facebook-sdk/base_facebook.php" afterPath="$PROJECT_DIR$/src/library/facebook-sdk/base_facebook.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/examples/batch.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/examples/batch.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/examples/books/books_browser.css" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/examples/books/books_browser.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/config/lang/bul.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/config/lang/bul.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/cid0cs.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/cid0cs.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/cid0ct.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/cid0ct.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/cid0jp.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/cid0jp.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/cid0kr.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/cid0kr.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_CSRF.php" afterPath="$PROJECT_DIR$/src/class/class_CSRF.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_amazonAPI.php" afterPath="$PROJECT_DIR$/src/class/class_amazonAPI.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_apns.php" afterPath="$PROJECT_DIR$/src/class/class_apns.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_blogger.php" afterPath="$PROJECT_DIR$/src/class/class_blogger.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_calender.php" afterPath="$PROJECT_DIR$/src/class/class_calender.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_cookie.php" afterPath="$PROJECT_DIR$/src/class/class_cookie.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_facebook.php" afterPath="$PROJECT_DIR$/src/class/class_facebook.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_file.php" afterPath="$PROJECT_DIR$/src/class/class_file.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_flickrAPI.php" afterPath="$PROJECT_DIR$/src/class/class_flickrAPI.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_ftp.php" afterPath="$PROJECT_DIR$/src/class/class_ftp.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_gcm.php" afterPath="$PROJECT_DIR$/src/class/class_gcm.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_html.php" afterPath="$PROJECT_DIR$/src/class/class_html.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_image.php" afterPath="$PROJECT_DIR$/src/class/class_image.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_imap.php" afterPath="$PROJECT_DIR$/src/class/class_imap.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_mail.php" afterPath="$PROJECT_DIR$/src/class/class_mail.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_mobile.php" afterPath="$PROJECT_DIR$/src/class/class_mobile.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_moshimoAPI.php" afterPath="$PROJECT_DIR$/src/class/class_moshimoAPI.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_mysql.php" afterPath="$PROJECT_DIR$/src/class/class_mysql.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_pdf.php" afterPath="$PROJECT_DIR$/src/class/class_pdf.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_qr.php" afterPath="$PROJECT_DIR$/src/class/class_qr.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_rakutenAPI.php" afterPath="$PROJECT_DIR$/src/class/class_rakutenAPI.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_rss.php" afterPath="$PROJECT_DIR$/src/class/class_rss.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_session.php" afterPath="$PROJECT_DIR$/src/class/class_session.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_socket.php" afterPath="$PROJECT_DIR$/src/class/class_socket.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_string.php" afterPath="$PROJECT_DIR$/src/class/class_string.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_system.php" afterPath="$PROJECT_DIR$/src/class/class_system.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_template.php" afterPath="$PROJECT_DIR$/src/class/class_template.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_twitter.php" afterPath="$PROJECT_DIR$/src/class/class_twitter.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_wikipediaAPI.php" afterPath="$PROJECT_DIR$/src/class/class_wikipediaAPI.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_xml.php" afterPath="$PROJECT_DIR$/src/class/class_xml.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_yahooAPI.php" afterPath="$PROJECT_DIR$/src/class/class_yahooAPI.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_youtubeAPI.php" afterPath="$PROJECT_DIR$/src/class/class_youtubeAPI.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_zip.php" afterPath="$PROJECT_DIR$/src/class/class_zip.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/exe/emoji_unicode/include/commons.php" afterPath="$PROJECT_DIR$/src/exe/emoji_unicode/include/commons.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/conf/conf_define.php" afterPath="$PROJECT_DIR$/src/conf/conf_define.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/conf/conf_system.php" afterPath="$PROJECT_DIR$/src/conf/conf_system.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/conf/conf_word.php" afterPath="$PROJECT_DIR$/src/conf/conf_word.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/src/config.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/src/config.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/magpierss/config.php" afterPath="$PROJECT_DIR$/src/library/magpierss/config.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/exe/coodbook.php" afterPath="$PROJECT_DIR$/src/exe/coodbook.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/courier.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/courier.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/courierb.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/courierb.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/courierbi.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/courierbi.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/courieri.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/courieri.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/database.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/database.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/datamatrix.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/datamatrix.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavusans.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavusans.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavusansb.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavusansb.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavusansbi.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavusansbi.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavusanscondensed.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavusanscondensed.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavusanscondensedb.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavusanscondensedb.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavusanscondensedbi.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavusanscondensedbi.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavusanscondensedi.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavusanscondensedi.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavusansextralight.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavusansextralight.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavusansi.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavusansi.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavusansmono.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavusansmono.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavusansmonob.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavusansmonob.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavusansmonobi.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavusansmonobi.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavusansmonoi.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavusansmonoi.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavuserif.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavuserif.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavuserifb.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavuserifb.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavuserifbi.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavuserifbi.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavuserifcondensed.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavuserifcondensed.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavuserifcondensedb.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavuserifcondensedb.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavuserifcondensedbi.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavuserifcondensedbi.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavuserifcondensedi.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavuserifcondensedi.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavuserifi.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/dejavuserifi.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/HTTP_Request/docs/download-progress.php" afterPath="$PROJECT_DIR$/src/library/PEAR/HTTP_Request/docs/download-progress.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/exe/emoji_unicode/include/emoji_trans.php" afterPath="$PROJECT_DIR$/src/exe/emoji_unicode/include/emoji_trans.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/encodings_maps.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/encodings_maps.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/HTTP_Request/docs/example.php" afterPath="$PROJECT_DIR$/src/library/PEAR/HTTP_Request/docs/example.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/Net/docs/example.php" afterPath="$PROJECT_DIR$/src/library/PEAR/Net/docs/example.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_001.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_001.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_002.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_002.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_003.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_003.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_004.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_004.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_005.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_005.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_006.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_006.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_007.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_007.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_008.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_008.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_009.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_009.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_010.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_010.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_011.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_011.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_012.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_012.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_013.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_013.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_014.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_014.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_015.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_015.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_016.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_016.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_017.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_017.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_018.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_018.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_019.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_019.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_020.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_020.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_021.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_021.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_022.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_022.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_023.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_023.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_024.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_024.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_025.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_025.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_026.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_026.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_027.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_027.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_029.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_029.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_030.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_030.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_031.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_031.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_032.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_032.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_033.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_033.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_034.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_034.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_035.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_035.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_036.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_036.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_037.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_037.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_038.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_038.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_039.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_039.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_040.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_040.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_041.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_041.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_042.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_042.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_043.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_043.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_044.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_044.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_045.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_045.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_046.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_046.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_047.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_047.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_048.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_048.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_049.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_049.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_050.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_050.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_051.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_051.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_052.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_052.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_053.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_053.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_054.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_054.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_055.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_055.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_056.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_056.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_057.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_057.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_058.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_058.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_059.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_059.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_060.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_060.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_061.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_061.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_062.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_062.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_063.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_063.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_064.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_064.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/example_065.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/example_065.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/facebook-sdk/facebook.php" afterPath="$PROJECT_DIR$/src/library/facebook-sdk/facebook.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/facebook-sdk/facebook_php4.php" afterPath="$PROJECT_DIR$/src/library/facebook-sdk/facebook_php4.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/fpdi/fpdf_tpl.php" afterPath="$PROJECT_DIR$/src/library/fpdi/fpdf_tpl.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/fpdi/fpdi.php" afterPath="$PROJECT_DIR$/src/library/fpdi/fpdi.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/fpdi/fpdi2tcpdf_bridge.php" afterPath="$PROJECT_DIR$/src/library/fpdi/fpdi2tcpdf_bridge.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/fpdi/fpdi_pdf_parser.php" afterPath="$PROJECT_DIR$/src/library/fpdi/fpdi_pdf_parser.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/freemono.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/freemono.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/freemonob.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/freemonob.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/freemonobi.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/freemonobi.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/freemonoi.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/freemonoi.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/freesans.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/freesans.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/freesansb.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/freesansb.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/freesansbi.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/freesansbi.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/freesansi.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/freesansi.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/freeserif.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/freeserif.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/freeserifb.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/freeserifb.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/freeserifbi.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/freeserifbi.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/freeserifi.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/freeserifi.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/func/func_agent.php" afterPath="$PROJECT_DIR$/src/func/func_agent.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/func/func_header.php" afterPath="$PROJECT_DIR$/src/func/func_header.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/func/func_html.php" afterPath="$PROJECT_DIR$/src/func/func_html.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/func/func_language.php" afterPath="$PROJECT_DIR$/src/func/func_language.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/func/func_php.php" afterPath="$PROJECT_DIR$/src/func/func_php.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/func/func_security.php" afterPath="$PROJECT_DIR$/src/func/func_security.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/func/func_system.php" afterPath="$PROJECT_DIR$/src/func/func_system.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/helvetica.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/helvetica.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/helveticab.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/helveticab.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/helveticabi.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/helveticabi.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/helveticai.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/helveticai.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/exe/htaccess.php" afterPath="$PROJECT_DIR$/src/exe/htaccess.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/examples/adsense/htmlHelper.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/examples/adsense/htmlHelper.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/htmlcolors.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/htmlcolors.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/hysmyeongjostdmedium.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/hysmyeongjostdmedium.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/doc/index.html" afterPath="$PROJECT_DIR$/src/library/tcpdf/doc/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/OpenSlopeOne/index.php" afterPath="$PROJECT_DIR$/src/library/OpenSlopeOne/index.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/examples/adsense/index.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/examples/adsense/index.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/examples/books/index.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/examples/books/index.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/examples/latitude/index.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/examples/latitude/index.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/examples/pagespeed/index.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/examples/pagespeed/index.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/examples/plus/index.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/examples/plus/index.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/examples/tasks/index.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/examples/tasks/index.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/examples/urlshortener/index.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/examples/urlshortener/index.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/examples/index.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/examples/index.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/init_lib.php" afterPath="$PROJECT_DIR$/src/init_lib.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/examples/books/interface.html" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/examples/books/interface.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/ipag.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/ipag.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/kozgopromedium.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/kozgopromedium.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/kozminproregular.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/kozminproregular.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/msgothic.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/msgothic.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/msungstdlight.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/msungstdlight.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/package.dtd" afterPath="$PROJECT_DIR$/src/library/PEAR/package.dtd" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/pdf417.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/pdf417.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/fpdi/pdf_context.php" afterPath="$PROJECT_DIR$/src/library/fpdi/pdf_context.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/fpdi/pdf_parser.php" afterPath="$PROJECT_DIR$/src/library/fpdi/pdf_parser.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/pdfacourier.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/pdfacourier.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/pdfacourierb.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/pdfacourierb.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/pdfacourierbi.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/pdfacourierbi.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/pdfacourieri.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/pdfacourieri.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/pdfahelvetica.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/pdfahelvetica.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/pdfahelveticab.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/pdfahelveticab.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/pdfahelveticabi.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/pdfahelveticabi.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/pdfahelveticai.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/pdfahelveticai.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/pdfasymbol.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/pdfasymbol.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/pdfatimes.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/pdfatimes.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/pdfatimesb.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/pdfatimesb.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/pdfatimesbi.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/pdfatimesbi.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/pdfatimesi.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/pdfatimesi.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/pdfazapfdingbats.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/pdfazapfdingbats.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/scripts/pearcmd.php" afterPath="$PROJECT_DIR$/src/library/PEAR/scripts/pearcmd.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/scripts/peclcmd.php" afterPath="$PROJECT_DIR$/src/library/PEAR/scripts/peclcmd.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/qdmail_receiver.php" afterPath="$PROJECT_DIR$/src/library/qdmail_receiver.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/exe/qr_img0.50i/php/qr_img.php" afterPath="$PROJECT_DIR$/src/exe/qr_img0.50i/php/qr_img.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/qrcode.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/qrcode.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/rcjfontgothic.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/rcjfontgothic.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/rcjfontmincho.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/rcjfontmincho.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/rcjfontpgothic.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/rcjfontpgothic.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/rcjfontpmincho.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/rcjfontpmincho.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/rcjfonttkgothic.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/rcjfonttkgothic.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/rcjfonttkmincho.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/rcjfonttkmincho.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/rcjfonttkpgothic.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/rcjfonttkpgothic.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/rcjfonttkpmincho.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/rcjfonttkpmincho.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/magpierss/rss_cache.inc" afterPath="$PROJECT_DIR$/src/library/magpierss/rss_cache.inc" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/magpierss/rss_fetch.inc" afterPath="$PROJECT_DIR$/src/library/magpierss/rss_fetch.inc" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/magpierss/rss_parse.inc" afterPath="$PROJECT_DIR$/src/library/magpierss/rss_parse.inc" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/magpierss/rss_utils.inc" afterPath="$PROJECT_DIR$/src/library/magpierss/rss_utils.inc" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/PackageFile/v2/rw.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/PackageFile/v2/rw.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Task/Postinstallscript/rw.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Task/Postinstallscript/rw.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Task/Replace/rw.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Task/Replace/rw.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Task/Unixeol/rw.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Task/Unixeol/rw.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/Task/Windowseol/rw.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/Task/Windowseol/rw.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/func/hash/sha1.php" afterPath="$PROJECT_DIR$/src/func/hash/sha1.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/func/hash/sha256.php" afterPath="$PROJECT_DIR$/src/func/hash/sha256.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/examples/books/simple.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/examples/books/simple.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/examples/plus/simple.php" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/examples/plus/simple.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/simplehtmldom/simple_html_dom.php" afterPath="$PROJECT_DIR$/src/library/simplehtmldom/simple_html_dom.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/spotcolors.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/spotcolors.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/stsongstdlight.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/stsongstdlight.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/examples/adsense/style.css" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/examples/adsense/style.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/examples/latitude/style.css" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/examples/latitude/style.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/examples/pagespeed/style.css" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/examples/pagespeed/style.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/examples/plus/style.css" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/examples/plus/style.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/examples/tasks/css/style.css" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/examples/tasks/css/style.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/google-api-php-client/examples/urlshortener/style.css" afterPath="$PROJECT_DIR$/src/library/google-api-php-client/examples/urlshortener/style.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/symbol.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/symbol.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/tcpdf.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/tcpdf.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/config/tcpdf_config.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/config/tcpdf_config.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/config/tcpdf_config_alt.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/config/tcpdf_config_alt.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/tcpdf_filters.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/tcpdf_filters.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/tcpdf_parser.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/tcpdf_parser.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/exe/emoji_unicode/test_emoji.php" afterPath="$PROJECT_DIR$/src/exe/emoji_unicode/test_emoji.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/exe/emoji_unicode/test_emoji_ssi.html" afterPath="$PROJECT_DIR$/src/exe/emoji_unicode/test_emoji_ssi.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/times.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/times.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/timesb.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/timesb.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/timesbi.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/timesbi.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/timesi.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/timesi.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/twitteroauth/twitteroauth.php" afterPath="$PROJECT_DIR$/src/library/twitteroauth/twitteroauth.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-pgc4.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-pgc4.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-pgc5.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-pgc5.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-pgo4.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-pgo4.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-pgo5.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-pgo5.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-pgs4.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-pgs4.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-pgs5.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-pgs5.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-pmo3.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-pmo3.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-pms3.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-pms3.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-tgc4.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-tgc4.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-tgc5.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-tgc5.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-tgo4.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-tgo4.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-tgo5.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-tgo5.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-tgs4.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-tgs4.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-tgs5.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-tgs5.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-tmo3.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-tmo3.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-tms3.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-tms3.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-ugo4.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-ugo4.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-ugo5.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/ume-ugo5.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/uni2cid_ac15.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/uni2cid_ac15.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/uni2cid_ag15.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/uni2cid_ag15.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/uni2cid_aj16.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/uni2cid_aj16.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/uni2cid_ak12.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/uni2cid_ak12.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/unicode_data.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/unicode_data.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/exe/upgrade.php" afterPath="$PROJECT_DIR$/src/exe/upgrade.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/exe/emoji_unicode/include/user_agent_carrier.php" afterPath="$PROJECT_DIR$/src/exe/emoji_unicode/include/user_agent_carrier.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/PackageFile/v1.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/PackageFile/v1.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/PackageFile/Generator/v1.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/PackageFile/Generator/v1.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/PackageFile/Parser/v1.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/PackageFile/Parser/v1.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/PackageFile/v2.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/PackageFile/v2.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/PackageFile/Generator/v2.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/PackageFile/Generator/v2.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/PEAR/PEAR/PackageFile/Parser/v2.php" afterPath="$PROJECT_DIR$/src/library/PEAR/PEAR/PackageFile/Parser/v2.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/library/tcpdf/fonts/zapfdingbats.php" afterPath="$PROJECT_DIR$/src/library/tcpdf/fonts/zapfdingbats.php" />
+    </list>
+    <ignored path="php_lib.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="ComposerSettings">
+    <pharPath>/usr/local/bin/composer</pharPath>
+  </component>
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="DaemonCodeAnalyzer">
+    <disable_hints />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="php_lib" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf />
+  </component>
+  <component name="FindManager">
+    <FindUsagesManager>
+      <setting name="OPEN_NEW_TAB" value="false" />
+    </FindUsagesManager>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="changedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/src/class/class_amazonAPI.php" />
+      </list>
+    </option>
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
+  <component name="ProjectFrameBounds">
+    <option name="width" value="1920" />
+    <option name="height" value="1080" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectReloadState">
+    <option name="STATE" value="0" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="php_lib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="php_lib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="php_lib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="php_lib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="php_lib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="php_lib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="php_lib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="conf" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="php_lib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="php_lib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="class" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="options.lastSelected" value="Configurable.PHP" />
+    <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="FullScreen" value="true" />
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
+      <TestRunner />
+      <method />
+    </configuration>
+    <configuration default="true" type="PhpLocalRunConfigurationType" factoryName="PHP Console">
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
+      <method />
+    </configuration>
+    <configuration default="true" type="PhpUnitRemoteRunConfigurationType" factoryName="PHPUnit on Server">
+      <method />
+    </configuration>
+    <list size="0" />
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration" maxAnnotateRevisions="500" myUseAcceleration="nothing" myAutoUpdateAfterCommit="false" cleanupOnStartRun="false" SSL_PROTOCOLS="sslv3">
+    <option name="USER" value="" />
+    <option name="PASSWORD" value="" />
+    <option name="mySSHConnectionTimeout" value="30000" />
+    <option name="mySSHReadTimeout" value="30000" />
+    <option name="LAST_MERGED_REVISION" />
+    <option name="MERGE_DRY_RUN" value="false" />
+    <option name="MERGE_DIFF_USE_ANCESTRY" value="true" />
+    <option name="UPDATE_LOCK_ON_DEMAND" value="false" />
+    <option name="IGNORE_SPACES_IN_MERGE" value="false" />
+    <option name="CHECK_NESTED_FOR_QUICK_MERGE" value="false" />
+    <option name="IGNORE_SPACES_IN_ANNOTATE" value="true" />
+    <option name="SHOW_MERGE_SOURCES_IN_ANNOTATE" value="true" />
+    <option name="FORCE_UPDATE" value="false" />
+    <option name="IGNORE_EXTERNALS" value="false" />
+    <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9fc58617-5f32-4084-907f-0d5d9560a1dc" name="Default" comment="" />
+      <created>1403256863921</created>
+      <updated>1403256863921</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="0" width="1920" height="1080" extended-state="0" />
+    <editor active="false" />
+    <layout>
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="myTodoPanelSettings">
+      <TodoPanelSettings />
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/class/class_amazonAPI.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="29" column="20" selection-start="972" selection-end="972" vertical-scroll-proportion="0.0" vertical-offset="435" max-vertical-offset="4935">
+          <folding>
+            <element signature="e#6#52#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/class/class_imap.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5460">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/class/class_mobile.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="15870">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/class/class_moshimoAPI.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1785">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/class/class_file.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5355">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/class/class_CSRF.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="990">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/class/class_calender.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2055">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/conf/conf_define.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="10785">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/conf/conf_system.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="982">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/conf/conf_word.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="12765">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/class/class_amazonAPI.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="57" column="0" selection-start="1576" selection-end="1576" vertical-scroll-proportion="0.89248437" vertical-offset="0" max-vertical-offset="5040">
+          <folding>
+            <element signature="e#6#52#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/class/class_blogger.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5715">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/class/class_apns.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2025">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/class/class_template.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="403" column="23" selection-start="11873" selection-end="11873" vertical-scroll-proportion="0.17431192" vertical-offset="5874" max-vertical-offset="9945">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
+

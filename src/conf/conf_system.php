@@ -3,13 +3,13 @@
 // conf_system.php
 //============================================
 //+++++++++++++++++++++++++++++
-// ’è”éŒ¾
+// ï¿½è”ï¿½éŒ¾
 //+++++++++++++++++++++++++++++
-// ƒVƒXƒeƒ€ƒf[ƒ^
-if(defined('SYSTEM_REQUEST') == false){
-      define('SYSTEM_REQUEST',$_SERVER['REQUEST_URI']);
+// ï¿½Vï¿½Xï¿½eï¿½ï¿½ï¿½fï¿½[ï¿½^
+if (defined('SYSTEM_REQUEST') == false) {
+    define('SYSTEM_REQUEST', $_SERVER['REQUEST_URI']);
 }
-if(defined('SYSTEM_DOMAIN') == false){
-      define('SYSTEM_DOMAIN',$_SERVER['SERVER_NAME']);
+if (defined('SYSTEM_DOMAIN') == false) {
+    define('SYSTEM_DOMAIN', $_SERVER['SERVER_NAME']);
 }
 ?>
