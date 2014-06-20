@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-0": {
-            "php_lib": "src/"
+            "php_lib": "src"
         }
     }
 }
