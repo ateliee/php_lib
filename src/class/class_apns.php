@@ -1,7 +1,4 @@
 <?php
-//============================================
-// class_apns.php
-//============================================
 // 接続先
 define('C_APNS_SOCKET_SANDBOX', 'ssl://gateway.sandbox.push.apple.com:2195');
 define('C_APNS_SOCKET', 'ssl://gateway.push.apple.com:2195');
