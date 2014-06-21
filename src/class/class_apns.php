@@ -7,9 +7,9 @@ define('C_APNS_SOCKET_SANDBOX', 'ssl://gateway.sandbox.push.apple.com:2195');
 define('C_APNS_SOCKET', 'ssl://gateway.push.apple.com:2195');
 define('C_APNS_MESSAGE_SIZE', 256);
 
-//+++++++++++++++++++++++++++++
-// class_apns
-//+++++++++++++++++++++++++++++
+/**
+ * APNS Server Side Class
+ */
 class class_apns
 {
     // 接続用PEMのパス
