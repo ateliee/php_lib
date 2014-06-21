@@ -27,7 +27,12 @@ class class_apns
     // 送信先デバイス
     var $APNS_DEVICE_TOKEN = array();
 
-    // 初期化
+    /**
+     * init
+     * @param string $path
+     * @param  string $password
+     * @return bool
+     */
     function init($path, $password)
     {
         $this->APNS_PATH = $path;
@@ -35,24 +40,46 @@ class class_apns
         return true;
     }
 
+    /**
+     * set debug mode
+     * @param bool $debug
+     * @return bool
+     */
     function setDebug($debug)
     {
         $this->DEBUG = $debug;
     }
 
+    /**
+     * set body data
+     * @param array $body
+     * @return bool
+     */
     function setBody($body)
     {
         $this->APNS_BODY = $body;
         return $this->APNS_BODY;
     }
 
+    /**
+     * send device token
+     * @param array $token
+     * @return array token data
+     */
     function setDeviceToken($token)
     {
         $this->APNS_DEVICE_TOKEN = $token;
         return $this->APNS_DEVICE_TOKEN;
     }
 
-    // APNS 接続
+    /**
+     * connect APNS
+     * @param string $sslclient
+     * @param string $pem_path pern path
+     * @param  string $passphrase
+     * @param  bool $retry connect failed retry flag
+     * @return bool
+     */
     function connectAPNS($sslclient, $pem_path, $passphrase, $retry = false)
     {
         $ctx = stream_context_create();
@@ -70,7 +97,11 @@ class class_apns
         return $fp;
     }
 
-    // メッセージサイズの取得
+    /**
+     * device token and message size
+     * @param array $deviceToken
+     * @return int
+     */
     function getMessageSize($deviceToken)
     {
         // Create the payload body
@@ -83,13 +114,21 @@ class class_apns
         return strlen($msg);
     }
 
-    // メッセージ取得
+    /**
+     * get message data for APNS
+     * @param array $deviceToken
+     * @param  string $payload
+     * @return string
+     */
     function getMessage($deviceToken, $payload)
     {
         return chr(0) . pack('n', 32) . pack('H*', $deviceToken) . pack('n', strlen($payload)) . $payload;
     }
 
-    // Push通知
+    /**
+     * push message
+     * @return array send message data
+     */
     function pushMessage()
     {
         $apns_socket = C_APNS_SOCKET;
