@@ -27,11 +27,21 @@ class class_template
         $this->system_Encoding = mb_internal_encoding();
     }
 
+    /**
+     * set html encoding
+     * @param string $encode encodetype(default internal encoding)
+     * @return null
+     */
     function sethtmlEncoding($encode)
     {
         $this->html_Encoding = $encode;
     }
 
+    /**
+     * set php encoding
+     * @param string $encode encodetype(default internal encoding)
+     * @return null
+     */
     function setSystemEncoding($encode)
     {
         $this->system_Encoding = $encode;
