@@ -124,4 +124,23 @@ function get_http_header($target)
 
 }
 
-?>
+//--------------------------------------------
+// リダイレクト
+//--------------------------------------------
+function headerStatus($status_code){
+    if($status_code == 301){
+        header("HTTP/1.1 301 Moved Permanently");
+    }else if($status_code == 404){
+        header("HTTP/1.0 404 Not Found");
+    }else if($status_code == 410){
+        header("HTTP/1.1 410 Gone");
+    }
+}
+function redirect($url,$status_code=0){
+    if($status_code > 0){
+        f_headerStatus($status_code);
+    }
+    // リダイレクト
+    header('Location: '.$url);
+    exit;
+}

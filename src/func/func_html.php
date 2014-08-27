@@ -231,6 +231,28 @@ function br2nl($string)
     return preg_replace('/<br[[:space:]]*\/?[[:space:]]*>/i', "\n", $string);
 }
 
+function strimw($str,$start,$width,$append="..."){
+    return mb_strimwidth($str,$start,$width,$append,SYSTEM_PHP_ENCODE);
+}
+
+//--------------------------------------------
+// 画像タグ作成
+//--------------------------------------------
+function makeImgTag($url,$w=0,$h=0,$alt=""){
+    $tag = '<img src="'.$url.'"';
+    if($w != ""){
+        $tag .= ' width="'.$w.'"';
+    }
+    if($h != ""){
+        $tag .= ' height="'.$h.'"';
+    }
+    if($alt != ""){
+        $tag .= ' alt="'.htmlspecialchars($alt).'"';
+    }
+    $tag .= '>';
+    return $tag;
+}
+
 //--------------------------------------------
 // チェックボックスリストを生成
 //--------------------------------------------

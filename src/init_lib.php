@@ -85,6 +85,7 @@ include_once(SYSTEM_PATH_CLASS . 'class_rss.php');
 include_once(SYSTEM_PATH_CLASS . 'class_mobile.php');
 include_once(SYSTEM_PATH_CLASS . 'class_CSRF.php');
 include_once(SYSTEM_PATH_CLASS . 'class_xml.php');
+include_once(SYSTEM_PATH_CLASS . 'class_validation.php');
 //include_once( SYSTEM_PATH_CLASS.'class_socket.php' );
 //include_once( SYSTEM_PATH_CLASS.'class_ftp.php' );
 include_once(SYSTEM_PATH_CLASS . 'class_yahooAPI.php');

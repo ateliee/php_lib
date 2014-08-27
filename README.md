@@ -285,6 +285,7 @@ etc.
 * XML Class
 * YAhoo API
 * Zip Class
+* validation Class
 
 ## Useing Library
 
