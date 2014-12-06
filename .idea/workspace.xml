@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="770a09e9-a009-43cc-abc5-a196af463f96" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/class/class_mysql.php" afterPath="$PROJECT_DIR$/src/class/class_mysql.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitgnore" afterPath="$PROJECT_DIR$/.gitgnore" />
     </list>
     <ignored path="php_lib.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -26,10 +26,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="class_mysql.php" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="class_mysql.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/class/class_mysql.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1049" column="0" selection-start="33826" selection-end="33826" vertical-scroll-proportion="0.9508197" vertical-offset="15155" max-vertical-offset="15825">
+            <state line="1049" column="0" selection-start="33826" selection-end="33826" vertical-scroll-proportion="-24.166666" vertical-offset="15155" max-vertical-offset="15825">
               <folding />
             </state>
           </provider>
@@ -53,10 +53,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name=".gitgnore" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name=".gitgnore" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/.gitgnore">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="90">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="634">
               <folding />
             </state>
           </provider>
@@ -77,8 +77,8 @@
       <list>
         <option value="$PROJECT_DIR$/src/class/class_pager.php" />
         <option value="$PROJECT_DIR$/src/init_lib.php" />
-        <option value="$PROJECT_DIR$/.gitgnore" />
         <option value="$PROJECT_DIR$/src/class/class_mysql.php" />
+        <option value="$PROJECT_DIR$/.gitgnore" />
       </list>
     </option>
   </component>
@@ -281,16 +281,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitgnore">
+    <entry file="file://$PROJECT_DIR$/src/class/class_mysql.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
+        <state line="1049" column="0" selection-start="33826" selection-end="33826" vertical-scroll-proportion="-24.166666" vertical-offset="15155" max-vertical-offset="15825">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/class/class_mysql.php">
+    <entry file="file://$PROJECT_DIR$/.gitgnore">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1049" column="0" selection-start="33826" selection-end="33826" vertical-scroll-proportion="0.9508197" vertical-offset="15155" max-vertical-offset="15825">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="634">
           <folding />
         </state>
       </provider>
