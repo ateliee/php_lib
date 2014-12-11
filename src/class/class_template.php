@@ -118,12 +118,14 @@ class TemplateVarParser{
             if(in_array($s,array("'","\""))){
                 $tmp .= $s;
                 $sp = $s;
+                $bs = null;
                 for($i++; $i < $str_length; $i++){
                     $s = mb_substr($str,$i,1,$this->encoding);
                     $tmp .= $s;
-                    if($s == $sp){
+                    if($s == $sp && (($sp != '"') || (($bs.$s) != '\"'))){
                         break;
                     }
+                    $bs = $s;
                 }
                 if($i >= $str_length){
                     $this->error('Bat Format Template "'.$str.'"');
@@ -762,7 +764,7 @@ class class_template {
     {
         // string
         if (preg_match("/^\"([\s\S]*)\"$/", $node->getName(), $matchs)) {
-            $result = (string)$matchs[1];
+            $result = (string)str_replace('\"','"',$matchs[1]);
         }else if (preg_match("/^'([\s\S]*)'$/", $node->getName(), $matchs)) {
             $result = (string)$matchs[1];
             // array
@@ -829,6 +831,20 @@ class class_template {
     }
 
     /**
+     * @param TemplateVarNode $node
+     * @return array
+     */
+    private function convertNodeToArray(TemplateVarNode $node)
+    {
+        $result = array();
+        foreach($node->getParams() as $key => $p){
+            $key = $this->evaString($key);
+            $result[$key] = $this->convertTemplateVar($p,true);
+        }
+        return $result;
+    }
+
+    /**
      * @param $str
      * @param bool $output_html
      * @return array|bool|null|string
@@ -842,25 +858,10 @@ class class_template {
             if($output_html && ($this->default_modifiers != "")){
                 if($parser->getFirst()->getType() != TemplateVarNode::$TYPE_FUNCTION){
                     $node = new TemplateVarNode(TemplateVarNode::$TYPE_FUNCTION,$this->default_modifiers);
-                    $node->addParam(new TemplateVarNode(TemplateVarNode::$TYPE_VAR,"'".$result."'"));
+                    $node->addParam(new TemplateVarNode(TemplateVarNode::$TYPE_VAR,'"'.str_replace('"','\"',$result).'"'));
                     $result = $this->convertNodeToFunction($node,false);
                 }
             }
-        }catch (TemplateException $e){
-            $this->error('parse error '.$str);
-        }
-        return $result;
-    }
-
-    /**
-     * @param $str
-     * @return array|bool|null|string
-     */
-    public function evaString($str)
-    {
-        $parser = new TemplateVarParser($str,$this->system_Encoding);
-        try{
-            $result = $this->convertTemplateVar($parser->getFirst(),true);
         }catch (TemplateException $e){
             $this->error('parse error '.$str);
         }
