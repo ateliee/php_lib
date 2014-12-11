@@ -1,50 +1,417 @@
 <?php
+/**
+ * Class Template v1
+ * support mysql
+ */
+# TODO : PHP template convert
+# TODO : cache create
+
+class TemplateException extends Exception
+{
+}
+/**
+ * Class TemplateVarNode
+ */
+class TemplateVarNode{
+    static $TYPE_FUNCTION = 'function';
+    static $TYPE_VAR = 'var';
+    static $TYPE_VARLIST = 'varlist';
+    static $TYPE_ARRAY = 'array';
+    static $TYPE_CALCULATION = 'calculation';
+
+    private $type;
+    private $name;
+    private $num;
+    private $params;
+    private $next;
+
+    function  __construct($type,$name=null)
+    {
+        $this->type = $type;
+        $this->name = $name;
+        $this->num = 0;
+        $this->params = array();
+        $this->next = null;
+    }
+
+    /**
+     * @return null
+     */
+    public function getName(){
+        return $this->name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getType(){
+        return $this->type;
+    }
+
+    /**
+     * @param $p
+     */
+    public function addParam($p){
+        $this->params[] = $p;
+        if(count($this->params) > 1){
+            $this->params[count($this->params)-2]->setNext($this->params[count($this->params)-1]);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getParams(){
+        return $this->params;
+    }
+
+    /**
+     * @param $n
+     * @return mixed
+     */
+    public function getParam($n){
+        return $this->params[$n];
+    }
+
+    /**
+     * @param $key
+     * @param $p
+     */
+    public function addKeyParam($key,$p){
+        $this->params[$key] = $p;
+    }
+
+    /**
+     * @param TemplateVarNode $n
+     */
+    public function setNext(TemplateVarNode &$n){
+        $this->next = $n;
+    }
+
+    /**
+     * @return TemplateVarNode
+     */
+    public function getNext(){
+        return $this->next;
+    }
+}
 
 /**
- * template class
- * @copyright Copyright © 2014, ateliee
- * @author ateliee
- * @version 1.0
+ * Class TemplateVarParser
  */
-class class_template
-{
-    var $Template;
-    var $Include;
-    var $Vars;
-    var $TemplateList;
-    var $left_delimiter = "<?";
-    var $right_delimiter = "?>";
-    var $html_Encoding;
-    var $system_Encoding;
+class TemplateVarParser{
+    private $original_str;
+    private $nodes;
+    private $encoding;
 
-    function class_template()
+    function  __construct($str,$encoding)
     {
-        $this->Template = "";
-        $this->TemplateList = array();
-        $this->Include = array();
+        $this->original_str = $str;
+        $this->encoding = $encoding;
+
+        $params = array();
+        // string to convert
+        $tmp = "";
+        $str_length = mb_strlen($str, $this->encoding);
+        for($i = 0; $i < $str_length; $i++){
+            $s = mb_substr($str,$i,1,$this->encoding);
+            if(in_array($s,array("'","\""))){
+                $tmp .= $s;
+                $sp = $s;
+                for($i++; $i < $str_length; $i++){
+                    $s = mb_substr($str,$i,1,$this->encoding);
+                    $tmp .= $s;
+                    if($s == $sp){
+                        break;
+                    }
+                }
+                if($i >= $str_length){
+                    $this->error('Bat Format Template "'.$str.'"');
+                }
+                $params[] = $tmp;
+                $tmp = '';
+            }else if(in_array($s,array("(",")",",","[","]",":"))){
+                if($tmp != ""){
+                    $params[] = $tmp;
+                    $tmp = "";
+                }
+                $params[] = $s;
+            }else if(in_array($s,array("=","<",">","*","!","+","-","/","%"))){
+                if($tmp != ""){
+                    $params[] = $tmp;
+                    $tmp = "";
+                }
+                $s3 = mb_substr($str,$i,3,$this->encoding);
+                $s2 = mb_substr($str,$i,2,$this->encoding);
+                if(in_array($s3,array("==="))){
+                    $params[] .= $s3;
+                    $i += 2;
+                }else if(in_array($s2,array("<=",">=","==","!=","||"))){
+                    $params[] .= $s2;
+                    $i ++;
+                }else{
+                    $params[] .= $s;
+                }
+            }else if(in_array($s,array(" "))){
+            }else{
+                $tmp .= $s;
+            }
+        }
+        if($tmp != ""){
+            $params[] = $tmp;
+            $tmp = "";
+        }
+        $this->createNode($params);
+    }
+
+    /**
+     * @param $params
+     */
+    private function createNode($params){
+        $num = 0;
+        $this->nodes = array();
+
+        for($num=0;$num<count($params);$num++){
+            $n = $this->_createNodePointer($params,$num);
+            if($n){
+                $this->addNode($n);
+            }
+        }
+    }
+
+    /**
+     * @param $params
+     * @param $num
+     * @return null|TemplateVarNode
+     */
+    private function _createNodePointer(&$params,&$num){
+        if(count($params) <= $num){
+            return null;
+        }
+        $s = $params[$num];
+        $ns = (count($params) > ($num + 1)) ? $params[$num+1] : null;
+        // inner var
+        if($s == '('){
+            $success = false;
+            $o = new TemplateVarNode(TemplateVarNode::$TYPE_VARLIST);
+            for($num+=1;$num<count($params);$num++){
+                $ss = $params[$num];
+                if($ss == ')'){
+                    if(count($o->getParams()) > 0){
+                        $success = true;
+                    }
+                    break;
+                }
+                $p = $this->_createNodePointer($params,$num);
+                if($p){
+                    $o->addParam($p);
+                }
+            }
+            if(!$success){
+                $this->error('Parse Error '.$this->original_str);
+            }
+            return $o;
+            // array
+        }else if($s == '['){
+            $success = false;
+            $o = new TemplateVarNode(TemplateVarNode::$TYPE_ARRAY);
+            for($num++;$num<count($params);$num++){
+                $ss = $params[$num];
+                if($ss == ']'){
+                    $success = true;
+                    break;
+                }else if($ss == ','){
+                    continue;
+                }
+                $p1 = $this->_createNodePointer($params,$num);
+                $num2 = $num + 1;
+                $p2 = $this->_createNodePointer($params,$num2);
+                $num3 = $num2 + 1;
+                $p3 = $this->_createNodePointer($params,$num3);
+                if($p1){
+                    if($p2->getName() == ':'){
+                        if($p3){
+                            $num = $num3;
+                            for($num++;$num<count($params);$num++){
+                                $ss3 = $params[$num];
+                                if($ss3 == ']'){
+                                    $success = true;
+                                    break;
+                                }else if($ss3 == ','){
+                                    break;
+                                }
+                                $pp3 = $this->_createNodePointer($params,$num);
+                                $p3->addParam($pp3);
+                            }
+                            $o->addKeyParam($p1->getName(),$p3);
+                            if($success){
+                                break;
+                            }
+                        }else{
+                            $this->error('Parse Error '.$this->original_str);
+                        }
+                    }else{
+                        $o->addParam($p1);
+                    }
+                }
+            }
+            if(!$success){
+                $this->error('Parse Error '.$this->original_str);
+            }
+            return $o;
+        }else if(in_array($s,array('===','!=','==','<=','>=','<','>','-','+','*','/','%','!','||'))){
+            return new TemplateVarNode(TemplateVarNode::$TYPE_CALCULATION,$s);
+        }else if($ns == '('){
+            $success = false;
+            $o = new TemplateVarNode(TemplateVarNode::$TYPE_FUNCTION,$s);
+            for($num+=2;$num<count($params);$num++){
+                $ss = $params[$num];
+                if($ss == ')'){
+                    $success = true;
+                    break;
+                }else if($ss == ','){
+                    continue;
+                }
+                $p = $this->_createNodePointer($params,$num);
+                if($p){
+                    $o->addParam($p);
+                }
+            }
+            if(!$success){
+                $this->error('Parse Error '.$this->original_str);
+            }
+            return $o;
+        }
+        return new TemplateVarNode(TemplateVarNode::$TYPE_VAR,$s);
+        /*for($i=$num+1;$i<count($params);$i++){
+            if(!$this->_createNodePointer($params,$i)){
+                break;
+            }
+        }*/
+    }
+
+    /**
+     * @param TemplateVarNode $n
+     */
+    public function addNode(TemplateVarNode $n){
+        $this->nodes[] = $n;
+        if(count($this->nodes) > 1){
+            $this->nodes[count($this->nodes)-2]->setNext($this->nodes[count($this->nodes)-1]);
+        }
+    }
+
+    /**
+     * @param $str
+     */
+    private function error($str){
+        throw new TemplateException('Template Parser : '.$str);
+    }
+
+    /**
+     * @return int
+     */
+    public function count(){
+        return count($this->nodes);
+    }
+
+    /**
+     * @param $n
+     * @return TemplateVarNode
+     */
+    public function get($n){
+        return $this->nodes[$n];
+    }
+
+    /**
+     * @return null|TemplateVarNode
+     */
+    public function getFirst(){
+        if($this->count() > 0){
+            return $this->get(0);
+        }
+        return null;
+    }
+}
+
+class class_template {
+
+    private $Template;
+    private $Include;
+    private $Import;
+    private $Block;
+    private $Vars;
+    private $outputVars;
+    private $TemplateList;
+    private $left_delimiter;
+    private $right_delimiter;
+    private $html_Encoding;
+    private $system_Encoding;
+    private $default_modifiers;
+    private $base_filename;
+
+    static private $Functions = array();
+
+    function  __construct()
+    {
+        $this->resetTemplateData();
         $this->clear_all_assign();
         $this->html_Encoding = mb_internal_encoding();
         $this->system_Encoding = mb_internal_encoding();
+        $this->default_modifiers = "htmlentities";
+        $this->setDelimiter("<?","?>");
+    }
+
+    /**
+     * @param $str
+     */
+    private function error($str){
+        throw new TemplateException('Template : '.$str);
+    }
+
+    /**
+     * @param $message
+     * @param int $error_type
+     * @throws TemplateException
+     */
+    private function notice($message,$error_type=E_USER_NOTICE){
+        trigger_error('Template : '.$message,$error_type);
+    }
+
+    /**
+     * @param $path
+     * @return base_path
+     */
+    public function setBasePath($path){
+        return ($this->base_filename = $path);
+    }
+
+    /**
+     * @param $start
+     * @param $end
+     */
+    public function setDelimiter($start,$end){
+        $this->left_delimiter = $start;
+        $this->right_delimiter = $end;
     }
 
     /**
      * set html encoding
      * @param string $encode encodetype(default internal encoding)
-     * @return null
+     * @return encodetype
      */
-    function sethtmlEncoding($encode)
+    public function setHtmlEncoding($encode)
     {
-        $this->html_Encoding = $encode;
+        return ($this->html_Encoding = $encode);
     }
 
     /**
      * set php encoding
      * @param string $encode encodetype(default internal encoding)
-     * @return null
+     * @return encodetype
      */
-    function setSystemEncoding($encode)
+    public function setSystemEncoding($encode)
     {
-        $this->system_Encoding = $encode;
+        return ($this->system_Encoding = $encode);
     }
 
     /**
@@ -53,7 +420,7 @@ class class_template
      * @param object $name
      * @return value
      */
-    function get_template_var($name = null)
+    public function get_template_var($name = null)
     {
         if (isset($name)) {
             return $this->Vars[$name];
@@ -62,21 +429,51 @@ class class_template
     }
 
     /**
+     *
+     */
+    private function resetTemplateData(){
+        $this->Template = "";
+        $this->TemplateList = array();
+        $this->Include = array();
+        $this->Import = array();
+        $this->Block = array();
+        $this->base_filename = "";
+    }
+    /**
      * set load html file
      * @param bool $filename (path)
+     * @param bool $path_set
      * @return bool
      */
-    function load($filename)
+    public function load($filename,$path_set=true)
     {
-        $this->clear_all_assign();
-        $this->Template = "";
-        if (!($fp = @fopen($filename, 'rb'))) {
-            return false;
+        $this->resetTemplateData();
+        // load tempate file
+        if (file_exists($filename) && $fp = @fopen($filename, 'rb')) {
+            $this->Template = "";
+            while (!feof($fp)) {
+                $this->Template .= fread($fp, 1024);
+            }
+            fclose($fp);
+
+            // set path
+            if($path_set){
+                $this->base_filename = dirname($filename);
+                $this->base_filename .= ($this->base_filename != "") ? "/" : "";
+            }
+            return true;
+        }else{
+            $this->error('Load Template Error.('.$filename.')');
         }
-        $length = max(1000, filesize($filename));
-        $this->Template = fread($fp, $length);
-        fclose($fp);
-        return true;
+        return false;
+    }
+
+    /**
+     * @param $str
+     * @return $str
+     */
+    public function setTemplateStr($str){
+        return ($this->Template = $str);
     }
 
     /**
@@ -84,17 +481,28 @@ class class_template
      * @param bool $set
      * @return string
      */
-    function get_display_template($set = true)
+    public function get_display_template($set = true)
     {
+        $this->clearOutputVars();
         $template = $this->Template;
         if ($set) {
-            // インクルード設定
+            // include setting
             $template = $this->setInclude($template);
-
-            // 変数設定
+            // import setting
+            $template = $this->setImportTemplate($template);
+            // strip setting
+            $template = $this->setStripTemplate($template);
+            // set template vars
             $template = $this->setTemplatesVars($template);
         }
         return $template;
+    }
+
+    /**
+     *
+     */
+    private function clearOutputVars(){
+        $this->outputVars = array();
     }
 
     /**
@@ -103,24 +511,25 @@ class class_template
      * @param bool $set
      * @return null
      */
-    function display($set = true)
+    public function display($set = true)
     {
         print $this->get_display_template($set);
     }
 
     /**
-     * set template include file
-     * @param string $id (namespace)
-     * @param  string $filename
+     * load inclue file
+     *
+     * @param $id
+     * @param $filename
      * @return bool
      */
-    function setIncludeFile($id, $filename)
-    {
-        if (!($fp = @fopen($filename, 'rb'))) {
+    function setIncludeFile($id,$filename){
+        $this->notice('"inclue file="*"" function is deprecation. please use "extend" function.');
+        if( !($fp = @fopen($filename,'rb')) ){
             return false;
         }
-        $length = max(1000, filesize($filename));
-        $template = fread($fp, $length);
+        $length = max(1000,filesize($filename));
+        $template= fread($fp,$length);
         fclose($fp);
 
         $this->Include[$id] = $template;
@@ -128,11 +537,33 @@ class class_template
     }
 
     /**
+     * set template include file
+     * @param  string $filename
+     * @return $template
+     */
+    private function loadTemplatePartsFile($filename)
+    {
+        $file = $this->base_filename.$filename;
+        if (file_exists($file) && $fp = @fopen($file, 'rb')) {
+            $template = "";
+            while (!feof($fp)) {
+                $template .= fread($fp, 1024);
+            }
+            fclose($fp);
+
+            return $template;
+        }else{
+            throw new TemplateException('file not load '.$file);
+        }
+        return false;
+    }
+
+    /**
      * set template variable
      * @param string $id (namespace)
      * @return null
      */
-    function assign($id, $val)
+    public function assign($id, $val)
     {
         $this->Vars[$id] = $val;
     }
@@ -143,7 +574,7 @@ class class_template
      * @param array $value
      * @return null
      */
-    function assign_vars($value)
+    public function assign_vars($value)
     {
         foreach ($value as $key => $val) {
             $this->assign($key, $val);
@@ -154,9 +585,25 @@ class class_template
      * clear template variable
      * @return null
      */
-    function clear_all_assign()
+    public function clear_all_assign()
     {
         $this->Vars = array();
+    }
+
+    /**
+     * @param $id
+     * @param $val
+     */
+    static public function filter($id, $val)
+    {
+        self::$Functions[$id] = $val;
+    }
+
+    /**
+     *
+     */
+    static public function clear_all_filter(){
+        self::$Functions = array();
     }
 
     /**
@@ -164,17 +611,17 @@ class class_template
      * @return srting
      * @access private
      */
-    function getAttr(&$attr, $str)
+    public function getAttr(&$attr, $str)
     {
         $attr = array();
-        // key=valueで分割
+        // key=value convert
         $preg_str = "/(\S+)=(\S+)/";
         if (preg_match_all($preg_str, $str, $matchs)) {
             $cnt = count($matchs[0]);
             for ($key = 0; $key < $cnt; $key++) {
                 $name = strtoupper($matchs[1][$key]);
                 $val = $matchs[2][$key];
-                $val = $this->convertString($val);
+                $val = $this->evaString($val);
                 $attr[$name] = $val;
             }
         }
@@ -182,168 +629,409 @@ class class_template
     }
 
     /**
-     * set template conditional expression
-     * @return srting
-     * @access private
+     * @param TemplateVarNode $node
+     * @param $loop
+     * @return array|bool|null|string
      */
-    function evaString($str)
+    private function convertTemplateVar(TemplateVarNode $node,$loop)
     {
-        $str = trim($str);
-        // 条件式を取得
-        $preg_str = "/^\s*?(\S+?)\s*?([\!\<\>\+\-\*\/%=]+)\s*?(\S+)\s*?$/";
-        if (preg_match($preg_str, $str, $tp)) {
-            $i1 = $this->convertString($tp[1]);
-            $is = $tp[2];
-            $i2 = $this->convertString($tp[3]);
-            //if(!is_null($i1) && !is_null($i2)){
-            switch ((string)$is) {
-                case '===':
-                    $item = ($i1 === $i2);
-                    break;
-                case '==':
-                    $item = ($i1 == $i2);
-                    break;
-                case '<=':
-                    $item = ($i1 <= $i2);
-                    break;
-                case '>=':
-                    $item = ($i1 >= $i2);
-                    break;
-                case '<':
-                    $item = ($i1 < $i2);
-                    break;
-                case '>':
-                    $item = ($i1 > $i2);
-                    break;
-                case '!=':
-                    $item = ($i1 != $i2);
-                    break;
-                case '+':
-                    $item = ($i1 + $i2);
-                    break;
-                case '-':
-                    $item = ($i1 - $i2);
-                    break;
-                case '*':
-                    $item = ($i1 * $i2);
-                    break;
-                case '/':
-                    $item = ($i1 / $i2);
-                    break;
-                case '%':
-                    $item = ($i1 % $i2);
-                    break;
+        $loop_count = 0;
+        $result = null;
+        while($node){
+            // function
+            if($node->getType() == TemplateVarNode::$TYPE_FUNCTION){
+                $result = $this->convertNodeToFunction($node);
+            }else if($node->getType() == TemplateVarNode::$TYPE_ARRAY){
+                $result = $this->convertNodeToArray($node);
+            }else if(in_array($node->getType(),array(TemplateVarNode::$TYPE_VAR,TemplateVarNode::$TYPE_VARLIST))){
+                $param_count = count($node->getParams());
+                $param_num = 0;
+                if($node->getType() == TemplateVarNode::$TYPE_VARLIST){
+                    if($param_count > 0){
+                        $result = $this->convertTemplateVar($node->getParam($param_num),false);
+                        $param_num ++;
+                    }else{
+                        throw new TemplateException();
+                    }
+                }else{
+                    $result = $this->convertNodeToVar($node,$this->Vars,true);
+                }
+
+                if($param_count > 0){
+                    for(;$param_num<$param_count;$param_num+=2){
+                        $c = $node->getParam($param_num);
+                        if($c->getType() == TemplateVarNode::$TYPE_CALCULATION && (($param_num + 1) < $param_count)){
+                            $p2 = $this->convertTemplateVar($node->getParam($param_num+1),false);
+                            $result = $this->convertToCalculation($result,$c->getName(),$p2);
+                        }else{
+                            throw new TemplateException();
+                        }
+                    }
+                }
+            }else if($node->getType() == TemplateVarNode::$TYPE_CALCULATION){
+                if($loop_count){
+                    $c = $node;
+                    $node = $node->getNext();
+                    $p2 = $this->convertTemplateVar($node,false);
+                    $result = $this->convertToCalculation($result,$c->getName(),$p2);
+                }else{
+                    throw new TemplateException();
+                }
+            }else{
+                throw new TemplateException();
             }
-            //}
-        } else {
-            $item = $this->convertString($str);
+            if(!$loop){
+                break;
+            }
+            $node = $node->getNext();
+            $loop_count ++;
+        }
+        return $result;
+    }
+
+    /**
+     * @param $p1
+     * @param $calc
+     * @param $p2
+     */
+    private function convertToCalculation($p1,$calc,$p2)
+    {
+        switch ((string)$calc) {
+            case '===':
+                $item = ($p1 === $p2);
+                break;
+            case '==':
+                $item = ($p1 == $p2);
+                break;
+            case '<=':
+                $item = ($p1 <= $p2);
+                break;
+            case '>=':
+                $item = ($p1 >= $p2);
+                break;
+            case '<':
+                $item = ($p1 < $p2);
+                break;
+            case '>':
+                $item = ($p1 > $p2);
+                break;
+            case '!=':
+                $item = ($p1 != $p2);
+                break;
+            case '+':
+                if(is_string($p1)){
+                    $item = ($p1.$p2);
+                }else{
+                    $item = ($p1 + $p2);
+                }
+                break;
+            case '-':
+                $item = ($p1 - $p2);
+                break;
+            case '*':
+                $item = ($p1 * $p2);
+                break;
+            case '/':
+                $item = ($p1 / $p2);
+                break;
+            case '%':
+                $item = ($p1 % $p2);
+                break;
+            case '||':
+                $item = ($p1 || $p2);
+                break;
+            default:
+                $this->error('Error Template Param '.$calc);
+                break;
         }
         return $item;
     }
 
     /**
-     * set template function
-     * @return srting
-     * @access private
+     * @param TemplateVarNode $node
      */
-    function convertString($str, $encode = true)
+    private function convertNodeToVar(TemplateVarNode $node,&$variables,$set_output=true)
     {
-        // 関数
-        $check = true;
-        if (preg_match("/^([a-zA-Z][a-zA-Z0-9_]+)\(([\s\S]*)\)$/", $str, $matchs)) {
-            $check = false;
-            $val = $this->convertString($matchs[2], false);
-            switch ($matchs[1]) {
+        // string
+        if (preg_match("/^\"([\s\S]*)\"$/", $node->getName(), $matchs)) {
+            $result = (string)$matchs[1];
+        }else if (preg_match("/^'([\s\S]*)'$/", $node->getName(), $matchs)) {
+            $result = (string)$matchs[1];
+            // array
+        } elseif (preg_match("/^\\\$([\[\]_a-zA-Z0-9\.\\\$]+)$/", $node->getName(), $matchs)) {
+            // , explode
+            $vlist = explode(".", $matchs[1]);
+            $tmp_output = null;
+            foreach ($vlist as $v) {
+                // array inside
+                if (preg_match("/^([_a-zA-Z0-9]+)(\[([\\\$_a-zA-Z0-9]+)\])?$/", $v, $m)) {
+                    $key = $m[1];
+                    if (isset($result)) {
+                        if (!isset($result[$key])) {
+                            if (!array_key_exists($key, $result)) {
+                                $this->error("template : not found [" . $matchs[1] . "] value;");
+                                $result = NULL;
+                            }else{
+                                $result = $result->$key;
+                            }
+                        } else {
+                            //$tmp_output[$key] = (is_array($value[$key])) ? array() : true;
+                            if($set_output){
+                                if(!isset($tmp_output[$key])){
+                                    if(!is_array($tmp_output)){
+                                        $tmp_output = array();
+                                    }
+                                    $tmp_output[$key] = (is_array($result[$key])) ? array() : true;
+                                }
+                                $tmp_output = &$tmp_output[$key];
+                            }
+                            $result = $result[$key];
+                        }
+                    } else {
+                        if (array_key_exists($key,$variables)) {
+                            $result = $variables[$key];
+                        }else{
+                            $this->error("template : not found value ".$node->getName()." in [" . $key . "] value;");
+                        }
+                        if(isset($variables[$key]) && $set_output){
+                            if(!isset($this->outputVars[$key])){
+                                $this->outputVars[$key] = (is_array($variables[$key])) ? array() : true;
+                            }
+                            $tmp_output = &$this->outputVars[$key];
+                        }
+                    }
+                    if (isset($m[3])) {
+                        $key = $this->evaString($m[3]);
+                        $result = $result[$key];
+                    }
+                }
+            }
+        } elseif (is_numeric($node->getName())) {
+            $result = intval($node->getName());
+        } elseif (strtoupper($node->getName()) == "TRUE") {
+            $result = true;
+        } elseif (strtoupper($node->getName()) == "FALSE") {
+            $result = false;
+        } elseif (strtoupper($node->getName()) == "NULL") {
+            $result = NULL;
+        } else {
+            $this->notice("not found value \"".$node->getName()."\" value.if string is \" or ' wrap string. ");
+            $result = $node->getName();
+            //$this->error("not found value ".$node->getName()." value;");
+        }
+        return $result;
+    }
+
+    /**
+     * @param TemplateVarNode $node
+     * @return array
+     */
+    private function convertNodeToArray(TemplateVarNode $node)
+    {
+        $result = array();
+        foreach($node->getParams() as $key => $p){
+            $key = $this->evaString($key);
+            $result[$key] = $this->convertTemplateVar($p,true);
+        }
+        return $result;
+    }
+
+    /**
+     * @param $str
+     * @return array|bool|null|string
+     */
+    public function evaString($str)
+    {
+        $parser = new TemplateVarParser($str,$this->system_Encoding);
+        try{
+            $result = $this->convertTemplateVar($parser->getFirst(),true);
+        }catch (TemplateException $e){
+            $this->error('parse error '.$str);
+        }
+        return $result;
+    }
+
+    /**
+     * @param $func
+     * @param $val
+     * @return bool
+     */
+    private function convertNodeToFunction(TemplateVarNode $node)
+    {
+        $params = array();
+        $error = null;
+        foreach($node->getParams() as $val){
+            try{
+                $params[] = $this->convertTemplateVar($val,false);
+            }catch (TemplateException $e){
+                $params[] = null;
+                $error = $e;
+            }
+        }
+        if(isset(self::$Functions[$node->getName()])){
+            if($error){
+                throw $error;
+            }
+            if ( is_callable( self::$Functions[$node->getName()] ) ) {
+                try{
+                    $result = call_user_func_array(self::$Functions[$node->getName()],$params);
+                }catch (TemplateException $e){
+                    $this->error('Error Functions '.$node->getName().'('.implode(",",$node->getParams()).')');
+                }
+            }else{
+                $this->error('Error Functions '.$node->getName().'('.implode(",",$node->getParams()).')');
+            }
+        }else{
+            switch ($node->getName()) {
+                case 'isset':
+                    $result = ($params[0] ? true : false);
+                    $error = null;
+                    break;
                 case 'is_array':
-                    $str = is_array($val);
+                    $result = is_array($params[0]);
                     break;
                 case 'is_numeric':
-                    $str = is_numeric($val);
+                    $result = is_numeric($params[0]);
                     break;
                 case 'is_string':
-                    $str = is_string($val);
+                    $result = is_string($params[0]);
                     break;
-                // escape
+                case 'boolval':
+                    $result = boolval($params[0]);
+                    break;
+                case 'intval':
+                    $result = intval($params[0]);
+                    break;
+                case 'strval':
+                    $result = strval($params[0]);
+                    break;
+                case 'floatval':
+                    $result = floatval($params[0]);
+                    break;
+                case 'upper':
+                    $result = strtoupper($params[0]);
+                    break;
+                case 'lower':
+                    $result = strtolower($params[0]);
+                    break;
+                case 'ucfirst':
+                    $result = ucfirst($params[0]);
+                    break;
+                case 'lcfirst':
+                    $result = lcfirst($params[0]);
+                    break;
                 case 'escape':
-                    $str = htmlspecialchars($val, ENT_QUOTES, $this->system_Encoding);
+                    if(!is_object($params[0])){
+                        $result = htmlspecialchars($params[0], ENT_QUOTES, $this->system_Encoding);
+                    }else{
+                        $result = null;
+                    }
                     break;
                 case 'htmlentities':
-                    $str = htmlentities($val, ENT_COMPAT, $this->system_Encoding);
+                    if(!is_object($params[0])){
+                        $result = htmlentities($params[0], ENT_COMPAT, $this->system_Encoding);
+                    }else{
+                        $result = null;
+                    }
                     break;
                 case 'htmlspecialchars':
-                    $str = htmlspecialchars($val, ENT_COMPAT, $this->system_Encoding);
+                    if(!is_object($params[0])){
+                        $result = htmlspecialchars($params[0], ENT_COMPAT, $this->system_Encoding);
+                    }else{
+                        $result = null;
+                    }
                     break;
                 case 'escape_br':
-                    $str = htmlentities($val, ENT_COMPAT, $this->system_Encoding);
-                    $str = nl2br($str);
+                case 'nl2br':
+                    if(!is_object($params[0])){
+                        $result = htmlentities($params[0], ENT_COMPAT, $this->system_Encoding);
+                        $result = nl2br($result);
+                    }else{
+                        $result = null;
+                    }
+                    break;
+                case 'print_r':
+                    $result = print_r($params[0], true);
+                    break;
+                case 'dump':
+                    ob_start();
+                    var_dump($params[0]);
+                    $result = ob_get_contents();
+                    ob_end_clean();
                     break;
                 case 'quotes':
-                    $str = preg_replace("/\"/", "\\\"", $val);
+                    if(!is_object($params[0])){
+                        $result = preg_replace("/\"/", "\\\"", $params[0]);
+                    }else{
+                        $result = null;
+                    }
                     break;
                 case 'urlencode':
-                    $str = urlencode($val);
+                    if(!is_object($params[0])){
+                        $result = urlencode($params[0]);
+                    }else{
+                        $result = null;
+                    }
                     break;
                 // format
                 case 'number_format':
-                    $str = number_format($val);
+                    $result = number_format($params[0]);
                     break;
                 case 'count':
-                    $str = count($val);
+                    $result = count($params[0]);
                     break;
-                default:
-                    $check = true;
+                case 'set':
+                    if(!is_object($params[0]) && (count($params) > 1)){
+                        $this->assign($params[0],$params[1]);
+                    }else{
+                        $this->error('error set() paramater "'.$params[0].'" or paramater count.');
+                    }
+                    $result = "";
                     break;
-            }
-        }
-        $result = $str;
-        if ($check) {
-            // 文字列
-            if (preg_match("/^\"([\s\S]*)\"$/", $str, $matchs)) {
-                $result = (string)$matchs[1];
-            } elseif (preg_match("/^'([\s\S]*)'$/", $str, $matchs)) {
-                $result = (string)$matchs[1];
-                // 配列
-            } elseif (preg_match("/^\\\$([\[\]_a-zA-Z0-9\.\\\$]+)$/", $str, $matchs)) {
-                // ,で分割
-                $vlist = explode(".", $matchs[1]);
-                foreach ($vlist as $v) {
-                    // 内部
-                    if (preg_match("/^([_a-zA-Z0-9]+)(\[([\\\$_a-zA-Z0-9]+)\])?$/", $v, $m)) {
-                        $key = $m[1];
-                        if (isset($value)) {
-                            if (!isset($value[$key])) {
-                                if (!array_key_exists($key, $value)) {
-                                    trigger_error("template : not found [" . $matchs[1] . "] value;<br />", E_USER_WARNING);
-                                }
-                                $value = NULL;
-                            } else {
-                                $value = $value[$key];
+                case 'e':
+                    $result = __($params[0]);
+                    break;
+                case 'nofilter':
+                    $result = $params[0];
+                    break;
+                case 'rest':
+                    $result = '';
+                    $output = $this->convertNodeToVar($node->getParam(0),$this->outputVars,false);
+                    if(is_array($params[0])){
+                        foreach($params[0] as $k => $v){
+                            if(!is_array($output) || !isset($output[$k])){
+                                $result .= $v;
                             }
-                        } else {
-                            $value = $this->Vars[$key];
                         }
-                        if (isset($m[3])) {
-                            $key = $this->convertString($m[3]);
-                            $value = $value[$key];
+                    }else{
+                        if(!$output){
+                            $result .= $params[0];
                         }
                     }
-                }
-                $result = $value;
-            } elseif (is_numeric($str)) {
-                $result = intval($str);
-            } elseif (strtoupper($str) == "TRUE") {
-                $result = true;
-            } elseif (strtoupper($str) == "FALSE") {
-                $result = false;
-            } elseif (strtoupper($str) == "NULL") {
-                $result = NULL;
+                    break;
+                case 'date':
+                    if(!is_string($params[0])){
+                        $this->error('date() format not string.'.$params[0].' given.');
+                    }
+                    if(is_numeric($params[1])){
+                        $time = $params[1];
+                    }else{
+                        $time = strtotime((string)$params[1]);
+                    }
+                    if($time <= 0){
+                        $this->error('date() paramater is string or number.'.$params[1].' given.');
+                    }
+                    $result = date($params[0],$time);
+                    break;
+                default:
+                    $this->error('Error Functions '.$node->getName());
+                    break;
+            }
+            if($error){
+                throw $error;
             }
         }
-        if (is_string($result) && $encode && ($this->html_Encoding != $this->system_Encoding)) {
-            $result = mb_convert_encoding($result, $this->html_Encoding, $this->system_Encoding);
-        }
         return $result;
-        //return $this->left_delimiter.$str.$this->right_delimiter;
     }
 
     /**
@@ -351,19 +1039,200 @@ class class_template
      * @return srting $template
      * @access private
      */
-    function setInclude($template)
+    public function setImportTemplate($template)
     {
-        //$preg_str = "/([\s\S]*?)".preg_quote($this->left_delimiter)."INCLUDE\s+([\s\S]+?)".preg_quote($this->right_delimiter)."([\s\S]*?)/i";
-        $preg_str = "/" . preg_quote($this->left_delimiter, "/") . "INCLUDE\s+([\s\S]+?)" . preg_quote($this->right_delimiter, "/") . "/i";
-        $template = preg_replace_callback($preg_str, array($this, '_setIncludeCallback'), $template);
+        // load extend file
+        $template = $this->_setExtendTemplate($template);
+        // replace block
+        $template = $this->_setBlockTemplate($template);
+        // load include file
+        $preg_str = "/" . preg_quote($this->left_delimiter, "/") . "IMPORT\s+(.+?)" . preg_quote($this->right_delimiter, "/") . "/i";
+        $template = preg_replace_callback($preg_str, array($this, '_setImportCallback'), $template);
+
         return $template;
     }
 
-    function _setIncludeCallback($args)
+    /**
+     * @param $template
+     * @return mixed
+     */
+    private function _setExtendTemplate($template)
     {
-        //$tp_header = $args[1];
-        //$var = $args[2];
-        //$tp_footer = $args[3];
+        $preg_str = "/^([\s\S]*?" . preg_quote($this->left_delimiter, "/") . "EXTEND\s+(.+?)" . preg_quote($this->right_delimiter, "/") . "[\s\S]*?)$/i";
+        $tmp = preg_replace_callback($preg_str, array($this, '_setExtendCallback'), $template);
+
+        // load block file
+        $tmp2 = $this->_setBlockData($template);
+        if(!preg_match($preg_str,$template)){
+            $tmp = $tmp2;
+        }
+        return $tmp;
+    }
+
+    /**
+     * @param $args
+     * @return string
+     */
+    private function _setExtendCallback($args)
+    {
+        $tmp_base = $args[1];
+
+        $var = $args[2];
+        // 属性値を取得
+        $attr = $this->getAttr($attr, $var);
+        // 属性から値設定
+        $tmp = "";
+        foreach ($attr as $name => $val) {
+            switch ($name) {
+                case "FILE":
+                    $tmp = $this->loadTemplatePartsFile($val);
+                    // extend
+                    $tmp = $this->_setExtendTemplate($tmp);
+                    break;
+            }
+        }
+
+        return $tmp;
+    }
+
+    /**
+     * @param $template
+     */
+    private function _setBlockData($template){
+
+        $preg_str = "/" . preg_quote($this->left_delimiter, "/") . "(\/?block([\s]+[^\s\/]+)?)" . preg_quote($this->right_delimiter, "/") . "/i";
+        // explode
+        $matchs = preg_split($preg_str, $template, 0, PREG_SPLIT_DELIM_CAPTURE);
+        //$this->TemplateList = $matchs;
+        $cnt = count($matchs);
+        // テンプレートを評価
+        $tmp = $matchs[0];
+
+        $t = "";
+        $level = 0;
+        for ($key = 1; $key < $cnt;) {
+            $tmp .= $this->_setBlockTags(false, $t, $key, $matchs, $level);
+        }
+        if($level != 0){
+            $this->error('Error Block');
+        }
+        return $tmp;
+    }
+
+    /**
+     * @param $template
+     * @return mixed
+     */
+    private function setStripTemplate($template){
+
+        $tag_id = "strip";
+        $preg_str = "/" . preg_quote($this->left_delimiter, "/") . "(\/?" . $tag_id . ")" . preg_quote($this->right_delimiter, "/") . "/";
+        // 文字列の分割
+        $matchs = preg_split($preg_str, $template, 0, PREG_SPLIT_DELIM_CAPTURE);
+
+        $tpl = "";
+        $cnt = count($matchs);
+        $lebel = 0;
+        for($i=0;$i<$cnt;$i+=2){
+            if($lebel > 0){
+                $t = preg_replace_callback(
+                    "/(" . preg_quote($this->left_delimiter, "/") . "\/?[^" . preg_quote($this->right_delimiter, "/") . "]+" . preg_quote($this->right_delimiter, "/") . ")".
+                    "|".
+                    "([^" . preg_quote($this->left_delimiter, "/") . "]+)/",
+                    function($mt){
+                        if(isset($mt[2])){
+                            $t = $mt[2];
+                            $t = preg_replace("/[\r\n\t]/","",$t);
+                            $t = preg_replace("/(\s){2,}/","$1",$t);
+                            return $t;
+                        }
+                        return $mt[1];
+                    },
+                    $matchs[$i]);
+                $tpl .= $t;
+            }else{
+                $tpl .= $matchs[$i];
+            }
+            if(($i + 1) >= $cnt){
+                continue;
+            }
+            if($matchs[$i + 1] == $tag_id){
+                $lebel ++;
+            }else if($matchs[$i + 1] == "/".$tag_id){
+                $lebel = max($lebel - 1,0);
+            }
+        }
+        return $tpl;
+    }
+
+    /**
+     * @param $block_key
+     * @param $tmp
+     * @param $key
+     * @param $list
+     * @param $level
+     * @return string
+     */
+    private function _setBlockTags($block_key, $tmp, &$key, &$list, &$level)
+    {
+        if(count($list) <= $key){
+            return "";
+        }
+        $type = $list[$key];
+        $template = "";
+        if(preg_match("/^block\s+(.+)$/i",$type,$matchs)){
+            $block_key = trim($matchs[1]);
+            $block_tmp = $list[$key + 2];
+            $c_level = $level + 1;
+            $key += 3;
+
+            $template .= $this->left_delimiter.$type.$this->right_delimiter;
+            while($key < count($list)){
+                if($c_level == $level){
+                    break;
+                }
+                $block_tmp .= $this->_setBlockTags($block_key,$block_tmp,$key,$list,$c_level);
+            }
+        }else if($type == "/block"){
+            if($block_key != ""){
+                $this->Block[$block_key] = $tmp;
+            }
+            $level --;
+            $key ++;
+        }else{
+            $template .= $type;
+            $key ++;
+        }
+        return $template;
+    }
+    /**
+     * @param $template
+     * @return string
+     */
+    private function _setBlockTemplate($template){
+        $preg_str = "/" .preg_quote($this->left_delimiter, "/")."BLOCK[\s]+(.+?)" . preg_quote($this->right_delimiter, "/")."/i";
+        return preg_replace_callback($preg_str, array($this, '_setBlockCallback'), $template);
+    }
+
+    /**
+     * @param $args
+     * @return string
+     */
+    private function _setBlockCallback($args)
+    {
+        $var = $args[1];
+        if(isset($this->Block[$var])){
+            return $this->_setBlockTemplate($this->Block[$var]);
+        }
+        return "";
+    }
+
+    /**
+     * @param $args
+     * @return string
+     */
+    private function _setImportCallback($args)
+    {
         $var = $args[1];
         // 属性値を取得
         $attr = $this->getAttr($attr, $var);
@@ -371,6 +1240,42 @@ class class_template
         $tmp = "";
         foreach ($attr as $name => $val) {
             switch ($name) {
+                case "FILE":
+                    $tmp = $this->loadTemplatePartsFile($val);
+                    break;
+            }
+        }
+        return $tmp;
+    }
+
+    /**
+     * @param $template
+     * @return mixed
+     */
+    private function setInclude($template)
+    {
+        //$preg_str = "/([\s\S]*?)".preg_quote($this->left_delimiter)."INCLUDE\s+([\s\S]+?)".preg_quote($this->right_delimiter)."([\s\S]*?)/i";
+        $preg_str = "/".preg_quote($this->left_delimiter,"/")."INCLUDE\s+([\s\S]+?)".preg_quote($this->right_delimiter,"/")."/i";
+        $template = preg_replace_callback( $preg_str , array($this, '_setIncludeCallback') , $template);
+        return $template;
+    }
+
+    /**
+     * @param $args
+     * @return string
+     */
+    private function _setIncludeCallback($args)
+    {
+        //$tp_header = $args[1];
+        //$var = $args[2];
+        //$tp_footer = $args[3];
+        $var = $args[1];
+        // 属性値を取得
+        $attr = $this->getAttr($attr,$var);
+        // 属性から値設定
+        $tmp = "";
+        foreach($attr as $name => $val){
+            switch($name){
                 case "FILE":
                     $tmp = $this->Include[$val];
                     break;
@@ -386,9 +1291,9 @@ class class_template
      * @return srting $template
      * @access private
      */
-    function setTemplatesVars($template)
+    public function setTemplatesVars($template)
     {
-        $preg_str = "/" . preg_quote($this->left_delimiter, "/") . "([\s\S]+?)" . preg_quote($this->right_delimiter, "/") . "/";
+        $preg_str = "/" . preg_quote($this->left_delimiter, "/") . "(.+?)" . preg_quote($this->right_delimiter, "/") . "/";
         // 文字列の分割
         $matchs = preg_split($preg_str, $template, 0, PREG_SPLIT_DELIM_CAPTURE);
         $this->TemplateList = $matchs;
@@ -402,53 +1307,62 @@ class class_template
         return $tmp;
     }
 
-    function _setTemplateTags(&$tmp, &$key, &$list, &$level, $check = false, $skip = false)
+    /**
+     * @param $tmp
+     * @param $key
+     * @param $list
+     * @param $level
+     * @param bool $check
+     * @param bool $skip
+     * @return bool
+     */
+    private function _setTemplateTags(&$tmp, &$key, &$list, &$level, $check = false, $skip = false)
     {
         // 式を取得
         $ptn = $list[$key];
-        // foreach
-        if (preg_match("/^(\/?)FOREACH\s*([\s\S]+?)$/i", $ptn, $m)) {
-            // 終了タグ
-            if ($m[1] == "/") {
-                $level--;
-                // 開始タグ
+        // comment
+        if (preg_match("/^#(.*)#$/i", $ptn, $m)) {
+            $tmp .= $list[$key + 1];
+            // literal
+        }else if (preg_match("/^LITERAL$/i", $ptn, $m)) {
+            $tmp .= $list[$key + 1];
+            // tag skip
+            $this->_skipLiteralTags($tmp, $key, $list, $level);
+            // foreach
+        }else if (preg_match("/^FOREACH\s+(.+)$/i", $ptn, $m)) {
+            $level++;
+            if ($skip == false) {
+                // loop
+                $this->_setForeachLoop($m[1], $tmp, $key, $list, $level);
             } else {
-                $level++;
-                if ($skip == false) {
-                    // ループ処理
-                    $this->_setForeachLoop($m[2], $tmp, $key, $list, $level);
-                } else {
-                    // タグスキップ
-                    $this->_skipIfTags($tmp, $key, $list, $level);
-                }
+                // tag skip
+                $this->_skipIfTags($tmp, $key, $list, $level);
             }
+        } else if (preg_match("/^\/FOREACH$/i", $ptn, $m)) {
+            $level--;
             // for文
-        } else if (preg_match("/^(\/?)FOR\s*([\s\S]+?)$/i", $ptn, $m)) {
-            // 終了タグ
-            if ($m[1] == "/") {
-                $level--;
-                // 開始タグ
+        } else if (preg_match("/^FOR\s+(.+)$/i", $ptn, $m)) {
+            $level++;
+            if ($skip == false) {
+                // loop
+                $this->_setForLoop($m[1], $tmp, $key, $list, $level);
             } else {
-                $level++;
-                if ($skip == false) {
-                    // ループ処理
-                    $this->_setForLoop($m[2], $tmp, $key, $list, $level);
-                } else {
-                    // タグスキップ
-                    $this->_skipIfTags($tmp, $key, $list, $level);
-                }
+                // tag skip
+                $this->_skipIfTags($tmp, $key, $list, $level);
             }
+        } else if (preg_match("/^\/FOR$/i", $ptn, $m)) {
+            $level--;
             // if文
-        } else if (preg_match("/^IF\s*\(\s*([\s\S]+?)\)$/i", $ptn, $m)) {
+        } else if (preg_match("/^IF\s*\(\s*(.+)\s*\)\s*$/i", $ptn, $m)) {
             $level++;
             if ($skip == false) {
                 // IF処理
                 $this->_setIf($m[1], $tmp, $key, $list, $level);
             } else {
-                // タグスキップ
+                // tag skip
                 $this->_skipIfTags($tmp, $key, $list, $level);
             }
-            // if文終了
+            // if end
         } else if (preg_match("/^\/IF$/i", $ptn, $m)) {
             $level--;
             // 無効な値は無視
@@ -462,16 +1376,41 @@ class class_template
         return $check;
     }
 
-    function _skipIfTags(&$tmp, &$key, &$list, &$level)
+    /**
+     * @param $tmp
+     * @param $key
+     * @param $list
+     * @param $level
+     */
+    private function _skipLiteralTags(&$tmp, &$key, &$list, &$level)
+    {
+        $cnt = count($list);
+        for ($key += 2; $key < $cnt; $key += 2) {
+            $ptn = $list[$key];
+            if(preg_match("/^\/LITERAL$/i", $ptn, $m)){
+                $tmp .= $list[$key + 1];
+                break;
+            }
+            $tmp .= $this->left_delimiter.$ptn.$this->right_delimiter;
+            $tmp .= $list[$key + 1];
+        }
+    }
+
+    /**
+     * @param $tmp
+     * @param $key
+     * @param $list
+     * @param $level
+     */
+    private function _skipIfTags(&$tmp, &$key, &$list, &$level)
     {
         $cnt = count($list);
         $start_level = $level - 1;
         for ($key += 2; $key < $cnt; $key += 2) {
-            // タグの実装
+            // tag
             $this->_setTemplateTags($tmp, $key, $list, $level, true, true);
-            // レベルチェック
+            // level check
             if ($level <= $start_level) {
-                //echo str_repeat("　",$level).htmlspecialchars($list[$key])."A<br/>";
                 break;
             }
         }
@@ -481,13 +1420,15 @@ class class_template
      * set template FOR
      * @access private
      */
-    function _setForLoop($str, &$tmp, &$key, &$list, &$level)
+    private function _setForLoop($str, &$tmp, &$key, &$list, &$level)
     {
         // 要素を抽出
         preg_match("/^\s*\\\$([\S]+)=([\S]+)\s+TO\s+(\S+)\s*((\S+)\s*)?$/i", $str, $m);
         $name = $m[1];
-        $start = $this->convertString($m[2]);
-        $loop = $this->convertString($m[3]);
+        $start_p = (new TemplateVarParser($m[2],$this->system_Encoding));
+        $loop_p = (new TemplateVarParser($m[3],$this->system_Encoding));
+        $start = $this->convertTemplateVar($start_p->getFirst(),true);
+        $loop = $this->convertTemplateVar($loop_p->getFirst(),true);
         $step = 1;
         if (isset($m[5])) {
             $at = $m[5];
@@ -500,7 +1441,7 @@ class class_template
         $start_key = $key;
         $start_level = $level - 1;
         $cnt = count($list);
-        if ($start < $loop) {
+        if ($start <= $loop) {
             for ($i = $start; $i <= $loop; $i += $step) {
                 $this->assign($name, $i);
                 $tmp .= $list[$key + 1];
@@ -522,7 +1463,7 @@ class class_template
             }
             $tmp .= $list[$key + 1];
         } else {
-            // タグスキップ
+            // tag skip
             $this->_skipIfTags($tmp, $key, $list, $level);
             $tmp .= $list[$key + 1];
         }
@@ -532,11 +1473,12 @@ class class_template
      * set template FOREACH
      * @access private
      */
-    function _setForeachLoop($str, &$tmp, &$key, &$list, &$level)
+    private function _setForeachLoop($str, &$tmp, &$key, &$list, &$level)
     {
         // 要素を抽出
-        preg_match("/^\s*([\S]+)\s+AS\s+([\S\s]+?)\s*$/i", $str, $m);
-        $item_list = $this->convertString($m[1]);
+        preg_match("/^\s*([\S]+)\s+AS\s+(.+?)\s*$/i", $str, $m);
+        $item_p = (new TemplateVarParser($m[1],$this->system_Encoding));
+        $item_list = $this->convertTemplateVar($item_p->getFirst(),true);
         $loop_key = "";
         $name = "";
         $s = $m[2];
@@ -546,12 +1488,14 @@ class class_template
         } elseif (preg_match("/^\\\$([\S]+)$/", $s, $m)) {
             $name = $m[1];
         }
-        // セクションの設定
+        // section
         $start_key = $key;
         $start_level = $level - 1;
         $cnt = count($list);
         $item_cnt = count($item_list);
-        if (0 < $item_cnt) {
+        //if ($item_list != null && !is_array($item_list)){
+        //$this->error("template : foreach value ".$str." is not array;");
+        if (0 < $item_cnt && is_array($item_list)) {
             $i = 0;
             foreach ($item_list as $item_key => $item) {
                 if ($loop_key != "") {
@@ -564,7 +1508,7 @@ class class_template
                 while ($key < $cnt) {
                     // タグの実装
                     $this->_setTemplateTags($tmp, $key, $list, $level);
-                    // レベルチェック
+                    // level check
                     if ($level <= $start_level) {
                         if (($i + 1) < $item_cnt) {
                             // キー値を戻す
@@ -579,7 +1523,7 @@ class class_template
             }
             $tmp .= $list[$key + 1];
         } else {
-            // タグスキップ
+            // tag skip
             $this->_skipIfTags($tmp, $key, $list, $level);
             $tmp .= $list[$key + 1];
         }
@@ -589,7 +1533,7 @@ class class_template
      * set template IF
      * @access private
      */
-    function _setIf($str, &$tmp, &$key, &$list, &$level)
+    private function _setIf($str, &$tmp, &$key, &$list, &$level)
     {
         // if処理
         $check = $this->_setIfExecute($str, $tmp, $key, $list, $level);
@@ -602,7 +1546,7 @@ class class_template
             // 式を取得
             $ptn = $list[$key];
             // elseif文
-            if (preg_match("/^(\/?)ELSE\s*IF\s*\(\s*([\s\S]+?)\)$/i", $ptn, $m)) {
+            if (preg_match("/^(\/?)ELSE\s*IF\s*\(\s*(.+?)\)$/i", $ptn, $m)) {
                 //echo "skip";
                 if ($check == false) {
                     // if文法処理
@@ -611,7 +1555,7 @@ class class_template
                     $key -= 2;
                     continue;
                 } else {
-                    // タグスキップ
+                    // tag skip
                     $this->_skipIfTags($tmp, $key, $list, $level);
                 }
                 // else文
@@ -623,13 +1567,13 @@ class class_template
                     $key -= 2;
                     continue;
                 } else {
-                    // タグスキップ
+                    // tag skip
                     $this->_skipIfTags($tmp, $key, $list, $level);
                 }
             } else {
                 $this->_setTemplateTags($tmp, $key, $list, $level, $check, ($check == false));
             }
-            // レベルチェック
+            // leevl check
             if ($level <= $start_level) {
                 $tmp .= $list[$key + 1];
                 break;
@@ -642,7 +1586,7 @@ class class_template
      * set template IF/ELSEIF/ELSE
      * @access private
      */
-    function _setIfExecute($str, &$tmp, &$key, &$list, &$level, $checked = false)
+    private function _setIfExecute($str, &$tmp, &$key, &$list, &$level, $checked = false)
     {
         // チェック
         $check = true;
@@ -656,7 +1600,11 @@ class class_template
         return ($check | $checked);
     }
 
-    function _setIfCheck($str)
+    /**
+     * @param $str
+     * @return bool
+     */
+    private function _setIfCheck($str)
     {
         $check = false;
         if ($this->evaString($str)) {
