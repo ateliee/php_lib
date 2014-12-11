@@ -865,6 +865,8 @@ class class_template {
                         $key = $this->evaString($m[3]);
                         $result = $result[$key];
                     }
+                }else{
+                    $this->error('not found format '.$node->getName().'.');
                 }
             }
         } elseif (is_numeric($node->getName())) {
