@@ -378,6 +378,14 @@ class class_template {
     }
 
     /**
+     * @param $name
+     */
+    public function setDefaultModifiers($name)
+    {
+        $this->default_modifiers = $name;
+    }
+
+    /**
      * @param $path
      * @return base_path
      */
@@ -821,15 +829,25 @@ class class_template {
     }
 
     /**
-     * @param TemplateVarNode $node
-     * @return array
+     * @param $str
+     * @param bool $output_html
+     * @return array|bool|null|string
+     * @throws TemplateException
      */
-    private function convertNodeToArray(TemplateVarNode $node)
+    public function evaString($str,$output_html=false)
     {
-        $result = array();
-        foreach($node->getParams() as $key => $p){
-            $key = $this->evaString($key);
-            $result[$key] = $this->convertTemplateVar($p,true);
+        $parser = new TemplateVarParser($str,$this->system_Encoding);
+        try{
+            $result = $this->convertTemplateVar($parser->getFirst(),true);
+            if($output_html && ($this->default_modifiers != "")){
+                if($parser->getFirst()->getType() != TemplateVarNode::$TYPE_FUNCTION){
+                    $node = new TemplateVarNode(TemplateVarNode::$TYPE_FUNCTION,$this->default_modifiers);
+                    $node->addParam(new TemplateVarNode(TemplateVarNode::$TYPE_VAR,$result));
+                    $result = $this->convertNodeToFunction($node,false);
+                }
+            }
+        }catch (TemplateException $e){
+            $this->error('parse error '.$str);
         }
         return $result;
     }
@@ -1366,7 +1384,7 @@ class class_template {
             // 無効な値は無視
         } else {
             if ($skip == false) {
-                $var = $this->evaString($ptn);
+                $var = $this->evaString($ptn,true);
                 $tmp .= $var;
                 $tmp .= $list[$key + 1];
             }
