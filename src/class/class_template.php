@@ -842,7 +842,7 @@ class class_template {
             if($output_html && ($this->default_modifiers != "")){
                 if($parser->getFirst()->getType() != TemplateVarNode::$TYPE_FUNCTION){
                     $node = new TemplateVarNode(TemplateVarNode::$TYPE_FUNCTION,$this->default_modifiers);
-                    $node->addParam(new TemplateVarNode(TemplateVarNode::$TYPE_VAR,$result));
+                    $node->addParam(new TemplateVarNode(TemplateVarNode::$TYPE_VAR,"'".$result."'"));
                     $result = $this->convertNodeToFunction($node,false);
                 }
             }
