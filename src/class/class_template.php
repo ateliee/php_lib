@@ -132,7 +132,13 @@ class TemplateVarParser{
                 }
                 $params[] = $tmp;
                 $tmp = '';
-            }else if(in_array($s,array("(",")",",","[","]",":"))){
+            }else if(in_array($s,array("[","]"))){
+                if($tmp != ""){
+                    $tmp .= $s;
+                }else{
+                    $params[] = $s;
+                }
+            }else if(in_array($s,array("(",")",",",":"))){
                 if($tmp != ""){
                     $params[] = $tmp;
                     $tmp = "";
