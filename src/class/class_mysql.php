@@ -6,9 +6,9 @@
 define("MYSQL_MODE_MYSQL",1);
 define("MYSQL_MODE_MYSQLI",2);
 define("MYSQL_MODE_PDO",3);
-//+++++++++++++++++++++++++++++
-// DBクラス
-//+++++++++++++++++++++++++++++
+/**
+ * Class class_mysql_connect
+ */
 class class_mysql_connect{
     var     $serverName  = 'localhost';
     var     $dbName      = '';
@@ -678,8 +678,15 @@ class class_mysql_connect{
             case 'CHAR':
             case 'VARCHAR':
             case 'TEXT':
+                $val = $this->toStringSQL($val,$default);
+                break;
             case 'DATE':
             case 'DATETIME':
+                if(is_null($default)){
+                    if($val == "" || is_null($val)){
+                        return "NULL";
+                    }
+                }
                 $val = $this->toStringSQL($val,$default);
                 break;
             // 数値変換
