@@ -767,13 +767,11 @@ class class_template {
                 if (preg_match("/^([_a-zA-Z0-9]+)(\[([\\\$_a-zA-Z0-9]+)\])?$/", $v, $m)) {
                     $key = $m[1];
                     if (isset($result)) {
-                        if (!isset($result[$key])) {
-                            if (!array_key_exists($key, $result)) {
-                                $this->error("template : not found [" . $matchs[1] . "] value;");
-                                $result = NULL;
-                            }else{
-                                $result = $result->$key;
-                            }
+                        if(is_object($result)) {
+                            $result = $result->$key;
+                        }else if (!array_key_exists($key, $result)) {
+                            $this->error("template : not found [" . $matchs[1] . "] value;");
+                            $result = NULL;
                         } else {
                             //$tmp_output[$key] = (is_array($value[$key])) ? array() : true;
                             if($set_output){
