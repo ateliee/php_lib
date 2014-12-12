@@ -144,17 +144,17 @@ class TemplateVarParser{
                     $tmp = "";
                 }
                 $params[] = $s;
-            }else if(in_array($s,array("=","<",">","*","!","+","-","/","%"))){
+            }else if(in_array($s,array("=","<",">","*","!","+","-","/","%","&"))){
+                $s3 = mb_substr($str,$i,3,$this->encoding);
+                $s2 = mb_substr($str,$i,2,$this->encoding);
                 if($tmp != ""){
                     $params[] = $tmp;
                     $tmp = "";
                 }
-                $s3 = mb_substr($str,$i,3,$this->encoding);
-                $s2 = mb_substr($str,$i,2,$this->encoding);
-                if(in_array($s3,array("==="))){
+                if(in_array($s3,array("==="))) {
                     $params[] .= $s3;
                     $i += 2;
-                }else if(in_array($s2,array("<=",">=","==","!=","||"))){
+                }else if(in_array($s2,array("<=",">=","==","!=","||","&&"))){
                     $params[] .= $s2;
                     $i ++;
                 }else{
@@ -267,7 +267,7 @@ class TemplateVarParser{
                 $this->error('Parse Error '.$this->original_str);
             }
             return $o;
-        }else if(in_array($s,array('===','!=','==','<=','>=','<','>','-','+','*','/','%','!','||'))){
+        }else if(in_array($s,array('===','!=','==','<=','>=','<','>','-','+','*','/','%','!','||','&&'))){
             return new TemplateVarNode(TemplateVarNode::$TYPE_CALCULATION,$s);
         }else if($ns == '('){
             $success = false;
@@ -365,7 +365,7 @@ class class_template {
         $this->clear_all_assign();
         $this->html_Encoding = mb_internal_encoding();
         $this->system_Encoding = mb_internal_encoding();
-        $this->default_modifiers = "htmlentities";
+        $this->default_modifiers = "";
         $this->setDelimiter("<?","?>");
     }
 
@@ -757,6 +757,9 @@ class class_template {
                 break;
             case '%':
                 $item = ($p1 % $p2);
+                break;
+            case '&&':
+                $item = ($p1 && $p2);
                 break;
             case '||':
                 $item = ($p1 || $p2);
