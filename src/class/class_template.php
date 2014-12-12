@@ -1699,7 +1699,7 @@ class class_template {
     private function _setIfCheck($str)
     {
         $check = false;
-        if ($this->evaString($str)) {
+        if ($res = $this->evaString($str)) {
             $check = true;
         }
         return $check;
