@@ -13,7 +13,7 @@ if (chdir(dirname(__FILE__)) == false) {
 //set_include_path()
 // バージョン
 define('PHPLIB_INCLUDE', true);
-define('SYSTEM_VERSION', '2.0');
+define('SYSTEM_VERSION', '1.1.0');
 define('SYSTEM_UPDATE', '2011/12/12');
 // 文字コード
 define('SYSTEM_LANGUAGE', 'uni');
