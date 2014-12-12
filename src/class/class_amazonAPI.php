@@ -139,7 +139,7 @@ class class_amazonAPI
             $level = 1;
             $new_level = 1;
             for ($i = 0; $i < $count; $i++) {
-                $i = $this->_XMLParser_Array($i, $count, $valuelist, $new_level, &$datalist);
+                $i = $this->_XMLParser_Array($i, $count, $valuelist, $new_level, $datalist);
             }
         }
         /*

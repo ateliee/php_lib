@@ -13,13 +13,6 @@
 //    未 | 未 | MovableType(未検証)
 //    ○ | 未 | Wordpress
 // ========================================
-require_once(dirname(__FILE__) . "/../library/XML/RPC.php");
-// PEAR
-// PHP 4.3.0 以降ではこの方法も使用できます。
-set_include_path(dirname(__FILE__) . "/../library/PEAR/" . PATH_SEPARATOR . get_include_path());
-require_once("PEAR.php");
-require_once("HTTP_Request/Request.php");
-
 // エントリポイント
 define("C_BLOG_AMEBA_URL", "http://atomblog.ameba.jp/servlet/_atom/blog");
 define("C_BLOG_LIVEDOOR_URL", "http://livedoor.blogcms.jp/atom/blog");
@@ -41,6 +34,13 @@ class class_blogger
     // コンストラクタ
     function class_blogger($id = "", $pw = "")
     {
+        require_once(dirname(__FILE__) . "/../library/XML/RPC.php");
+        // PEAR
+        // PHP 4.3.0 以降ではこの方法も使用できます。
+        set_include_path(dirname(__FILE__) . "/../library/PEAR/" . PATH_SEPARATOR . get_include_path());
+        require_once("PEAR.php");
+        require_once("HTTP_Request/Request.php");
+
         if ($id != "" && $pw != "") {
             $this->setUser($id, $pw);
         }

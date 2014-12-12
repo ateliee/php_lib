@@ -27,11 +27,11 @@ define('SYSTEM_ZIP_ENCODE', 'Shift-JIS');
 // システム言語
 define('SYSTEM_LIB_LANGUAGE', 'ja');
 // パスデータ
-define('SYSTEM_PATH_COF', "conf/");
-define('SYSTEM_PATH_FUNC', "func/");
-define('SYSTEM_PATH_CLASS', "class/");
-define('SYSTEM_PATH_EXE', "exe/");
-define('SYSTEM_PATH_LANGUAGE', "language/");
+define('SYSTEM_PATH_COF', dirname(__FILE__)."/conf/");
+define('SYSTEM_PATH_FUNC', dirname(__FILE__)."/func/");
+define('SYSTEM_PATH_CLASS', dirname(__FILE__)."/class/");
+define('SYSTEM_PATH_EXE', dirname(__FILE__)."/exe/");
+define('SYSTEM_PATH_LANGUAGE', dirname(__FILE__)."/language/");
 // デフォルトタイムゾーン
 define('SYSTEM_DEFAULT_TIMEZONE', "Asia/Tokyo");
 
@@ -79,9 +79,9 @@ include_once(SYSTEM_PATH_CLASS . 'class_mail.php');
 include_once(SYSTEM_PATH_CLASS . 'class_mysql.php');
 include_once(SYSTEM_PATH_CLASS . 'class_html.php');
 include_once(SYSTEM_PATH_CLASS . 'class_image.php');
-//include_once( SYSTEM_PATH_CLASS.'class_calender.php' );
+include_once(SYSTEM_PATH_CLASS . 'class_calender.php' );
 include_once(SYSTEM_PATH_CLASS . 'class_rss.php');
-//include_once( SYSTEM_PATH_CLASS.'class_qr.php' );
+include_once(SYSTEM_PATH_CLASS . 'class_qr.php' );
 include_once(SYSTEM_PATH_CLASS . 'class_mobile.php');
 include_once(SYSTEM_PATH_CLASS . 'class_CSRF.php');
 include_once(SYSTEM_PATH_CLASS . 'class_xml.php');

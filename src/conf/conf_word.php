@@ -846,4 +846,3 @@ $G_DEPENDENCE_WORD = array(
     '\xE3\x8F\xBD' => '30日',
     '\xE3\x8F\xBE' => '31日',
 );
-?>

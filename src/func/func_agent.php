@@ -144,11 +144,10 @@ function in_CIDR($ip, $cidr)
 
 function get_ip_carrier()
 {
-    GLOBAL $G_SYSTEM_CIDR_MOBILE;
     // IPのキャリアを決定する
     $ip_carrier = "";
     // IPアドレスからキャリアを判断する
-    foreach ($G_SYSTEM_CIDR_MOBILE as $carrier => $carrier_cidr) {
+    foreach (class_carrer::getCidrAll() as $carrier => $carrier_cidr) {
         foreach ($carrier_cidr as $cidr) {
             if (in_CIDR($_SERVER["REMOTE_ADDR"], $cidr)) {
                 $ip_carrier = $carrier;
@@ -198,7 +197,7 @@ function get_carrier()
 function get_mail_carrier($mail)
 {
     $mail_carrier = "";
-    foreach ($G_SYSTEM_CIDR_MOBILE as $carrier => $c_domain) {
+    foreach (class_carrer::getCidrAll() as $carrier => $c_domain) {
         foreach ($c_domain as $domain) {
             if (preg_match("/" . preg_quote($domain, "/") . "$/", $mail)) {
                 $mail_carrier = $carrier;

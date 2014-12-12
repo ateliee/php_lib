@@ -11,9 +11,9 @@ if(isset($_SERVER["HTTP_HOST"])){
     $L_URL = $L_PROTOCOL.$_SERVER["HTTP_HOST"].$L_SELF_DIR;
 }
 $L_LIB_PATH = $L_URL."/../exe/qr_img0.50i/php/qr_img.php";
-//+++++++++++++++++++++++++++++
-// QRコード作成クラス
-//+++++++++++++++++++++++++++++
+/**
+ * Class class_qr
+ */
 class class_qr{
     // 透過色
     var $transparent = 0xffffffff;

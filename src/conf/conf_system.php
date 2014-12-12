@@ -12,4 +12,3 @@ if (defined('SYSTEM_REQUEST') == false) {
 if (defined('SYSTEM_DOMAIN') == false) {
     define('SYSTEM_DOMAIN', $_SERVER['SERVER_NAME']);
 }
-?>
