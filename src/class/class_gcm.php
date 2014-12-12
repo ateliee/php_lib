@@ -113,5 +113,3 @@ class class_gcm
         return $result_list;
     }
 }
-
-?>

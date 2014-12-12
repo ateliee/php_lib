@@ -355,4 +355,3 @@ class class_imap
     }
 }
 
-?>

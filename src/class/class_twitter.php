@@ -101,5 +101,3 @@ class class_twitter
         return $token;
     }
 }
-
-?>

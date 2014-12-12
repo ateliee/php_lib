@@ -348,5 +348,3 @@ class class_file
         return true;
     }
 }
-
-?>

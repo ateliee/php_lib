@@ -385,5 +385,3 @@ class class_rakutenAPI
         return $datalist;
     }
 }
-
-?>

@@ -128,5 +128,3 @@ class class_calender
         return $text;
     }
 }
-
-?>

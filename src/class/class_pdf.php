@@ -180,5 +180,3 @@ class class_pdf extends FPDI
 
     }
 }
-
-?>

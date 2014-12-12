@@ -371,5 +371,3 @@ class class_mail
         return $result;
     }
 }
-
-?>

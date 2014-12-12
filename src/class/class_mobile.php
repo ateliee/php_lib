@@ -1049,5 +1049,3 @@ class class_mobile
         print $template;
     }
 }
-
-?>

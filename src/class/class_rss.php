@@ -252,5 +252,3 @@ class class_rss
         return $blog_data;
     }
 }
-
-?>

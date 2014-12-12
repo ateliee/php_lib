@@ -120,4 +120,3 @@ function mb_conv($s,$from_to){
       return($s); 
 }
 */
-?>

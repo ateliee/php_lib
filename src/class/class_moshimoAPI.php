@@ -115,5 +115,3 @@ class class_moshimoAPI
         return $this->requestParam(C_MOSHIMO_API_SEARCH, $request);
     }
 }
-
-?>

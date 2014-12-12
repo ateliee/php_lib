@@ -34,5 +34,3 @@ class class_youtubeAPI
         return $contents;
     }
 }
-
-?>

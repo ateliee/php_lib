@@ -117,5 +117,3 @@ class class_xml
         return $result;
     }
 }
-
-?>

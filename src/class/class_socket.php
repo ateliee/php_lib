@@ -186,5 +186,3 @@ class class_socket
         return $str;
     }
 }
-
-?>

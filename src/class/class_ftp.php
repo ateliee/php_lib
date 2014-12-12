@@ -145,5 +145,3 @@ class class_ftp
         return $result;
     }
 }
-
-?>

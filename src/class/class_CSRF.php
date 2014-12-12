@@ -1,65 +1,64 @@
 <?php
 //============================================
 // class_CSRF.php
-// CSRF:�N���X�T�C�g���N�G�X�g�t�H�[�W�F��(Cross-Site Request Forgeries)
-// CSR:����̃T�C�g�̐��K�̃��[�U�̌��������p���āA���K�̃��[�U���Ӑ}���Ă��Ȃ�����������������U��
+// CSRF:クロスサイトリクエストフォージェリ(Cross-Site Request Forgeries)
+// CSR:特定のサイトの正規のユーザの権限を悪用して、正規のユーザが意図していない処理を強制させる攻撃
 //============================================
 
 //+++++++++++++++++++++++++++++
-// class_CSRF�N���X
+// class_CSRFクラス
 //+++++++++++++++++++++++++++++
 class class_CSRF
 {
     var $ttl;
     var $name;
 
-    function Token($name = 'tokens', $ttl = 1800)
+    function Token( $name = 'tokens', $ttl = 1800 )
     {
-        // CSRF ���o�g�[�N���ő�L����(�b)
-        // �ŏ�����͂��̒l�� 1/2 (1800 �̏ꍇ�́A900�b�Ԃ͍Œ�ێ������)
+        // CSRF 検出トークン最大有効期限(秒)
+        // 最小期限はこの値の 1/2 (1800 の場合は、900秒間は最低保持される)
         $this->ttl = (int)$ttl;
 
-        // �Z�b�V�����ɓo�^����g�[�N���z��̖���
+        // セッションに登録するトークン配列の名称
         $this->name = $name;
     }
 
     /**
-     * �g�[�N���𐶐�
+     * トークンを生成
      */
     function createToken()
     {
         $curr = time();
-        $tokens = isset($_SESSION[$this->name]) ? $_SESSION[$this->name] : array();
-        foreach ($tokens as $id => $time) {
-            // �L�����؂�̏ꍇ�̓��X�g����폜
-            if ($time < $curr - $this->ttl) {
-                unset($tokens[$id]);
-            } else {
+        $tokens = isset( $_SESSION[$this->name] ) ? $_SESSION[$this->name] : array();
+        foreach ( $tokens as $id => $time ) {
+            // 有効期限切れの場合はリストから削除
+            if ( $time < $curr - $this->ttl ) {
+                unset( $tokens[$id] );
+            }
+            else {
                 $uniq_id = $id;
             }
         }
-        if (count($tokens) < 2) {
-            if (!$tokens || ($curr - (int)($this->ttl / 2)) >= max($tokens)) {
-                $uniq_id = sha1(uniqid(rand(), TRUE));
+        if ( count( $tokens ) < 2 ) {
+            if ( ! $tokens || ( $curr - (int)( $this->ttl / 2 ) ) >= max( $tokens ) ) {
+                $uniq_id = sha1( uniqid( rand(), TRUE ) );
                 $tokens[$uniq_id] = time();
             }
         }
-        // ���X�g���Z�b�V�����ɓo�^
+        // リストをセッションに登録
         $_SESSION[$this->name] = $tokens;
         return $uniq_id;
     }
 
     /**
-     * �Z�b�V�����̃��X�g�Ƀg�[�N�������݂��A�g�[�N�����L�������̏ꍇ�� FALSE ��Ԃ�
+     * セッションのリストにトークンが存在し、トークンが有効期限内の場合は FALSE を返す
      */
-    function isCSRF($token)
+    function isCSRF( $token )
     {
         $tokens = $_SESSION[$this->name];
-        if (isset($tokens[$token]) && $tokens[$token] > time() - $this->ttl) {
+        if ( isset( $tokens[$token] ) && $tokens[$token] > time() - $this->ttl ) {
             return FALSE;
         }
         return TRUE;
     }
 }
-
-?>

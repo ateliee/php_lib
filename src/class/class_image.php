@@ -991,5 +991,3 @@ class class_image
         return $success;
     }
 }
-
-?>

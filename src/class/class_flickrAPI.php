@@ -6,8 +6,6 @@
 // amazonAPI
 //-------------------------------
 //define('C_AMAZON_API_METHOD','GET');
-
-
 //+++++++++++++++++++++++++++++
 // class_flickrAPIクラス
 //+++++++++++++++++++++++++++++
@@ -110,5 +108,3 @@ class class_flickrAPI
         return $result;
     }
 }
-
-?>

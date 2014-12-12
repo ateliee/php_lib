@@ -811,5 +811,3 @@ class class_yahooAPI
         return $value;
     }
 }
-
-?>

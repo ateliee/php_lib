@@ -152,5 +152,3 @@ class class_html
         return '<' . $tag . '>' . $str . '</' . tag . '>';
     }
 }
-
-?>

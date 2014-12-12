@@ -313,4 +313,3 @@ class class_wikipediaAPI
     }
 }
 
-?>
