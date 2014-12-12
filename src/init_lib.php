@@ -141,4 +141,3 @@ if (get_magic_quotes_gpc()) {
     $_POST = f_reMagicQuotes($_POST);
     $_GET = f_reMagicQuotes($_GET);
 }
-?>
