@@ -341,6 +341,47 @@ class TemplateVarParser{
     }
 }
 
+/**
+ * Class TemplateBlock
+ */
+class TemplateBlock{
+    private $parent;
+    private $html;
+
+    function  __construct($html,$parent=null)
+    {
+        $this->html = $html;
+        $this->parent = $parent;
+    }
+
+    /**
+     * @param $parent
+     */
+    public function setParent($parent)
+    {
+        $this->parent = $parent;
+        return $this;
+    }
+
+    /**
+     * @return TemplateBlock
+     */
+    public function getParent(){
+        return $this->parent;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function __toString()
+    {
+        return $this->html;
+    }
+}
+
+/**
+ * Class class_template
+ */
 class class_template {
 
     private $Template;
@@ -356,6 +397,8 @@ class class_template {
     private $system_Encoding;
     private $default_modifiers;
     private $base_filename;
+    private $auto_header;
+    private $headers;
 
     static private $Functions = array();
 
@@ -367,6 +410,23 @@ class class_template {
         $this->system_Encoding = mb_internal_encoding();
         $this->default_modifiers = "";
         $this->setDelimiter("<?","?>");
+        $this->auto_header = false;
+        $this->headers = array('Content-type' => 'text/html; charset='.$this->html_Encoding);
+    }
+
+    /**
+     * @param $enable
+     * @return mixed
+     */
+    public function setAutoHeader($enable){
+        return ($this->auto_header = $enable);
+    }
+
+    /**
+     * @return bool
+     */
+    public function getAutoHeader(){
+        return $this->auto_header;
     }
 
     /**
@@ -387,10 +447,11 @@ class class_template {
 
     /**
      * @param $name
+     * @return mixed
      */
     public function setDefaultModifiers($name)
     {
-        $this->default_modifiers = $name;
+        return ($this->default_modifiers = $name);
     }
 
     /**
@@ -404,10 +465,12 @@ class class_template {
     /**
      * @param $start
      * @param $end
+     * @return $this
      */
     public function setDelimiter($start,$end){
         $this->left_delimiter = $start;
         $this->right_delimiter = $end;
+        return $this;
     }
 
     /**
@@ -529,6 +592,11 @@ class class_template {
      */
     public function display($set = true)
     {
+        if($this->auto_header){
+            foreach($this->headers as $key => $val){
+                header($key.': '.$val);
+            }
+        }
         print $this->get_display_template($set);
     }
 
@@ -1185,7 +1253,7 @@ class class_template {
      */
     private function _setBlockData($template){
 
-        $preg_str = "/" . preg_quote($this->left_delimiter, "/") . "(\/?block([\s]+[^\s\/]+)?)" . preg_quote($this->right_delimiter, "/") . "/i";
+        $preg_str = "/" . preg_quote($this->left_delimiter, "/") . "(\/?block([\s]+[^\s\/]+?)?)" . preg_quote($this->right_delimiter, "/") . "/i";
         // explode
         $matchs = preg_split($preg_str, $template, 0, PREG_SPLIT_DELIM_CAPTURE);
         //$this->TemplateList = $matchs;
@@ -1211,7 +1279,7 @@ class class_template {
     private function setStripTemplate($template){
 
         $tag_id = "strip";
-        $preg_str = "/" . preg_quote($this->left_delimiter, "/") . "(\/?" . $tag_id . ")" . preg_quote($this->right_delimiter, "/") . "/";
+        $preg_str = "/".preg_quote($this->left_delimiter,"/")."(\/?".$tag_id.")".preg_quote($this->right_delimiter,"/")."/";
         // 文字列の分割
         $matchs = preg_split($preg_str, $template, 0, PREG_SPLIT_DELIM_CAPTURE);
 
@@ -1251,6 +1319,18 @@ class class_template {
     }
 
     /**
+     * @param $matchs
+     * @return mixed
+     */
+    private $current_block;
+    private function _setBlockParentCallback($matchs){
+        if(isset($this->Block[$this->current_block])){
+            return $this->Block[$this->current_block];
+        }
+        $this->error('not found parent() block "'.$this->current_block.'".');
+    }
+
+    /**
      * @param $block_key
      * @param $tmp
      * @param $key
@@ -1271,6 +1351,10 @@ class class_template {
             $c_level = $level + 1;
             $key += 3;
 
+            $this->current_block = $block_key;
+            $preg_str = "/".preg_quote($this->left_delimiter,"/")."\s*parent\(\s*?\)\s*".preg_quote($this->right_delimiter,"/")."/";
+            $block_tmp = preg_replace_callback($preg_str,array($this,'_setBlockParentCallback'),$block_tmp);
+
             $template .= $this->left_delimiter.$type.$this->right_delimiter;
             while($key < count($list)){
                 if($c_level == $level){
@@ -1280,7 +1364,13 @@ class class_template {
             }
         }else if($type == "/block"){
             if($block_key != ""){
-                $this->Block[$block_key] = $tmp;
+                if(isset($this->Block[$block_key])){
+                    $this->Block[$block_key] = new TemplateBlock($tmp,$this->Block[$block_key]);
+                }else{
+                    $this->Block[$block_key] = new TemplateBlock($tmp);
+                }
+            }else{
+                $this->error('not input block key.');
             }
             $level --;
             $key ++;
@@ -1309,6 +1399,7 @@ class class_template {
         if(isset($this->Block[$var])){
             return $this->_setBlockTemplate($this->Block[$var]);
         }
+        $this->error('not found block "'.$var.'".');
         return "";
     }
 
