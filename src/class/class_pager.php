@@ -114,13 +114,17 @@ class class_pager{
                 $params[$this->page_param] = $page;
             }else{
                 $filename = basename($url);
+                $page_url = $page;
+                if($this->page_param != ""){
+                    $page_url = $this->page_param.'/'.$page_url;
+                }
                 if(preg_match('/^(.*)\.(.+)$/',$filename,$mt)){
-                    $url = str_replace($filename,$page.'/'.$filename,$url);
+                    $url = str_replace($filename,$page_url.'/'.$filename,$url);
                 }else{
                     if(substr($url,-1) != '/'){
                         $url .= '/';
                     }
-                    $url .= $page.'/';
+                    $url .= $page_url.'/';
                 }
             }
         }
