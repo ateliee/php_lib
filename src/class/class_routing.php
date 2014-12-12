@@ -129,23 +129,25 @@ class class_routing{
     }
 
     /**
+     * @param $key
      * @param $rule
      * @param $val
      * @param $no
      * @return $this
      */
-    public function addRule($rule,$val,$params=array(),$no=0)
+    public function addRule($key,$rule,$val,$params=array(),$no=0)
     {
-        return $this->addRoutingRule(new RoutingRule($rule,$val,$params,$no));
+        return $this->addRoutingRule($key,new RoutingRule($rule,$val,$params,$no));
     }
 
     /**
+     * @param $key
      * @param RoutingRule $rule
      * @return $this
      */
-    public function addRoutingRule(RoutingRule $rule)
+    public function addRoutingRule($key,RoutingRule $rule)
     {
-        $this->rules[] = $rule;
+        $this->rules[$key] = $rule;
         return $this;
     }
 
