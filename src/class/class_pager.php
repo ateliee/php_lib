@@ -109,17 +109,19 @@ class class_pager{
                 parse_str($matchs[2], $params);
             }
         }
-        if($this->url_mode == self::$URL_MODE_PARAM){
-            $params[$this->page_param] = $page;
-        }else{
-            $filename = basename($url);
-            if(preg_match('/^(.*)\.(.+)$/',$filename,$mt)){
-                $url = str_replace($filename,$page.'/'.$filename,$url);
+        if($page != 0){
+            if($this->url_mode == self::$URL_MODE_PARAM){
+                $params[$this->page_param] = $page;
             }else{
-                if(substr($url,-1) != '/'){
-                    $url .= '/';
+                $filename = basename($url);
+                if(preg_match('/^(.*)\.(.+)$/',$filename,$mt)){
+                    $url = str_replace($filename,$page.'/'.$filename,$url);
+                }else{
+                    if(substr($url,-1) != '/'){
+                        $url .= '/';
+                    }
+                    $url .= $page.'/';
                 }
-                $url .= $page.'/';
             }
         }
 
