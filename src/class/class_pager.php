@@ -1,6 +1,13 @@
 <?php
 
+/**
+ * Class class_pager
+ */
 class class_pager{
+    static $URL_MODE_PARAM = 1;
+    static $URL_MODE_URL = 2;
+
+    private $url_mode;
     private $total_count;
     private $visible;
     private $current;
@@ -12,12 +19,22 @@ class class_pager{
     private $page_count;
 
     function class_pager(){
+        $this->url_mode = self::$URL_MODE_PARAM;
         $this->total_count = 0;
         $this->visible = 0;
         $this->current = 0;
         $this->pager_count = 10;
         $this->page_param = 'page';
         $this->base_url = '';
+    }
+
+    /**
+     * @param $mode
+     * @return $this
+     */
+    public function setUrlMode($mode){
+        $this->url_mode = $mode;
+        return $this;
     }
 
     /**
@@ -57,6 +74,13 @@ class class_pager{
     }
 
     /**
+     * @return int
+     */
+    public function getPagerCount(){
+        return $this->pager_count;
+    }
+
+    /**
      * @param $current
      * @return $this
      */
@@ -66,20 +90,40 @@ class class_pager{
     }
 
     /**
+     * @return int
+     */
+    public function getCurrent(){
+        return $this->current;
+    }
+
+    /**
      * @param $page
      * @return string
      */
-    private function getPagesUrl($page){
-        $param = array();
-        $param[$this->page_param] = $page;
-
+    public function getPagesUrl($page){
         $url = $this->base_url;
-        if(preg_match('/\?/',$url)){
-            $url .= '&';
-        }else{
-            $url .= '?';
+        $params = array();
+        if(preg_match('/^(.*)\?(.*)$/',$url,$matchs)){
+            $url = $matchs[1];
+            if(isset($matchs[2])){
+                parse_str($matchs[2], $params);
+            }
         }
-        return $url.http_build_query($param);
+        if($this->url_mode == self::$URL_MODE_PARAM){
+            $params[$this->page_param] = $page;
+        }else{
+            $filename = basename($url);
+            if(preg_match('/^(.*)\.(.+)$/',$filename,$mt)){
+                $url = str_replace($filename,$page.'/'.$filename,$url);
+            }else{
+                if(substr($url,-1) != '/'){
+                    $url .= '/';
+                }
+                $url .= $page.'/';
+            }
+        }
+
+        return $url.((count($params) > 0) ? '?'.http_build_query($params) : '');
     }
 
     /**
@@ -112,6 +156,7 @@ class class_pager{
         $arr['start'] = $this->page_start;
         $arr['end'] = $this->page_end;
         $arr['html'] = $this->getPagerHTML('&lt;&lt;','&gt;&gt;');
+        $arr['pager'] = $this;
         return $arr;
     }
 
