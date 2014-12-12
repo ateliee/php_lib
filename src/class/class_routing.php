@@ -6,7 +6,7 @@
 class RoutingRule{
     private $rule;
     private $value;
-    private $params = array();
+    private $url_params;
     private $no;
 
     /**
@@ -17,7 +17,7 @@ class RoutingRule{
     function __construct($rule,$value,$params=array(),$no=0){
         $this->rule = $rule;
         $this->value = $value;
-        $this->params = $params;
+        $this->url_params = $params;
         $this->no = $no;
     }
 
@@ -45,8 +45,8 @@ class RoutingRule{
     /**
      * @return array
      */
-    public function getParams(){
-        return $this->params;
+    public function getUrlParams(){
+        return $this->url_params;
     }
 
     /**
@@ -80,9 +80,9 @@ class RoutingRule{
      * @param $params
      * @return array
      */
-    public function setParams($params){
-        $this->params = $params;
-        return $this->params;
+    public function setUrlParams($params){
+        $this->url_params = $params;
+        return $this->url_params;
     }
 }
 
@@ -111,6 +111,18 @@ class RoutingRuleMatch extends RoutingRule{
             $this->params[$key] = $val;
             $i ++;
         }
+    }
+
+    /**
+     * @param $key
+     * @param null $default
+     * @return null
+     */
+    public function getParam($key,$default=null){
+        if(isset($this->params[$key])){
+            return $this->params[$key];
+        }
+        return $default;
     }
 }
 
