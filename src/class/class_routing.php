@@ -98,7 +98,7 @@ class RoutingRuleMatch extends RoutingRule{
     function __construct(RoutingRule $rule,$params = array()){
         parent::__construct($rule->getRule(),$rule->getValue(),$rule->getNo());
 
-        $params_list = $rule->getParams();
+        $params_list = $rule->getUrlParams();
         $keys = array_keys($params_list);
 
         $i = 0;
@@ -123,6 +123,16 @@ class RoutingRuleMatch extends RoutingRule{
             return $this->params[$key];
         }
         return $default;
+    }
+
+    /**
+     * @param $key
+     * @param $val
+     * @return $this
+     */
+    public function setParam($key,$val){
+        $this->params[$key] = $val;
+        return $this;
     }
 }
 
