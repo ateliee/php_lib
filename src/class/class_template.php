@@ -1495,7 +1495,9 @@ class class_template {
     private function _setForLoop($str, &$tmp, &$key, &$list, &$level)
     {
         // 要素を抽出
-        preg_match("/^\s*\\\$([\S]+)\s*=\s*([\S]+)\s+TO\s+(\S+)\s*((\S+)\s*)?$/i", $str, $m);
+        if(!preg_match("/^\s*\\\$([\S]+)\s*=\s*([\S]+)\s+TO\s+(\S+)\s*((\S+)\s*)?$/i", $str, $m)){
+            $this->error('un support format "for '.$str.'"');
+        }
         $name = $m[1];
         $start_p = (new TemplateVarParser($m[2],$this->system_Encoding));
         $loop_p = (new TemplateVarParser($m[3],$this->system_Encoding));
