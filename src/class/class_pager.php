@@ -106,6 +106,8 @@ class class_pager{
         $arr['count'] = $this->total_count;
         $arr['visible'] = $this->visible;
         $arr['current'] = $this->current;
+        $arr['prev'] = max($this->current - 1,0);
+        $arr['next'] = max(min($this->current + 1,$this->pager_count),0);
         $arr['page_count'] = $this->page_count;
         $arr['start'] = $this->page_start;
         $arr['end'] = $this->page_end;
