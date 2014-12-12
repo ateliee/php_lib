@@ -631,7 +631,7 @@ class class_template {
     {
         $attr = array();
         // key=value convert
-        $preg_str = "/(\S+)=(\S+)/";
+        $preg_str = "/(\S+)\s*=\s*(\S+)/";
         if (preg_match_all($preg_str, $str, $matchs)) {
             $cnt = count($matchs[0]);
             for ($key = 0; $key < $cnt; $key++) {
@@ -685,13 +685,18 @@ class class_template {
                     }
                 }
             }else if($node->getType() == TemplateVarNode::$TYPE_CALCULATION){
+                $c = $node;
                 if($loop_count){
-                    $c = $node;
                     $node = $node->getNext();
                     $p2 = $this->convertTemplateVar($node,false);
                     $result = $this->convertToCalculation($result,$c->getName(),$p2);
                 }else{
-                    throw new TemplateException();
+                    if(($node = $node->getNext()) && ($node->getType() == TemplateVarNode::$TYPE_VAR) && is_numeric($node->getName())){
+                        $p2 = $this->convertTemplateVar($node,false);
+                        $result = $this->convertToCalculation(0,$c->getName(),$p2);
+                    }else{
+                        throw new TemplateException();
+                    }
                 }
             }else{
                 throw new TemplateException();
@@ -909,13 +914,18 @@ class class_template {
     {
         $parser = new TemplateVarParser($str,$this->system_Encoding);
         try{
-            $result = $this->convertTemplateVar($parser->getFirst(),true);
-            if($output_html && ($this->default_modifiers != "")){
-                if($parser->getFirst()->getType() != TemplateVarNode::$TYPE_FUNCTION){
-                    $node = new TemplateVarNode(TemplateVarNode::$TYPE_FUNCTION,$this->default_modifiers);
-                    $node->addParam(new TemplateVarNode(TemplateVarNode::$TYPE_VAR,'"'.str_replace('"','\"',$result).'"'));
-                    $result = $this->convertNodeToFunction($node,false);
+            if($parser->getFirst()) {
+                $result = $this->convertTemplateVar($parser->getFirst(), true);
+                if ($output_html && ($this->default_modifiers != "")) {
+                    if ($parser->getFirst()->getType() != TemplateVarNode::$TYPE_FUNCTION) {
+                        $node = new TemplateVarNode(TemplateVarNode::$TYPE_FUNCTION, $this->default_modifiers);
+                        $node->addParam(new TemplateVarNode(TemplateVarNode::$TYPE_VAR, '"' . str_replace('"', '\"', $result) . '"'));
+                        $result = $this->convertNodeToFunction($node, false);
+                    }
                 }
+            }else{
+                $this->notice('not found string var "'.$str.'"');
+                $result = null;
             }
         }catch (TemplateException $e){
             $this->error('parse error '.$str);
@@ -1495,7 +1505,7 @@ class class_template {
     private function _setForLoop($str, &$tmp, &$key, &$list, &$level)
     {
         // 要素を抽出
-        if(!preg_match("/^\s*\\\$([\S]+)\s*=\s*([\S]+)\s+TO\s+(\S+)\s*((\S+)\s*)?$/i", $str, $m)){
+        if(!preg_match("/^\s*\\\$([\S]+)\s*=\s*([\S]+)\s+TO\s+(\S+)\s*(([\S\s]+?)\s*)?$/i", $str, $m)){
             $this->error('un support format "for '.$str.'"');
         }
         $name = $m[1];
@@ -1512,11 +1522,15 @@ class class_template {
                 $step = intval($attr["STEP"]);
             }
         }
+        if($step == 0){
+            $this->error('un support format "for '.$str.'" by step is not 0.');
+        }
         $start_key = $key;
         $start_level = $level - 1;
         $cnt = count($list);
-        if ($start <= $loop) {
-            for ($i = $start; $i <= $loop; $i += $step) {
+        if (($step > 0) ? ($start <= $loop) : ($start >= $loop)) {
+            $i = $start;
+            while(($step > 0) ? ($i <= $loop) : ($i >= $loop)){
                 $this->assign($name, $i);
                 $tmp .= $list[$key + 1];
                 $key += 2;
@@ -1525,7 +1539,7 @@ class class_template {
                     $this->_setTemplateTags($tmp, $key, $list, $level);
                     // レベルチェック
                     if ($level <= $start_level) {
-                        if (($i + $step) <= $loop) {
+                        if (($step > 0) ? (($i + $step) <= $loop) : (($i + $step) >= $loop)) {
                             // キー値を戻す
                             $key = $start_key;
                             $level++;
@@ -1534,6 +1548,7 @@ class class_template {
                     }
                     $key += 2;
                 };
+                $i += $step;
             }
             $tmp .= $list[$key + 1];
         } else {
