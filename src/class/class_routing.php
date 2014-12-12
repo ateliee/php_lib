@@ -152,6 +152,18 @@ class class_routing{
     }
 
     /**
+     * @param $key
+     * @return RoutingRule|null
+     */
+    public function getRule($key)
+    {
+        if(isset($this->rules[$key])){
+            return $this->rules[$key];
+        }
+        return null;
+    }
+
+    /**
      * @param $url
      * @return RoutingRuleMatch|null
      */
