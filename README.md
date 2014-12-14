@@ -115,6 +115,11 @@ $DB->query($sql);
 if($DB->numRows() > 0){
     $sv = $DB->fetchArray();
 }
+
+$sql = "SELECT COUNT(*) FROM `:table:` ";
+$sql .= "WHERE `id`=:%id%: ";
+$DB->execute($sql,array('id' => $id,'table'=>'test'));
+$sqlvalue = $DB->fetchResults();
 ```
 
 ### <a name="mail">Mail Engine(class_mail.php)
