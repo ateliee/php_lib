@@ -11,8 +11,16 @@ support PHP version 4/5
 Onry include "init_lib.php" file.
 (setup init_lib.php)
 
+### download file and include
 ``` php
 include_once(dir(__FILE__)."/php_lib/init_lib.php");
+```
+
+### composer
+```
+    "require": {
+        "ateliee/php_lib": "dev-master"
+    }
 ```
 
 ## Example
