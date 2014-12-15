@@ -272,17 +272,26 @@ class TemplateVarParser{
         }else if($ns == '('){
             $success = false;
             $o = new TemplateVarNode(TemplateVarNode::$TYPE_FUNCTION,$s);
+            $vo = null;
             for($num+=2;$num<count($params);$num++){
                 $ss = $params[$num];
                 if($ss == ')'){
                     $success = true;
                     break;
-                }else if($ss == ','){
+                }else if($ss == ',') {
+                    $vo = null;
                     continue;
+                }else{
+                    if(!$vo){
+                        $vo = new TemplateVarNode(TemplateVarNode::$TYPE_VARLIST);
+                        if($vo){
+                            $o->addParam($vo);
+                        }
+                    }
                 }
                 $p = $this->_createNodePointer($params,$num);
                 if($p){
-                    $o->addParam($p);
+                    $vo->addParam($p);
                 }
             }
             if(!$success){
@@ -774,6 +783,7 @@ class class_template {
             }
             $node = $node->getNext();
             $loop_count ++;
+
         }
         return $result;
     }
