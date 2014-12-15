@@ -157,6 +157,7 @@ function getPnkz($pnkz, $options = array())
 {
     $count = count($pnkz);
 
+    $p = new class_pnkz();
     $start = "";
     if (isset($options["start"])) {
         $start = $options["start"];
@@ -165,30 +166,21 @@ function getPnkz($pnkz, $options = array())
     if (isset($options["end"])) {
         $end = $options["end"];
     }
-    $mode = "";
+    if($start || $end){
+        $p->setWrapHTML($start,$end);
+    }
     if (isset($options["mode"])) {
         $mode = $options["mode"];
+        if($mode == 'list'){
+            $p->setWrapElement('li');
+        }else{
+            $p->setWrapElement(null);
+        }
     }
-    // 一覧に設定
-    $list = "";
-    $i = 0;
     foreach ($pnkz as $key => $val) {
-        $list .= $start;
-        if ($mode == "list") {
-            $list .= '<li class="li' . $i . '">';
-        }
-        if ((($i + 1) < $count) && ($val["href"])) {
-            $list .= '<a href="' . $val["href"] . '">' . $val["value"] . '</a>';
-        } else {
-            $list .= '<span>' . $val["value"] . '</span>';
-        }
-        if ($mode == "list") {
-            $list .= '</li>';
-        }
-        $list .= $end;
-        $i++;
+        $p->addItem(new class_pnkzItem($val["value"],$val["href"]));
     }
-    return $list;
+    return $p->getHTML();
 }
 
 //--------------------------------------------
