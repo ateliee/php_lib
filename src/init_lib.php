@@ -106,6 +106,7 @@ include_once(SYSTEM_PATH_CLASS . 'class_flickrAPI.php');
 //include_once( SYSTEM_PATH_CLASS.'class_moshimoAPI.php' );
 include_once(SYSTEM_PATH_CLASS . 'class_pager.php');
 include_once(SYSTEM_PATH_CLASS . 'class_routing.php');
+include_once(SYSTEM_PATH_CLASS . 'class_pnkz.php');
 // function
 include_once(SYSTEM_PATH_FUNC . 'func_php.php');
 include_once(SYSTEM_PATH_FUNC . 'func_system.php');

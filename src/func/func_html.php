@@ -271,4 +271,3 @@ function makeCheckboxList($value_key, $checklist, $valuelist, $before = "", $aft
     return $list;
 }
 
-?>
