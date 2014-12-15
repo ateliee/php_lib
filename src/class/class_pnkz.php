@@ -151,7 +151,7 @@ class class_pnkz
             }
             if ($this->wrapElement) {
                 $class = 'li'.$i;
-                if($this->linkClass){
+                if($this->linkClass && $link){
                     $class .= ' '.$this->linkClass;
                 }
                 $list .= '<'.$this->wrapElement.' class="'.$class.'">';
