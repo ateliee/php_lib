@@ -76,6 +76,10 @@ name is test
 name is not test
 <?/if?>
 
+<!-- set value -->
+<?set('test','sample')?>
+display is sample : '<?$test?>'
+
 <!-- escape string -->
 name is <?htmlentities($name)?>
 name is <?escape($name)?>
