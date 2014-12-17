@@ -1197,9 +1197,6 @@ class class_template {
                     }
                     break;
                 case 'date':
-                    if(!is_string($params[0])){
-                        $this->error('date() format not string.'.$params[0].' given.');
-                    }
                     if(array_key_exists(1,$params)){
                         if(is_numeric($params[1])){
                             $time = $params[1];
