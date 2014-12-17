@@ -671,13 +671,24 @@ class class_mysql_connect{
         }
         return "NULL";
     }
-    function toSqlValueSQL($val,$type,$default=NULL){
+
+    /**
+     * @param $val
+     * @param $type
+     * @param null $default
+     * @param int $length
+     * @return int|string
+     */
+    function toSqlValueSQL($val,$type,$default=NULL,$length=0){
         $type = strtoupper($type);
         switch($type){
             // 文字列変換
             case 'CHAR':
             case 'VARCHAR':
             case 'TEXT':
+                if($length > 0){
+                    $val = mb_substr($val,0,$length);
+                }
                 $val = $this->toStringSQL($val,$default);
                 break;
             case 'DATE':
@@ -703,15 +714,22 @@ class class_mysql_connect{
         }
         return $val;
     }
+
+    /**
+     * @param $valuelist
+     * @param $tablevalue
+     * @return mixed
+     */
     function toSqlValueListSQL($valuelist,$tablevalue){
         foreach($valuelist as $key => $val){
             //if(in_array($tkey,$valuelist)){
             $tv = $tablevalue[$key];
             if(isset($tv)){
+                $length = isset($tv["SIZE"]) ? intval($tv["SIZE"]) : 0;
                 if(isset($tv["DEFAULT"])){
-                    $valuelist[$key] = $this->toSqlValueSQL($val,$tv["TYPE"],$tv["DEFAULT"]);
+                    $valuelist[$key] = $this->toSqlValueSQL($val,$tv["TYPE"],$tv["DEFAULT"],$length);
                 }else{
-                    $valuelist[$key] = $this->toSqlValueSQL($val,$tv["TYPE"]);
+                    $valuelist[$key] = $this->toSqlValueSQL($val,$tv["TYPE"],null,$length);
                 }
             }
         }
