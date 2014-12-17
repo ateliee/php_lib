@@ -1143,20 +1143,6 @@ class class_template {
                 case 'number_format':
                     $result = number_format($params[0]);
                     break;
-                case 'date_format':
-                    if(!array_key_exists(1,$params)){
-                        $this->error('date_format() 2 paramater called.');
-                    }else{
-                        if(is_numeric($params[1])){
-                            $result = date($params[0],$params[1]);
-                        }else if(is_string($params[1])) {
-                            $result = date($params[0], strtotime($params[1]));
-                        }else{
-                            $result = null;
-                            $this->notice('date_format() paramater date is not support format');
-                        }
-                    }
-                    break;
                 case 'strimw':
                     $str = $params[0];
                     $start = $params[1];
@@ -1209,6 +1195,9 @@ class class_template {
                         $this->error('date() paramater is string or number.'.$params[1].' given.');
                     }
                     $result = date($params[0],$time);
+                    break;
+                case 'time':
+                    $result = time();
                     break;
                 default:
                     $this->error('Error Functions '.$node->getName());
