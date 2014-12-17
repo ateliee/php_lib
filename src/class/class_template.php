@@ -1186,10 +1186,14 @@ class class_template {
                     if(!is_string($params[0])){
                         $this->error('date() format not string.'.$params[0].' given.');
                     }
-                    if(is_numeric($params[1])){
-                        $time = $params[1];
+                    if(array_key_exists(1,$params)){
+                        if(is_numeric($params[1])){
+                            $time = $params[1];
+                        }else{
+                            $time = strtotime((string)$params[1]);
+                        }
                     }else{
-                        $time = strtotime((string)$params[1]);
+                        $time = time();
                     }
                     if($time <= 0){
                         $this->error('date() paramater is string or number.'.$params[1].' given.');
