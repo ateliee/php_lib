@@ -1113,6 +1113,9 @@ class class_template {
                         $result = null;
                     }
                     break;
+                case 'strip_tags':
+                    $result = strip_tags($params[0],(array_key_exists(1,$params) ? $params[1] : ""));
+                    break;
                 case 'print_r':
                     $result = print_r($params[0], true);
                     break;
@@ -1139,6 +1142,27 @@ class class_template {
                 // format
                 case 'number_format':
                     $result = number_format($params[0]);
+                    break;
+                case 'date_format':
+                    if(!array_key_exists(1,$params)){
+                        $this->error('date_format() 2 paramater called.');
+                    }else{
+                        if(is_numeric($params[1])){
+                            $result = date($params[0],$params[1]);
+                        }else if(is_string($params[1])) {
+                            $result = date($params[0], strtotime($params[1]));
+                        }else{
+                            $result = null;
+                            $this->notice('date_format() paramater date is not support format');
+                        }
+                    }
+                    break;
+                case 'strimw':
+                    $str = $params[0];
+                    $start = $params[1];
+                    $width = $params[2];
+                    $append = (array_key_exists(3,$params) ? $params[3] : "");
+                    $result = mb_strimwidth($str,$start,$width,$append,$this->system_Encoding);
                     break;
                 case 'count':
                     $result = count($params[0]);
