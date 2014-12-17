@@ -1185,7 +1185,11 @@ class class_template {
                     break;
                 case 'rest':
                     $result = '';
-                    $output = $this->convertNodeToVar($node->getParam(0),$this->outputVars,false);
+                    if($node && ($node->getParam(0)) && ($node->getParam(0)->getParam(0))){
+                        $output = $this->convertNodeToVar($node->getParam(0)->getParam(0),$this->outputVars,false);
+                    }else{
+                        $this->error('rest() paramater not found');
+                    }
                     if(is_array($params[0])){
                         foreach($params[0] as $k => $v){
                             if(!is_array($output) || !isset($output[$k])){
