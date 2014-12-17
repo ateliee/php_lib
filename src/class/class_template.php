@@ -1023,7 +1023,7 @@ class class_template {
                 $result = null;
             }
         }catch (TemplateException $e){
-            $this->error('parse error '.$str);
+            $this->error($e->getMessage());
         }
         return $result;
     }
