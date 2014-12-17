@@ -643,6 +643,9 @@ class class_email
             $hvaluelist['Bcc'] = implode(",", $maillist);
         }
         //$hvaluelist["Message-Id"] = "<".md5(uniqid(microtime()))."@ドメイン">";
+
+        $body = str_replace(array("\r\n", "\r"), "\n", $this->body);
+        $body = $this->encodeString($body);
         if (count($this->files) > 0) {
             $boundary = md5(uniqid(rand())); //バウンダリー文字（パートの境界）
             //$boundary = "_Boundary_" . uniqid(rand(1000,9999) . '_') . "_";
@@ -653,7 +656,7 @@ class class_email
             $body .= "--" . $boundary . "\n";
             $body .= "Content-Type: text/plain; charset=" . $this->encoding . "\n";
             $body .= "Content-Transfer-Encoding: 7bit\n\n";
-            $body .= $this->encodeString($this->body) . "\n\n";
+            $body .= $body . "\n\n";
             $body .= "--" . $boundary . "\n";
             foreach ($this->files as $file) {
                 $body .= "Content-Type: " . $file->getMimeType() . "; name=\"" . $file->getFilename() . "\"\n";
@@ -665,7 +668,6 @@ class class_email
         } else {
             $hvaluelist["Content-Type"] = "text/plain; charset=" . $this->encoding;
             $hvaluelist["Content-Transfer-Encoding"] = "7bit";
-            $body = $this->encodeString($this->body);
         }
         if ($this->return) {
             $hvaluelist['Return-Path'] = $this->return->getMail();
