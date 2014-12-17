@@ -170,6 +170,7 @@ class TemplateVarParser{
             $tmp = "";
         }
         $this->createNode($params);
+
     }
 
     /**
@@ -198,17 +199,24 @@ class TemplateVarParser{
         }
         $s = $params[$num];
         $ns = (count($params) > ($num + 1)) ? $params[$num+1] : null;
+
         // inner var
         if($s == '('){
             $success = false;
             $o = new TemplateVarNode(TemplateVarNode::$TYPE_VARLIST);
+            $skip = 0;
             for($num+=1;$num<count($params);$num++){
                 $ss = $params[$num];
-                if($ss == ')'){
-                    if(count($o->getParams()) > 0){
-                        $success = true;
+                if($ss == '(') {
+                    $skip ++;
+                }else if($ss == ')'){
+                    $skip --;
+                    if($skip < 0){
+                        if(count($o->getParams()) > 0){
+                            $success = true;
+                        }
+                        break;
                     }
-                    break;
                 }
                 $p = $this->_createNodePointer($params,$num);
                 if($p){
@@ -273,11 +281,17 @@ class TemplateVarParser{
             $success = false;
             $o = new TemplateVarNode(TemplateVarNode::$TYPE_FUNCTION,$s);
             $vo = null;
+            $skip = 0;
             for($num+=2;$num<count($params);$num++){
                 $ss = $params[$num];
-                if($ss == ')'){
-                    $success = true;
-                    break;
+                if($ss == '('){
+                    $skip ++;
+                }else if($ss == ')'){
+                    $skip --;
+                    if($skip < 0){
+                        $success = true;
+                        break;
+                    }
                 }else if($ss == ',') {
                     $vo = null;
                     continue;
