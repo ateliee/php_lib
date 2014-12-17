@@ -1,7 +1,9 @@
 <?php
-//============================================
-// class_mail.php
-//============================================
+/**
+ * Class class_mail
+ *
+ * class_email.phpに以降(仕様変更)
+ */
 class class_mail
 {
     var $mail_smpt = "localhost";

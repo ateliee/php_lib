@@ -77,6 +77,7 @@ include_once(SYSTEM_PATH_CLASS . 'class_template.php');
 include_once(SYSTEM_PATH_CLASS . 'class_file.php');
 include_once(SYSTEM_PATH_CLASS . 'class_string.php');
 include_once(SYSTEM_PATH_CLASS . 'class_mail.php');
+include_once(SYSTEM_PATH_CLASS . 'class_email.php');
 include_once(SYSTEM_PATH_CLASS . 'class_mysql.php');
 include_once(SYSTEM_PATH_CLASS . 'class_html.php');
 include_once(SYSTEM_PATH_CLASS . 'class_image.php');
