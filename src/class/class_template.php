@@ -474,7 +474,9 @@ class class_template {
      */
     public function setDefaultModifiers($name)
     {
-        return ($this->default_modifiers = $name);
+        $before = $this->default_modifiers;
+        $this->default_modifiers = $name;
+        return $before;
     }
 
     /**
