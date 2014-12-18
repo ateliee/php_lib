@@ -55,7 +55,7 @@ class class_emailData
             $from_encoding = mb_internal_encoding();
         }
         return (new class_emailData(
-            mb_convert_encoding($this->mail,$to_encoding,$from_encoding),
+            ($this->mail),
             mb_convert_encoding($this->name,$to_encoding,$from_encoding)));
     }
 }
@@ -237,8 +237,12 @@ class class_emailFileData
  */
 class class_mail
 {
+    private $sock;
     private $smtp;
     private $port;
+    private $smtp_id;
+    private $smtp_password;
+    private $debug;
 
     private $encoding;
     private $mail_encoding;
@@ -263,6 +267,8 @@ class class_mail
         $this->port = 25;
         $this->setEncoding("ISO-2022-JP","SJIS");
         $this->setSystemEncoding(mb_internal_encoding());
+        $this->debug = false;
+        $this->sock = null;
 
         $this->from = null;
         $this->return = null;
@@ -273,6 +279,38 @@ class class_mail
         $this->subject = "";
         $this->body = "";
         $this->files = array();
+    }
+
+    /**
+     * @param $host
+     * @param $port
+     * @return $this
+     */
+    public function setSmtp($host,$port)
+    {
+        $this->smtp = $host;
+        $this->port = $port;
+        return $this;
+    }
+
+    /**
+     * @param $id
+     * @param $password
+     * @return $this
+     */
+    public function setSmtpUser($id,$password)
+    {
+        $this->smtp_id = $id;
+        $this->smtp_password = $password;
+        return $this;
+    }
+
+    /**
+     * @param $debug
+     */
+    public function setDebug($debug)
+    {
+        $this->debug = $debug;
     }
 
     /**
@@ -464,6 +502,18 @@ class class_mail
     }
 
     /**
+     * @param $mail
+     * @param string $name
+     * @return $this
+     */
+    public function setToMail($mail,$name="")
+    {
+        $this->resetTo();
+        $this->addTo($mail,$name);
+        return $this;
+    }
+
+    /**
      * @param $name
      * @return $this
      */
@@ -639,10 +689,237 @@ class class_mail
      */
     public function send()
     {
+        if($this->smtp == "localhost"){
+            return $this->sendMail();
+        }
+        return $this->sendSmtp();
+    }
+
+    /**
+     * @param $message
+     * @throws Exception
+     */
+    private function error($message)
+    {
+        if($this->debug){
+            throw new Exception($message);
+        }
+    }
+
+    /**
+     *
+     */
+    private function smtpAuthClose()
+    {
+        if($this->sock){
+            @fclose($this->sock);
+            $this->sock = null;
+        }
+    }
+
+    /**
+     * @return null|string
+     */
+    private function smtpGet()
+    {
+        if($this->sock){
+            return fgets($this->sock);
+        }
+        return null;
+    }
+
+    /**
+     * @return null|string
+     */
+    private function smtpPut($message)
+    {
+        if($this->sock){
+            return fputs($this->sock,$message."\r\n");
+        }
+        return null;
+    }
+
+    /**
+     * @return bool
+     * @throws Exception
+     */
+    private function smtpAuthSSL()
+    {
+        $hostname = exec("hostname");
+        $ip = gethostbyname($this->smtp);
+
+        $this->sock = null;
+        // 接続
+        if(@$this->sock = fsockopen("ssl://".$ip,$this->port,$errno,$msg)){
+            $msg = $this->smtpGet();
+            if(strpos($msg,"220")===false and strpos($msg,"250")===false){
+                $this->smtpAuthClose();
+                return false;
+            }
+            $this->smtpPut("ehlo {$hostname}");
+            $msg = $this->smtpGet();
+            if(strpos($msg,"220")===false and strpos($msg,"250")===false){
+                $this->smtpAuthClose();
+                return false;
+            }
+            // 認証
+            $this->smtpPut("auth login");
+            while(strpos($msg=$this->smtpGet(),"334")===false){
+                if(strpos($msg,"220")===false and strpos($msg,"250")===false and strpos($msg,"334")===false){
+                    $this->smtpAuthClose();
+                    return false;
+                }
+            }
+            $this->smtpPut(base64_encode($this->smtp_id));
+            $msg = $this->smtpGet();
+            if(strpos($msg,"220")===false and strpos($msg,"250")===false and strpos($msg,"334")===false){
+                $this->smtpAuthClose();
+                return false;
+            }
+            $this->smtpPut(base64_encode($this->smtp_password));
+            $msg = $this->smtpGet();
+            if(strpos($msg,"220")===false and strpos($msg,"250")===false and strpos($msg,"334")===false and strpos($msg,"235")===false){
+                $this->smtpAuthClose();
+                return false;
+            }
+            return true;
+        }
+        $this->error('smtp connection error '.$this->smtp.':'.$this->port.' '.$this->smtp_id.'@'.$this->smtp_password);
+        return false;
+    }
+
+    /**
+     * @return bool
+     * @throws Exception
+     */
+    private function smtpAuth()
+    {
+        $response = "";
+
+        $this->sock = null;
+        if($this->sock = fsockopen($this->smtp,$this->port)){
+            $this->smtpPut("HELO ".$this->smtp);
+            $result = $this->smtpGet();
+            $response .= $result."\n";
+
+            // 認証
+            $this->smtpPut("AUTH LOGIN");
+            $response .= "AUTH LOGIN\n";
+
+            $id = base64_encode($this->smtp_id);
+            $password = base64_encode($this->smtp_password);
+
+            $this->smtpPut($id);
+            $response .= $id."\n";
+
+            $result = $this->smtpGet();
+            $response .= $result."\n";
+
+            $this->smtpPut($password);
+            $response .= $password."\n";
+
+            $result = $this->smtpGet();
+            $response .= $result."\n";
+
+            return true;
+        }
+        $this->error('smtp connection error '.$this->smtp.':'.$this->port.' '.$this->smtp_id.'@'.$this->smtp_password);
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function sendSmtp()
+    {
+        if($this->smtpauth()){
+            $subject = $this->encodeSystemString($this->subject);
+            $body = str_replace(array("\r\n", "\r"), "\n", $this->body);
+            $body = $this->encodeSystemString($body);
+            $from = $this->getFrom()->cloneEncode($this->mail_encoding,$this->system_encoding);
+            $to_data = array();
+            foreach ($this->to as $t) {
+                $to_data[] = $t->cloneEncode($this->mail_encoding,$this->system_encoding);
+            }
+            $cc_data = array();
+            foreach ($this->cc as $t) {
+                $cc_data[] = $t->cloneEncode($this->mail_encoding,$this->system_encoding);
+            }
+            $bcc_data = array();
+            foreach ($this->bcc as $t) {
+                $bcc_data[] = $t->cloneEncode($this->mail_encoding,$this->system_encoding);
+            }
+
+            $org_encoding = mb_internal_encoding();
+
+            mb_language("Japanese");
+            //mb_language("ja");
+            mb_internal_encoding($this->mail_encoding);
+
+            $response = "";
+
+            // from
+            $this->smtpPut("MAIL FROM:".$this->encodeMailData($from));
+            $response .= "MAIL FROM:".$this->encodeMailData($from)."\n";
+
+            $result = $this->smtpGet();
+            $response .= $result."\n";
+
+            // to
+            $maillist = array();
+            foreach ($to_data as $t) {
+                $maillist[] = $this->encodeMailData($t);
+            }
+            $to = implode(",", $maillist);
+
+            $this->smtpPut("RCPT TO:".$to);
+            $response .= "RCPT TO:".$to."\n";
+
+            $result = $this->smtpGet();
+            $response .= $result."\n";
+
+            $this->smtpPut("DATA"); //DATAを送信後、ピリオドオンリーの行を送るまで本文。
+            $response .= "DATA\n";
+
+            $result = $this->smtpGet();
+            $response .= $result."\n";
+
+            $this->smtpPut("SUBJECT:".$subject); //Subjectヘッダ送信
+            $response .= $subject."\n";
+
+            $this->smtpPut($body); //本文送信
+            $response .= $body."\n";
+
+            $result = $this->smtpGet();
+            $response .= $result."\n";
+
+            $this->smtpPut("\r\n."); //ピリオドのみの行を送信。
+            $response .= ".\n";
+            $result = $this->smtpGet();
+            $response .= $result."\n";
+
+            $success = true;
+            if(!preg_match("/^250/",$result)){ //成功すると250 OK～と返してくるので
+                $success = false;
+            }
+            $this->smtpAuthClose();
+
+            mb_internal_encoding($org_encoding);
+
+            return $success;
+        }
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function sendMail()
+    {
         $subject = $this->encodeSystemString($this->subject);
         $body = str_replace(array("\r\n", "\r"), "\n", $this->body);
         $body = $this->encodeSystemString($body);
-        $form = $this->getFrom()->cloneEncode($this->mail_encoding,$this->system_encoding);
+        $from = $this->getFrom()->cloneEncode($this->mail_encoding,$this->system_encoding);
         $to_data = array();
         foreach ($this->to as $t) {
             $to_data[] = $t->cloneEncode($this->mail_encoding,$this->system_encoding);
@@ -669,7 +946,7 @@ class class_mail
 
         $hvaluelist = array();
         // メールヘッダー作成
-        $hvaluelist['From'] = $this->encodeMailData($form);
+        $hvaluelist['From'] = $this->encodeMailData($from);
         // To
         $maillist = array();
         foreach ($to_data as $t) {
@@ -741,6 +1018,8 @@ class class_mail
         $header = implode("\n", $header);
         $subject = $this->encodeMiMeHeader($subject);
 
+        var_dump($to);
+        var_dump($header);
         // 送信（第1引数はSMTPのRCPT TO（エンベロープTO）にも使われる）
         //if (mb_send_mail($this->to, $subject, $body, $header)) {
         $result = false;
