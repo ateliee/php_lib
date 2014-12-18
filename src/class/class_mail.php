@@ -1,172 +1,134 @@
 <?php
+
 /**
- * Class class_mail
- *
- * class_email.phpに以降(仕様変更)
+ * Class class_emailData
  */
-class class_mail
+class class_emailData
 {
-    var $mail_smpt = "localhost";
-    var $mail_port = 25;
+    private $mail;
+    private $name;
 
-    //var $from_encode = 'Shift-JIS';
-    var $from_encode = 'SJIS';
-    var $mail_encode = 'ISO-2022-JP';
-
-    var $from = "";
-    var $fromName = "";
-    var $subject = "";
-    var $body = "";
-    var $tolist = array();
-    var $cclist = array();
-    var $bcclist = array();
-    var $returnPath = "";
-    var $files = array();
-
-    // コンストラクタ
-    function class_mail()
+    /**
+     * @param $mail
+     * @param null $name
+     */
+    public function __construct($mail,$name=null)
     {
+        $this->mail = $mail;
+        $this->name = $name;
     }
 
-    // 文字コード変換
-    function encoding($val, $to_encoding = "", $from_encoding = "")
+    /**
+     * @param $name
+     * @return $this
+     */
+    public function setName($name)
     {
-        if (($to_encoding != "") && ($from_encoding != "") && ($to_encoding != $from_encoding)) {
-            $val = mb_convert_kana($val, "K", $from_encoding);
-            $val = mb_convert_encoding($val, $to_encoding, $from_encoding);
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMail()
+    {
+        return $this->mail;
+    }
+
+    /**
+     * メールの表示名を取得
+     *
+     * @param $form_encoding
+     * @param $encoding
+     * @return string
+     */
+    public function getDisplay($encoding,$form_encoding=null)
+    {
+        if ($this->name) {
+            $name = $this->name;
+            if($form_encoding == null){
+                $form_encoding = mb_internal_encoding();
+            }
+            if($form_encoding != $encoding){
+                $name = mb_convert_encoding($name,$encoding,$form_encoding);
+            }
+            return mb_encode_mimeheader($name, $encoding, "B", "\n") . " <" . $this->name . ">";
         }
-        return $val;
+        return $this->mail;
+    }
+}
+
+/**
+ * Class class_emailFileData
+ */
+class class_emailFileData
+{
+    static $ATTACHMENT = 'attachment';
+    static $INLINE = 'inline';
+
+    private $path;
+    private $data;
+    private $filename;
+    private $mime;
+    private $disposition;
+
+    /**
+     * @param $path
+     * @param string $filename
+     * @param string $disposition|attachment:付属物 inline:本文と一緒に表示
+     */
+    public function __construct($path, $filename = "", $disposition = "attachment")
+    {
+        if (!($contents = $this->readFile($path))) {
+            $contents = $this->getUrlContents($path);
+        }
+        if ($contents != "") {
+            $contents_encoded = chunk_split(base64_encode($contents), 76, "\n"); //エンコードして分割
+            $info = pathinfo($path);
+
+            if ($filename == "") {
+                $filename = $info["basename"];
+            } else {
+                $filename .= "." . $info["extension"];
+            }
+            $this->path = $path;
+            $this->filename = $filename;
+            $this->data = $contents_encoded;
+            $this->mime = $this->checkMimeType($path);
+            $this->disposition = $disposition;
+        }
     }
 
-    // 外部ファイルを取得
-    function file_get_contents_curl($url)
+    /**
+     * 外部ファイルを取得
+     *
+     * @param $url
+     * @return null|string
+     */
+    private function getUrlContents($url)
     {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        ob_start();
-        curl_exec($ch);
-        curl_close($ch);
-        $string = ob_get_contents();
-        ob_end_clean();
+        $string = null;
+        if($ch = curl_init()){
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            ob_start();
+            curl_exec($ch);
+            curl_close($ch);
+
+            $string = ob_get_contents();
+            ob_end_clean();
+        }
         return $string;
     }
 
-    // メールの表示名を取得
-    function getMailDisplay($mail, $name = "")
-    {
-        if ($name != "") {
-            return mb_encode_mimeheader($name, $this->mail_encode, "B", "\n") . " <" . $mail . ">";
-        }
-        return $mail;
-    }
-
-    // 送信元を設定
-    function setFrom($val)
-    {
-        $this->from = $val;
-        $this->from = mb_convert_encoding($this->from, $this->mail_encode, $this->from_encode);
-    }
-
-    function setFromName($val, $to_encoding = "", $from_encoding = "")
-    {
-        $this->fromName = $this->encoding($val, $to_encoding, $from_encoding);
-        $this->fromName = $this->encoding($this->fromName, $this->mail_encode, $this->from_encode);
-    }
-
-    function setFromMail($val, $name = "", $to_encoding = "", $from_encoding = "")
-    {
-        $this->setFrom($val, $to_encoding, $from_encoding);
-        $this->setFromName($name, $to_encoding, $from_encoding);
-    }
-
-    // Return-Pathを設定
-    function setReturnPath($val)
-    {
-        $this->returnPath = $val;
-        $this->returnPath = mb_convert_encoding($this->returnPath, $this->mail_encode, $this->from_encode);
-    }
-
-    // 件名を設定
-    function setSubject($val, $to_encoding = "", $from_encoding = "")
-    {
-        $this->subject = $this->encoding($val, $to_encoding, $from_encoding);
-        $this->subject = $this->encoding($this->subject, $this->mail_encode, $this->from_encode);
-    }
-
-    // 本文を設定
-    function setBody($val, $to_encoding = "", $from_encoding = "")
-    {
-        // 改行コード置換
-        $val = str_replace(array("\r\n", "\r"), "\n", $val);
-        $this->body = $this->encoding($val, $to_encoding, $from_encoding);
-        $this->body = $this->encoding($this->body, $this->mail_encode, $this->from_encode);
-    }
-
-    // 送信先を設定
-    function setTo($val, $to_encoding = "", $from_encoding = "")
-    {
-        $v = $this->encoding($val, $to_encoding, $from_encoding);
-        $v = $this->encoding($v, $this->mail_encode, $this->from_encode);
-        $this->tolist[0]["mail"] = $v;
-    }
-
-    function setToName($val, $to_encoding = "", $from_encoding = "")
-    {
-        $v = $this->encoding($val, $to_encoding, $from_encoding);
-        $v = $this->encoding($v, $this->mail_encode, $this->from_encode);
-        $this->tolist[0]["name"] = $v;
-    }
-
-    function addToMail($val, $name = "", $to_encoding = "", $from_encoding = "")
-    {
-        $v = $this->encoding($val, $to_encoding, $from_encoding);
-        $v = $this->encoding($v, $this->mail_encode, $this->from_encode);
-        $vn = $this->encoding($name, $to_encoding, $from_encoding);
-        $vn = $this->encoding($vn, $this->mail_encode, $this->from_encode);
-        $this->tolist[] = array("mail" => $v, "name" => $vn);
-    }
-
-    function resetToMail()
-    {
-        $this->tolist = array();
-    }
-
-    // CCを追加
-    function addCCMail($val, $name = "", $to_encoding = "", $from_encoding = "")
-    {
-        $v = $this->encoding($val, $to_encoding, $from_encoding);
-        $v = $this->encoding($v, $this->mail_encode, $this->from_encode);
-        $vn = $this->encoding($name, $to_encoding, $from_encoding);
-        $vn = $this->encoding($vn, $this->mail_encode, $this->from_encode);
-        $this->cclist[] = array("mail" => $v, "name" => $vn);
-    }
-
-    function resetCCMail()
-    {
-        $this->cclist = array();
-    }
-
-    // BCCを追加
-    function addBCCMail($val, $name = "", $to_encoding = "", $from_encoding = "")
-    {
-        $v = $this->encoding($val, $to_encoding, $from_encoding);
-        $v = $this->encoding($v, $this->mail_encode, $this->from_encode);
-        $vn = $this->encoding($name, $to_encoding, $from_encoding);
-        $vn = $this->encoding($vn, $this->mail_encode, $this->from_encode);
-        $this->bcclist[] = array("mail" => $v, "name" => $vn);
-    }
-
-    function resetBCCMail()
-    {
-        $this->bcclist = array();
-    }
-
-    function file_read($path)
+    /**
+     * @param $path
+     * @return null|string
+     */
+    private function readFile($path)
     {
         if ($fp = @fopen($path, "r")) {
-            //$size = filesize($path);
-            //$size = exec('stat -c %s '. escapeshellarg ($path));
             $contents = "";
             while (!feof($fp)) {
                 $contents .= fread($fp, 1024);
@@ -177,7 +139,10 @@ class class_mail
         return null;
     }
 
-    function getMimeType($path)
+    /**
+     * @return mixed|string
+     */
+    private function checkMimeType()
     {
         $mimeTypeList = array(
             'jpg' => 'image/jpeg',
@@ -220,106 +185,464 @@ class class_mail
             //'tgz'   => 'application/octet-stream',
         );
         if (function_exists("finfo_file")) {
-            $mimetype = finfo_file($finfo, $path);
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mimetype = finfo_file($finfo, $this->path);
             finfo_close($finfo);
             return $mimetype;
         } else {
-            $info = pathinfo($path);
+            $info = pathinfo($this->path);
             if (isset($info["extension"]) && isset($mimeTypeList[$info["extension"]])) {
                 return $mimeTypeList[$info["extension"]];
             } else if (!function_exists('mime_content_type')) {
-                return exec('file -Ib ' . $path);
+                return exec('file -Ib ' . $this->path);
             } else {
                 // 非推奨
-                return mime_content_type($path);
+                return mime_content_type($this->path);
             }
         }
     }
 
-    // ファイルの添付
-    function addFile($path, $filename = "", $disposition = "attachment")
+    /**
+     * @return mixed|string
+     */
+    public function getMimeType(){
+        return $this->mime;
+    }
+
+    /**
+     * @return mixed|string
+     */
+    public function getFilename(){
+        return $this->filename;
+    }
+
+    /**
+     * @return mixed|string
+     */
+    public function getDisposition(){
+        return $this->disposition;
+    }
+
+    /**
+     * @return mixed|string
+     */
+    public function getData(){
+        return $this->data;
+    }
+}
+
+/**
+ * Class class_mail
+ *
+ * class_email.phpに以降(仕様変更)
+ */
+class class_mail
+{
+    private $smtp;
+    private $port;
+
+    private $encoding;
+    private $system_encoding;
+    //var $from_encode = 'SJIS';
+    //var $mail_encode = 'ISO-2022-JP';
+    private $from;
+    private $return;
+    private $to;
+    private $cc;
+    private $bcc;
+
+    private $subject;
+    private $body;
+    private $files;
+
+    /**
+     *
+     */
+    public function __construct()
+    {
+        $this->smtp = "localhost";
+        $this->port = 25;
+        $this->setEncoding("ISO-2022-JP");
+        $this->setSystemEncoding(mb_internal_encoding());
+
+        $this->from = null;
+        $this->return = null;
+        $this->to = array();
+        $this->cc = array();
+        $this->bcc = array();
+
+        $this->subject = "";
+        $this->body = "";
+        $this->files = array();
+    }
+
+    /**
+     * @param $encoding
+     * @return $this
+     */
+    public function setEncoding($encoding)
+    {
+        $this->encoding = $encoding;
+        return $this;
+    }
+
+    /**
+     * @param $encoding
+     * @return $this
+     */
+    public function setSystemEncoding($encoding)
+    {
+        $this->system_encoding = $encoding;
+        return $this;
+    }
+
+    // 文字コード変換
+    /*function encoding($val, $to_encoding = "", $from_encoding = "")
+    {
+        if (($to_encoding != "") && ($from_encoding != "") && ($to_encoding != $from_encoding)) {
+            $val = mb_convert_kana($val, "K", $from_encoding);
+            $val = mb_convert_encoding($val, $to_encoding, $from_encoding);
+        }
+        return $val;
+    }*/
+    /**
+     * @param $str
+     * @return string
+     */
+    private function encodeString($str)
+    {
+        if($this->encoding != $this->system_encoding) {
+            $str = mb_convert_kana($str, "K", $this->system_encoding);
+            $str = mb_convert_encoding($str, $this->encoding, $this->system_encoding);
+        }
+        return $str;
+    }
+
+    /**
+     * @param $subject
+     * @return $this
+     */
+    public function setSubject($subject)
+    {
+        $this->subject = $subject;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubject()
+    {
+        return $this->subject;
+    }
+
+    /**
+     * @param $body
+     * @return $this
+     */
+    public function setBody($body)
+    {
+        $this->body = $body;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBody()
+    {
+        return $this->body;
+    }
+
+    /**
+     * 送信元を設定
+     *
+     * @param $mail
+     */
+    public function setFrom($mail)
+    {
+        $this->from = new class_emailData($mail);
+        return $this;
+    }
+
+    /**
+     * @return class_emailData
+     */
+    public function getFrom()
+    {
+        return $this->from;
+    }
+
+    /**
+     * @param $name
+     * @return $this
+     */
+    public function setFromName($name)
+    {
+        if($this->from){
+            $this->from->setName($name);
+        }
+        return $this;
+    }
+
+    /**
+     * @param $mail
+     * @param string $name
+     */
+    public function setFromMail($mail, $name = "")
+    {
+        $this->from = new class_emailData($mail,$name);
+        return $this;
+    }
+
+    /**
+     * @param $mail
+     * @return $this
+     */
+    public function setReturnPath($mail)
+    {
+        $this->return = new class_emailData($email);
+        return $this;
+    }
+
+    /**
+     * @return class_emailData
+     */
+    public function getReturnPath()
+    {
+        return $this->return;
+    }
+
+    /**
+     * 送信先を設定
+     *
+     * @param $mail
+     * @return $this
+     */
+    public function setTo($mail)
+    {
+        $this->resetTo();
+        $this->addTo($mail);
+        return $this;
+    }
+
+    /**
+     * @param $name
+     * @return $this
+     */
+    public function setToName($name)
+    {
+        trigger_error('Please not use setToName().');
+        if(count($this->to) > 0){
+            $this->to[0]->setName($name);
+        }
+        return $this;
+    }
+
+    /**
+     * @param $mail
+     * @param string $name
+     * @return $this
+     */
+    public function addTo($mail,$name="")
+    {
+        $this->to[] = new class_emailData($mail,$name);
+        return $this;
+    }
+
+    /**
+     * @param $mail
+     * @param string $name
+     * @return class_mail
+     */
+    public function addToMail($mail, $name = ""){
+        trigger_error('Please use addToMail() change addTo().');
+        return $this->addTo($mail,$name);
+    }
+
+    /**
+     * @return $this
+     */
+    public function resetTo()
+    {
+        $this->to = array();
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTo()
+    {
+        return $this->to;
+    }
+
+    /**
+     * @param $mail
+     * @param string $name
+     * @return $this
+     */
+    public function addCC($mail,$name="")
+    {
+        $this->cc[] = new class_emailData($mail,$name);
+        return $this;
+    }
+
+    /**
+     * @param $mail
+     * @param string $name
+     */
+    public function addCCMail($mail, $name = "")
+    {
+        trigger_error('Please use addCCMail() change addCC().');
+        return $this->addCC($mail,$name);
+    }
+
+    /**
+     * @return $this
+     */
+    public function resetCC()
+    {
+        $this->cc = array();
+        return $this;
+    }
+
+    /**
+     * @return class_mail
+     */
+    public function resetCCMail()
+    {
+        trigger_error('Please use resetCCMail() change resetCC().');
+        return $this->resetCC();
+    }
+
+    /**
+     * @return array
+     */
+    public function getCC()
+    {
+        return $this->cc;
+    }
+
+    /**
+     * @param class_emailData $email
+     * @return $this
+     */
+    public function addBCC(class_emailData $email)
+    {
+        $this->bcc[] = $email;
+        return $this;
+    }
+
+    /**
+     * @param $mail
+     * @param string $name
+     */
+    public function addBCCMail($mail, $name = "")
+    {
+        trigger_error('Please use addBCCMail() change addBCC().');
+        return $this->addBCC($mail,$name);
+    }
+
+    /**
+     * @return $this
+     */
+    public function resetBCC()
+    {
+        $this->bcc = array();
+        return $this;
+    }
+
+    /**
+     * @return class_mail
+     */
+    public function resetBCCMail()
+    {
+        trigger_error('Please use resetBCCMail() change resetBCC().');
+        return $this->resetBCC();
+    }
+
+    /**
+     * @return array
+     */
+    public function getBCC()
+    {
+        return $this->bcc;
+    }
+
+    /**
+     * ファイルの添付
+     *
+     * @param $path
+     * @param string $filename
+     * @param string $disposition
+     * @return bool
+     */
+    public function addFile($path, $filename = "", $disposition = "attachment")
     {
         if ($path != "") {
-            $contents = null;
-            if (!($contents = $this->file_read($path))) {
-                $contents = $this->file_get_contents_curl($path);
-            }
-            if ($contents != "") {
-                $contents_encoded = chunk_split(base64_encode($contents), 76, "\n"); //エンコードして分割
-                $info = pathinfo($path);
-
-                if ($filename == "") {
-                    $filename = $info["basename"];
-                    $filename = mb_convert_encoding($filename, $this->mail_encode, $this->from_encode);
-                } else {
-                    $filename = mb_convert_encoding($filename, $this->mail_encode, $this->from_encode);
-                    $filename .= "." . $info["extension"];
-                }
-                $file = array();
-                $file["name"] = $filename;
-                $file["data"] = $contents_encoded;
-                $file["mime"] = $this->getMimeType($path);
-                $file["disposition"] = $disposition; // attachment:付属物 inline:本文と一緒に表示
-                $this->files[] = $file;
-            }
+            $this->files[] = new class_emailFileData($path,$filename,$disposition);
         }
         return false;
     }
 
-    function setFiles($files)
-    {
-        $this->deleteFiles();
-        foreach ($files as $file) {
-            $this->addFile($file["path"], isset($file["name"]) ? $file["name"] : "");
-        }
-    }
-
-    function deleteFiles()
+    /**
+     *
+     */
+    public function deleteFiles()
     {
         $this->files = array();
+        return $this;
     }
 
-    // メール送信
+    /**
+     * メール送信
+     *
+     * @return bool
+     */
     function send()
     {
         $org_encoding = mb_internal_encoding();
 
         mb_language("Japanese");
         //mb_language("ja");
-        mb_internal_encoding($this->mail_encode);
+        mb_internal_encoding($this->encoding);
         // WindowsではSMTPのMAIL FROM（エンベロープFrom）に使われる
-        //ini_set("smtp_port", $mail_port);
-        //ini_set("SMTP", $mail_smpt);
-        ini_set("sendmail_from", $this->from);
+        //ini_set("smtp_port", $this->port);
+        //ini_set("SMTP", $this->smpt);
+        ini_set("sendmail_from", $this->getFrom()->getMail());
         //ini_set("sendmail_from", mb_encode_mimeheader($this->subject,$this->mail_encode,"B","\n"));
 
         $hvaluelist = array();
         // メールヘッダー作成
-        $hvaluelist['From'] = $this->getMailDisplay($this->from, $this->fromName);
+        $hvaluelist['From'] = $this->getFrom()->getDisplay($this->encoding,$this->system_encoding);
         // To
         $maillist = array();
-        foreach ($this->tolist as $t) {
-            $maillist[] = $this->getMailDisplay($t["mail"], $t["name"]);
+        foreach ($this->to as $t) {
+            $maillist[] = $t->getDisplay($this->encoding,$this->system_encoding);
         }
         $to = implode(",", $maillist);
         //$hvaluelist['To'] = $to;
         // CC
         $maillist = array();
-        foreach ($this->cclist as $t) {
-            $maillist[] = $this->getMailDisplay($t["mail"], $t["name"]);
+        foreach ($this->cc as $t) {
+            $maillist[] = $t->getDisplay($this->encoding,$this->system_encoding);
         }
         if (count($maillist) > 0) {
             $hvaluelist['Cc'] = implode(",", $maillist);
         }
         // BCC
         $maillist = array();
-        foreach ($this->bcclist as $t) {
-            $maillist[] = $this->getMailDisplay($t["mail"], $t["name"]);
+        foreach ($this->bcc as $t) {
+            $maillist[] = $t->getDisplay($this->encoding,$this->system_encoding);
         }
         if (count($maillist) > 0) {
             $hvaluelist['Bcc'] = implode(",", $maillist);
         }
         //$hvaluelist["Message-Id"] = "<".md5(uniqid(microtime()))."@ドメイン">";
+
+        $body = str_replace(array("\r\n", "\r"), "\n", $this->body);
+        $body = $this->encodeString($body);
         if (count($this->files) > 0) {
             $boundary = md5(uniqid(rand())); //バウンダリー文字（パートの境界）
             //$boundary = "_Boundary_" . uniqid(rand(1000,9999) . '_') . "_";
@@ -328,40 +651,39 @@ class class_mail
 
             $body = "";
             $body .= "--" . $boundary . "\n";
-            $body .= "Content-Type: text/plain; charset=" . $this->mail_encode . "\n";
+            $body .= "Content-Type: text/plain; charset=" . $this->encoding . "\n";
             $body .= "Content-Transfer-Encoding: 7bit\n\n";
-            $body .= $this->body . "\n\n";
+            $body .= $body . "\n\n";
             $body .= "--" . $boundary . "\n";
             foreach ($this->files as $file) {
-                $body .= "Content-Type: " . $file["mime"] . "; name=\"" . $file["name"] . "\"\n";
+                $body .= "Content-Type: " . $file->getMimeType() . "; name=\"" . $file->getFilename() . "\"\n";
                 $body .= "Content-Transfer-Encoding: base64\n";
-                $body .= "Content-Disposition: " . $file["disposition"] . "; filename=\"" . $file["name"] . "\"\n\n";
-                $body .= $file["data"] . "\n";
+                $body .= "Content-Disposition: " . $file->getDisposition() . "; filename=\"" . $file->getFilename() . "\"\n\n";
+                $body .= $file->getData() . "\n";
                 $body .= "--" . $boundary . "--\n";
             }
         } else {
-            $hvaluelist["Content-Type"] = "text/plain; charset=" . $this->mail_encode;
+            $hvaluelist["Content-Type"] = "text/plain; charset=" . $this->encoding;
             $hvaluelist["Content-Transfer-Encoding"] = "7bit";
-            $body = $this->body;
         }
-        if ($this->returnPath != "") {
-            $hvaluelist['Return-Path'] = $this->returnPath;
+        if ($this->return) {
+            $hvaluelist['Return-Path'] = $this->return->getMail();
         } else {
-            $hvaluelist['Return-Path'] = $this->from;
+            $hvaluelist['Return-Path'] = $this->from->getMail();
         }
-        $hvaluelist['Reply-To'] = $this->from;
+        $hvaluelist['Reply-To'] = $this->from->getMail();
         $hvaluelist["X-Mailer"] = "PHP/" . phpversion() . "";
         $hvaluelist["MIME-version"] = "1.0";
-        $param = "-f" . $this->from;
-        if ($this->returnPath != "") {
-            $param = "-f" . $this->returnPath;
+        $param = "-f" . $this->from->getMail();
+        if ($this->return != "") {
+            $param = "-f" . $this->return->getMail();
         }
         $header = array();
         foreach ($hvaluelist as $key => $val) {
             $header[] = ucfirst($key) . ": " . $val;
         }
         $header = implode("\n", $header);
-        $subject = mb_encode_mimeheader($this->subject, $this->mail_encode, "B", "\n");
+        $subject = mb_encode_mimeheader($this->encodeString($this->subject), $this->encoding, "B", "\n");
 
         // 送信（第1引数はSMTPのRCPT TO（エンベロープTO）にも使われる）
         //if (mb_send_mail($this->to, $subject, $body, $header)) {
