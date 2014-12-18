@@ -17,7 +17,7 @@ class class_session
     function start()
     {
         if (!session_id()) {
-            session_start();
+            @session_start();
         }
         // セッションIDの妥当性を調べる
         if (!isset($_SESSION['_SESSION_CHECK'])) {
@@ -38,7 +38,7 @@ class class_session
         $tmp = $_SESSION;
         session_destroy();
         session_id(md5(uniqid(rand(), true)));
-        session_start();
+        @session_start();
         $_SESSION = $tmp;
     }
 
