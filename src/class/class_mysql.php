@@ -677,9 +677,10 @@ class class_mysql_connect{
      * @param $type
      * @param null $default
      * @param int $length
+     * @param bool $unsigned
      * @return int|string
      */
-    function toSqlValueSQL($val,$type,$default=NULL,$length=0){
+    function toSqlValueSQL($val,$type,$default=NULL,$length=0,$unsigned=false){
         $type = strtoupper($type);
         switch($type){
             // 文字列変換
@@ -701,11 +702,40 @@ class class_mysql_connect{
                 $val = $this->toStringSQL($val,$default);
                 break;
             // 数値変換
+            case 'TINYINT':
+            case 'SMALLINT':
+            case 'MEDIUMINT':
             case 'INT':
             case 'BIGINT':
             case 'FLOAT':
             case 'DOUBLE':
             case 'LONG':
+                $min = 0;
+                $max = 0;
+                if($type == 'TINYINT') {
+                    $min = -128;
+                    $max = 127;
+                }else if($type == 'SMALLINT'){
+                    $min = -32768;
+                    $max = 32767;
+                }else if($type == 'MEDIUMINT'){
+                    $min = -8388608;
+                    $max = 8388607;
+                }else if($type == 'INT'){
+                    $min = -2147483648;
+                    $max = 2147483647;
+                }else if($type == 'BIGINT'){
+                    $min = -9223372036854775808;
+                    $max = 9223372036854775807;
+                }
+                if($min < 0 || $max > 0){
+                    if($unsigned){
+                        $max = ($max + ($min * -1));
+                        $min = 0;
+                    }
+                    $val = max($val,$min);
+                    $val = min($val,$max);
+                }
                 /*if(isset($default) == false){
                       $default = "0";
                 }*/
@@ -726,10 +756,11 @@ class class_mysql_connect{
             $tv = $tablevalue[$key];
             if(isset($tv)){
                 $length = isset($tv["SIZE"]) ? intval($tv["SIZE"]) : 0;
+                $unsigned = (isset($tv["ATTRIBTE"]) && preg_match('/UNSIGNED/i',$tv['ATTRIBTE'])) ? true : false;
                 if(isset($tv["DEFAULT"])){
-                    $valuelist[$key] = $this->toSqlValueSQL($val,$tv["TYPE"],$tv["DEFAULT"],$length);
+                    $valuelist[$key] = $this->toSqlValueSQL($val,$tv["TYPE"],$tv["DEFAULT"],$length,$unsigned);
                 }else{
-                    $valuelist[$key] = $this->toSqlValueSQL($val,$tv["TYPE"],null,$length);
+                    $valuelist[$key] = $this->toSqlValueSQL($val,$tv["TYPE"],null,$length,$unsigned);
                 }
             }
         }
