@@ -29,6 +29,14 @@ class class_emailData
     }
 
     /**
+     * @return null
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
      * @return mixed
      */
     public function getMail()
@@ -37,25 +45,18 @@ class class_emailData
     }
 
     /**
-     * メールの表示名を取得
-     *
-     * @param $form_encoding
-     * @param $encoding
-     * @return string
+     * @param $to_encoding
+     * @param null $from_encoding
+     * @return class_emailData
      */
-    public function getDisplay($encoding,$form_encoding=null)
+    public function cloneEncode($to_encoding,$from_encoding=null)
     {
-        if ($this->name) {
-            $name = $this->name;
-            if($form_encoding == null){
-                $form_encoding = mb_internal_encoding();
-            }
-            if($form_encoding != $encoding){
-                $name = mb_convert_encoding($name,$encoding,$form_encoding);
-            }
-            return mb_encode_mimeheader($name, $encoding, "B", "\n") . " <" . $this->name . ">";
+        if(!$from_encoding){
+            $from_encoding = mb_internal_encoding();
         }
-        return $this->mail;
+        return (new class_emailData(
+            mb_convert_encoding($this->mail,$to_encoding,$from_encoding),
+            mb_convert_encoding($this->name,$to_encoding,$from_encoding)));
     }
 }
 
@@ -233,8 +234,6 @@ class class_emailFileData
 
 /**
  * Class class_mail
- *
- * class_email.phpに以降(仕様変更)
  */
 class class_mail
 {
@@ -242,9 +241,9 @@ class class_mail
     private $port;
 
     private $encoding;
+    private $mail_encoding;
     private $system_encoding;
-    //var $from_encode = 'SJIS';
-    //var $mail_encode = 'ISO-2022-JP';
+
     private $from;
     private $return;
     private $to;
@@ -262,7 +261,7 @@ class class_mail
     {
         $this->smtp = "localhost";
         $this->port = 25;
-        $this->setEncoding("ISO-2022-JP");
+        $this->setEncoding("ISO-2022-JP","SJIS");
         $this->setSystemEncoding(mb_internal_encoding());
 
         $this->from = null;
@@ -278,11 +277,16 @@ class class_mail
 
     /**
      * @param $encoding
+     * @param $mail_encoding
      * @return $this
      */
-    public function setEncoding($encoding)
+    public function setEncoding($encoding,$mail_encoding=null)
     {
         $this->encoding = $encoding;
+        if(!$mail_encoding){
+            $mail_encoding = $encoding;
+        }
+        $this->mail_encoding = $mail_encoding;
         return $this;
     }
 
@@ -311,11 +315,44 @@ class class_mail
      */
     private function encodeString($str)
     {
-        if($this->encoding != $this->system_encoding) {
-            $str = mb_convert_kana($str, "K", $this->system_encoding);
-            $str = mb_convert_encoding($str, $this->encoding, $this->system_encoding);
+        if($this->encoding != $this->mail_encoding) {
+            $str = mb_convert_kana($str, "K", $this->mail_encoding);
+            $str = mb_convert_encoding($str, $this->encoding, $this->mail_encoding);
         }
         return $str;
+    }
+
+    /**
+     * @param $str
+     */
+    private function encodeSystemString($str)
+    {
+        if($this->system_encoding != $this->mail_encoding) {
+            $str = mb_convert_encoding($str, $this->mail_encoding, $this->system_encoding);
+        }
+        return $str;
+    }
+
+    /**
+     * @param $str
+     * @return string
+     */
+    private function encodeMiMeHeader($str)
+    {
+        return mb_encode_mimeheader($str, $this->encoding, "B", "\n");
+    }
+
+    /**
+     * @param class_emailData $email
+     * @return string
+     */
+    private function encodeMailData(class_emailData $email)
+    {
+        $mail = $email->getMail();
+        if($email->getName()){
+            $mail = $this->encodeMiMeHeader($email->getName()).'<'.$email->getMail().'>';
+        }
+        return $mail;
     }
 
     /**
@@ -401,7 +438,7 @@ class class_mail
      */
     public function setReturnPath($mail)
     {
-        $this->return = new class_emailData($email);
+        $this->return = new class_emailData($mail);
         return $this;
     }
 
@@ -525,12 +562,12 @@ class class_mail
     }
 
     /**
-     * @param class_emailData $email
+     * @param $email
      * @return $this
      */
-    public function addBCC(class_emailData $email)
+    public function addBCC($mail, $name = "")
     {
-        $this->bcc[] = $email;
+        $this->bcc[] = new class_emailData($mail,$name);
         return $this;
     }
 
@@ -600,13 +637,30 @@ class class_mail
      *
      * @return bool
      */
-    function send()
+    public function send()
     {
+        $subject = $this->encodeSystemString($this->subject);
+        $body = str_replace(array("\r\n", "\r"), "\n", $this->body);
+        $body = $this->encodeSystemString($body);
+        $form = $this->getFrom()->cloneEncode($this->mail_encoding,$this->system_encoding);
+        $to_data = array();
+        foreach ($this->to as $t) {
+            $to_data[] = $t->cloneEncode($this->mail_encoding,$this->system_encoding);
+        }
+        $cc_data = array();
+        foreach ($this->cc as $t) {
+            $cc_data[] = $t->cloneEncode($this->mail_encoding,$this->system_encoding);
+        }
+        $bcc_data = array();
+        foreach ($this->bcc as $t) {
+            $bcc_data[] = $t->cloneEncode($this->mail_encoding,$this->system_encoding);
+        }
+
         $org_encoding = mb_internal_encoding();
 
         mb_language("Japanese");
         //mb_language("ja");
-        mb_internal_encoding($this->encoding);
+        mb_internal_encoding($this->mail_encoding);
         // WindowsではSMTPのMAIL FROM（エンベロープFrom）に使われる
         //ini_set("smtp_port", $this->port);
         //ini_set("SMTP", $this->smpt);
@@ -615,33 +669,32 @@ class class_mail
 
         $hvaluelist = array();
         // メールヘッダー作成
-        $hvaluelist['From'] = $this->getFrom()->getDisplay($this->encoding,$this->system_encoding);
+        $hvaluelist['From'] = $this->encodeMailData($form);
         // To
         $maillist = array();
-        foreach ($this->to as $t) {
-            $maillist[] = $t->getDisplay($this->encoding,$this->system_encoding);
+        foreach ($to_data as $t) {
+            $maillist[] = $this->encodeMailData($t);
         }
         $to = implode(",", $maillist);
         //$hvaluelist['To'] = $to;
         // CC
         $maillist = array();
-        foreach ($this->cc as $t) {
-            $maillist[] = $t->getDisplay($this->encoding,$this->system_encoding);
+        foreach ($cc_data as $t) {
+            $maillist[] = $this->encodeMailData($t);
         }
         if (count($maillist) > 0) {
             $hvaluelist['Cc'] = implode(",", $maillist);
         }
         // BCC
         $maillist = array();
-        foreach ($this->bcc as $t) {
-            $maillist[] = $t->getDisplay($this->encoding,$this->system_encoding);
+        foreach ($bcc_data as $t) {
+            $maillist[] = $this->encodeMailData($t);
         }
         if (count($maillist) > 0) {
             $hvaluelist['Bcc'] = implode(",", $maillist);
         }
         //$hvaluelist["Message-Id"] = "<".md5(uniqid(microtime()))."@ドメイン">";
 
-        $body = str_replace(array("\r\n", "\r"), "\n", $this->body);
         $body = $this->encodeString($body);
         if (count($this->files) > 0) {
             $boundary = md5(uniqid(rand())); //バウンダリー文字（パートの境界）
@@ -656,6 +709,9 @@ class class_mail
             $body .= $body . "\n\n";
             $body .= "--" . $boundary . "\n";
             foreach ($this->files as $file) {
+                if(!$file->getData()){
+                    continue;
+                }
                 $body .= "Content-Type: " . $file->getMimeType() . "; name=\"" . $file->getFilename() . "\"\n";
                 $body .= "Content-Transfer-Encoding: base64\n";
                 $body .= "Content-Disposition: " . $file->getDisposition() . "; filename=\"" . $file->getFilename() . "\"\n\n";
@@ -683,7 +739,7 @@ class class_mail
             $header[] = ucfirst($key) . ": " . $val;
         }
         $header = implode("\n", $header);
-        $subject = mb_encode_mimeheader($this->encodeString($this->subject), $this->encoding, "B", "\n");
+        $subject = $this->encodeMiMeHeader($subject);
 
         // 送信（第1引数はSMTPのRCPT TO（エンベロープTO）にも使われる）
         //if (mb_send_mail($this->to, $subject, $body, $header)) {
