@@ -285,7 +285,10 @@ class TemplateVarParser{
             for($num+=2;$num<count($params);$num++){
                 $ss = $params[$num];
                 if($ss == '('){
-                    $skip ++;
+                    $vo = $this->_createNodePointer($params,$num);
+                    $o->addParam($vo);
+                    continue;
+                    //$skip ++;
                 }else if($ss == ')'){
                     $skip --;
                     if($skip < 0){
