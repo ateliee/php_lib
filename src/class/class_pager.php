@@ -177,12 +177,9 @@ class class_pager{
         $pager_num = 0;
         if(!is_null($prev)){
             if($this->pager_count < $this->page_count){
-                if(($this->page_count - 1) >= 0){
+                if(($this->page_count - 1) >= 0 && ($this->current > 0)){
                     $pager = '<li class="li_'.$pager_num.'"><a href="'.$this->getPagesUrl($this->current - 1).'">'.$prev.'</a></li>'.$pager;
                     $pager_num ++;
-                }else if($this->page_count > 0){
-                    //$pager = '<li class="li_'.$pager_num.'"><span>&lt;&lt;</span></li>'.$pager;
-                    //$pager_num ++;
                 }
             }
         }

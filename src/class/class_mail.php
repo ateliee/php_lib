@@ -832,6 +832,7 @@ class class_mail
      */
     public function sendSmtp()
     {
+        # TODO : 開発中未対応
         if($this->smtpauth()){
             $subject = $this->encodeSystemString($this->subject);
             $body = str_replace(array("\r\n", "\r"), "\n", $this->body);
