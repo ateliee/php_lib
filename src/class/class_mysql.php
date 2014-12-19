@@ -315,8 +315,11 @@ class class_mysql_column extends class_mysql_column_obj{
         }else{
             $attr[] = "NOT NULL";
         }
+        if($this->autoincrement){
+            $attr[] = "AUTO_INCREMENT";
+        }
         if($create && $this->autoincrement){
-            $attr[] = "AUTO_INCREMENT PRIMARY KEY";
+            $attr[] = "PRIMARY KEY";
         }
         if($this->nullable && is_null($this->default)) {
             $attr[] = "DEFAULT NULL";
