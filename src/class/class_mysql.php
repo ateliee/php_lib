@@ -91,7 +91,7 @@ class class_mysql_column extends class_mysql_column_obj{
                 if (isset($arr["AUTO_INCREMENT"]) && $arr["AUTO_INCREMENT"]) {
                     $this->autoincrement = true;
                 }
-                if (isset($arr["DEFAULT"])) {
+                if (array_key_exists("DEFAULT",$arr)) {
                     $this->default = $arr["DEFAULT"];
                 }
                 if (isset($arr["COMMENT"])) {
@@ -318,9 +318,9 @@ class class_mysql_column extends class_mysql_column_obj{
         if($create && $this->autoincrement){
             $attr[] = "AUTO_INCREMENT PRIMARY KEY";
         }
-        if(is_null($this->default) && $this->nullable) {
+        if($this->nullable && is_null($this->default)) {
             $attr[] = "DEFAULT NULL";
-        }else if($this->default != ""){
+        }else if(!is_null($this->default)){
             $attr[] = "DEFAULT ".$this->default;
         }
         if($create && $this->unique){
