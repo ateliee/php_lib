@@ -1,11 +1,1011 @@
 <?php
-//============================================
-// class_mysql.php
-//============================================
 
 define("MYSQL_MODE_MYSQL",1);
 define("MYSQL_MODE_MYSQLI",2);
 define("MYSQL_MODE_PDO",3);
+
+class class_mysql_column_obj{
+    private $table;
+
+    function __construct()
+    {
+        $this->table = null;
+    }
+
+
+    /**
+     * @param class_mysql_table $table
+     */
+    public function setTable(class_mysql_table $table)
+    {
+        $this->table = $table;
+    }
+
+    /**
+     * @return class_mysql_table|null
+     */
+    public function getTable()
+    {
+        return $this->table;
+    }
+}
+
+/**
+ * Class class_mysql_column
+ */
+class class_mysql_column extends class_mysql_column_obj{
+    static $CHAR = 'CHAR';
+    static $VARCHAR = 'VARCHAR';
+    static $TEXT = 'TEXT';
+    static $DATE = 'DATE';
+    static $DATETIME = 'DATETIME';
+    static $INT = 'INT';
+    static $BIGINT = 'BIGINT';
+    static $TINYINT = 'TINYINT';
+    static $SMALLINT = 'SMALLINT';
+    static $MEDIUMINT = 'MEDIUMINT';
+    static $FLOAT = 'FLOAT';
+    static $DOUBLE = 'DOUBLE';
+    static $LONG = 'LONG';
+
+    private $type;
+    private $name;
+    private $length;
+    private $unsigned;
+    private $default;
+    private $nullable;
+    private $autoincrement;
+    private $unique;
+    private $comment;
+
+    function __construct()
+    {
+        parent::__construct();
+        $this->name = null;
+        $this->type = null;
+        $this->length = 0;
+        $this->unsigned = false;
+        $this->default = null;
+        $this->nullable = false;
+        $this->autoincrement = false;
+        $this->unique = false;
+        $this->comment = null;
+
+        $paramaters = func_get_args();
+        if(func_num_args() >= 2) {
+            $this->name = $paramaters[0];
+            $arr = $paramaters[1];
+            if (is_array($arr)) {
+                $this->type = strtoupper($arr["TYPE"]);
+                if (isset($arr["SIZE"]) && ($arr["SIZE"] > 0)) {
+                    $this->length = intval($arr["SIZE"]);
+                }
+                if (isset($arr["ATTRIBTE"])) {
+                    if (preg_match('/UNSIGNED/i', $arr['ATTRIBTE'])) {
+                        $this->unsigned = true;
+                    }
+                }
+                if (isset($arr["NULL"]) && $arr["NULL"]) {
+                    $this->nullable = true;
+                }
+                if (isset($arr["AUTO_INCREMENT"]) && $arr["AUTO_INCREMENT"]) {
+                    $this->autoincrement = true;
+                }
+                if (isset($arr["DEFAULT"])) {
+                    $this->default = $arr["DEFAULT"];
+                }
+                if (isset($arr["COMMENT"])) {
+                    $this->comment = $arr["COMMENT"];
+                }
+
+                if (isset($arr["UNIQUE"]) && $arr["UNIQUE"] == true) {
+                    $this->unique = true;
+                }
+            } else {
+                $this->type = strtoupper($paramaters[1]);
+                if (func_num_args() >= 3) {
+                    if (isset($paramaters[2])) {
+                        $this->length = $paramaters[2];
+                    }
+                }
+            }
+        }else if(func_num_args() >= 1) {
+            $this->name = $paramaters[0];
+        }
+    }
+
+    /**
+     * @param $info
+     * @return bool
+     */
+    public function setDBColumn($info)
+    {
+        $this->name = null;
+        $this->type = null;
+        $this->length = 0;
+        $this->unsigned = false;
+        $this->nullable = false;
+        $this->autoincrement = false;
+        $this->default = null;
+        $this->unique = false;
+
+        $success = false;
+        foreach($info as $key => $val){
+            $key = strtolower($key);
+            if($key == 'field') {
+                $this->name = $val;
+                $success = true;
+            }else if($key == 'type'){
+                $type = $val;
+                if(preg_match('/^(.+) (.+)$/',$val,$types)){
+                    $type = $types[1];
+                    if(preg_match('/unsigned/i',$types[2])){
+                        $this->unsigned = true;
+                    }
+                }
+                if(preg_match('/^(.+)\(([0-9]+)\)$/',$type,$mt)){
+                    $this->type = strtoupper($mt[1]);
+                    $this->length = intval($mt[2]);
+                }else{
+                    $this->type = strtoupper($type);
+                }
+            }else if($key == 'null'){
+                if(strtolower($val) == 'yes'){
+                    $this->nullable = true;
+                }
+            }else if($key == 'key'){
+                if(preg_match('/PRI/i',$val)) {
+                    $this->autoincrement = true;
+                }else if(preg_match('/UNI/i',$val)){
+                    $this->unique = true;
+                }
+            }else if($key == 'default'){
+                $this->default = $val;
+            }else if($key == 'extra'){
+                if(preg_match('/atuo_increment/',$val)){
+                    $this->autoincrement = true;
+                }
+            }else if($key == 'comment'){
+                $this->comment = $val;
+            }
+        }
+        return $success;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setFieldType($type,$length=0)
+    {
+        $this->type = strtoupper($type);
+        $this->length = $length;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLength()
+    {
+        return $this->length;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUnsigned()
+    {
+        return $this->unsigned;
+    }
+
+    /**
+     * @param $unsigned
+     */
+    public function setUnsigned($unsigned)
+    {
+        $this->unsigned = $unsigned;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isUnique()
+    {
+        return $this->unique;
+    }
+
+    /**
+     * @param boolean $unique
+     */
+    public function setUnique($unique)
+    {
+        $this->unique = $unique;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDefault()
+    {
+        return $this->default;
+    }
+
+    /**
+     * @param mixed $default
+     */
+    public function setDefault($default)
+    {
+        $this->default = $default;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNullable()
+    {
+        return $this->nullable;
+    }
+
+    /**
+     * @param mixed $nullable
+     */
+    public function setNullable($nullable)
+    {
+        $this->nullable = $nullable;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAutoincrement()
+    {
+        return $this->autoincrement;
+    }
+
+    /**
+     * @param mixed $autoincrement
+     */
+    public function setAutoincrement($autoincrement)
+    {
+        $this->autoincrement = $autoincrement;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+    /**
+     * @param mixed $comment
+     */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
+    }
+
+    /**
+     * @return string
+     */
+    public function infoSQL($create=false)
+    {
+        $attr = array();
+        if($this->unsigned){
+            $attr[] = 'UNSIGNED';
+        }
+        if($this->nullable){
+            $attr[] = "NULL";
+        }else{
+            $attr[] = "NOT NULL";
+        }
+        if($create && $this->autoincrement){
+            $attr[] = "AUTO_INCREMENT PRIMARY KEY";
+        }
+        if(is_null($this->default) && $this->nullable) {
+            $attr[] = "DEFAULT NULL";
+        }else if($this->default != ""){
+            $attr[] = "DEFAULT ".$this->default;
+        }
+        if($create && $this->unique){
+            $attr[] = "UNIQUE";
+        }
+        if($this->comment){
+            $attr[] = 'COMMENT '."'".$this->comment."'";
+        }
+        $sql = '`'.$this->name.'` ';
+        if($this->length > 0){
+            $sql .= $this->type.' ('.$this->length.') ';
+        }else{
+            $sql .= $this->type.' ';
+        }
+        $sql .= implode(" ",$attr);
+        return $sql;
+    }
+
+    /**
+     * @param string $action
+     * @return string
+     */
+    public function alterSQL($action="ADD")
+    {
+        $sql = 'ALTER TABLE `'.$this->getTable()->getName().'` '.$action.' '.$this->infoSQL($action == 'ADD');
+        return $sql;
+    }
+
+    /**
+     * @return string
+     */
+    public function addPrimaryKeySQL()
+    {
+        return 'ALTER TABLE `'.$this->getTable()->getName().'` ADD PRIMARY KEY('.$this->getName().')';
+    }
+
+    /**
+     * @return string
+     */
+    public function dropPrimaryKeySQL()
+    {
+        return 'ALTER TABLE `'.$this->getTable()->getName().'` DROP PRIMARY KEY';
+    }
+
+    /**
+     * @return string
+     */
+    public function addUniqueSQL()
+    {
+        return 'ALTER TABLE `'.$this->getTable()->getName().'` ADD UNIQUE ('.$this->getName().')';
+    }
+
+    /**
+     * @return string
+     */
+    public function dropUniqueSQL()
+    {
+        return 'ALTER TABLE `'.$this->getTable()->getName().'` DROP INDEX '.$this->getName();
+    }
+
+    /**
+     * @param $val
+     * @return mixed|string
+     */
+    public function rangeValue($val)
+    {
+        $type = strtoupper($this->type);
+        switch($type){
+            // 文字列変換
+            case self::$CHAR:
+            case self::$VARCHAR:
+            case self::$TEXT:
+                if($this->length > 0){
+                    $val = mb_substr($val,0,$this->length);
+                }
+                break;
+            case self::$DATE:
+            case self::$DATETIME:
+                if($val == ""){
+                    $val = null;
+                }
+                break;
+            // 数値変換
+            case self::$TINYINT:
+            case self::$SMALLINT:
+            case self::$MEDIUMINT:
+            case self::$INT:
+            case self::$BIGINT:
+            case self::$FLOAT:
+            case self::$DOUBLE:
+            case self::$LONG:
+                $min = 0;
+                $max = 0;
+                if($type == self::$TINYINT) {
+                    $min = -128;
+                    $max = 127;
+                }else if($type == self::$SMALLINT){
+                    $min = -32768;
+                    $max = 32767;
+                }else if($type == self::$MEDIUMINT){
+                    $min = -8388608;
+                    $max = 8388607;
+                }else if($type == self::$INT){
+                    $min = -2147483648;
+                    $max = 2147483647;
+                }else if($type == self::$BIGINT){
+                    $min = -9223372036854775808;
+                    $max = 9223372036854775807;
+                }
+                if($min < 0 || $max > 0){
+                    if($this->unsigned){
+                        $max = ($max + ($min * -1));
+                        $min = 0;
+                    }
+                    $val = max($val,$min);
+                    $val = min($val,$max);
+                }
+                break;
+        }
+        return $val;
+    }
+
+    /**
+     * @param $type
+     * @return bool
+     */
+    static function isStringType($type)
+    {
+        $type = strtoupper($type);
+        switch($type){
+            // 文字列変換
+            case self::$CHAR:
+            case self::$VARCHAR:
+            case self::$TEXT:
+            case self::$DATE:
+            case self::$DATETIME:
+                return true;
+                break;
+            // 数値変換
+            case self::$TINYINT:
+            case self::$SMALLINT:
+            case self::$MEDIUMINT:
+            case self::$INT:
+            case self::$BIGINT:
+            case self::$FLOAT:
+            case self::$DOUBLE:
+            case self::$LONG:
+                return false;
+                break;
+        }
+        return false;
+    }
+
+    /**
+     * DB用に値を変換する
+     *
+     * @param $str
+     * @param null $default
+     * @return string
+     */
+    static function toStringSQL($str,$default=NULL)
+    {
+        if(isset($str)){
+            return "'".$str."'";
+        }
+        if(is_null($default) == false){
+            return "'".$default."'";
+        }
+        return "NULL";
+    }
+
+    /**
+     * DB用に値を変換する
+     *
+     * @param $str
+     * @param null $default
+     * @return int|string
+     */
+    static function toNumberSQL($str,$default=NULL)
+    {
+        if(isset($str)){
+            if(is_numeric($str)){
+                return $str;
+            }
+        }
+        if(is_null($default) == false){
+            return intval($default);
+        }
+        return "NULL";
+    }
+
+
+    /**
+     * @param class_mysql_column $column
+     * @return bool
+     */
+    public function isEnqueColumn(class_mysql_column $column)
+    {
+        if($this->name != $column->getName()) {
+            return false;
+        }else if($this->type != $column->getType()){
+            return false;
+        }else if($this->isStringType($this->type) && $this->length != $column->getLength()){
+            return false;
+        }else if($this->unique != $column->isUnique()){
+            return false;
+        }else if($this->default != $column->getDefault()){
+            return false;
+        }else if($this->nullable != $column->getNullable()){
+            return false;
+        }else if($this->autoincrement != $column->getAutoincrement()){
+            return false;
+        }else if($this->comment != $column->getComment()){
+            return false;
+        }
+        return true;
+    }
+}
+
+/**
+ * Class class_mysql_index
+ */
+class class_mysql_index extends class_mysql_column_obj
+{
+    private $unique;
+    private $name;
+    private $columns;
+
+    function __construct($name)
+    {
+        $this->unique = false;
+        $this->name = null;
+        $this->columns = array();
+        if(is_array($name)){
+            $this->setDBColumn($name);
+        }else{
+            $this->name = $name;
+        }
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isUnique()
+    {
+        return $this->unique;
+    }
+
+    /**
+     * @param boolean $unique
+     */
+    public function setUnique($unique)
+    {
+        $this->unique = $unique;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param class_mysql_column $column
+     */
+    public function addColumn(class_mysql_column $column)
+    {
+        $this->columns[] = $column;
+    }
+
+    /**
+     * @return string
+     */
+    public function alterSQL($action='ADD')
+    {
+        // ALTER TABLE版
+        $sql = "ALTER TABLE `".$this->getTable()->getName()."` ".$action." ".$this->infoSQL();
+        return $sql;
+    }
+
+    /**
+     * @param $name
+     * @param $columns
+     * @return string
+     * @throws Exception
+     */
+    static function alterMutableSQL($name,$columns)
+    {
+        $columns_sql = array();
+        for($i=1;$i<count($columns);$i++){
+            $column = $columns[$i];
+            if($column instanceof class_mysql_index){
+                $columns_sql[] = 'ADD '.$column->infoSQL();
+            }else{
+                throw new Exception('Not support params must be class_mysql_index');
+            }
+        }
+        return "ALTER TABLE `".$name."` ".implode(",\n",$columns_sql)."\n";
+    }
+
+    /**
+     * @return string
+     */
+    public function infoSQL()
+    {
+        $val = array();
+        foreach($this->columns as $field_val){
+            $val[] = "`".$field_val->getName()."`";
+        }
+        return "INDEX `".$this->name."`(".implode(",",$val).") ";
+    }
+
+    /**
+     * @param $index
+     */
+    public function setDBColumn($index)
+    {
+        $this->unique = false;
+        $this->name = null;
+        $this->columns = array();
+        foreach($index as $k => $v){
+            $k = strtolower($k);
+            if($k == 'key_name') {
+                $this->name = $v;
+            }else if($k == 'non_unique'){
+                $this->unique = ($v != 0);
+            }else if($k == 'column_name'){
+                $this->addColumn(new class_mysql_column($v));
+            }
+        }
+    }
+}
+
+/**
+ * Class class_mysql_index
+ */
+class class_mysql_foreignkey extends class_mysql_column_obj
+{
+    static $ON_RESTRICT = 'RESTRICT';
+    static $ON_CASCADE = 'CASCADE';
+    static $ON_SETNULL = 'SET NULL';
+    static $ON_NOACTION = 'NO ACTION';
+
+    private $name;
+    private $column;
+    private $target;
+    private $onupdate;
+    private $ondelete;
+
+    function __construct(class_mysql_column $column,class_mysql_column $target=null)
+    {
+        $this->name = null;
+        $this->column = $column;
+        $this->target = $target;
+        $this->onupdate = null;
+        $this->ondelete = null;
+    }
+
+    /**
+     * @param class_mysql_column $target
+     */
+    public function setTarget(class_mysql_column $target)
+    {
+        $this->target = $target;
+    }
+
+
+    /**
+     * @return null
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param null $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOnupdate()
+    {
+        return $this->onupdate;
+    }
+
+    /**
+     * @param mixed $onupdate
+     */
+    public function setOnupdate($onupdate)
+    {
+        $this->onupdate = $onupdate;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOndelete()
+    {
+        return $this->ondelete;
+    }
+
+    /**
+     * @param mixed $ondelete
+     */
+    public function setOndelete($ondelete)
+    {
+        $this->ondelete = $ondelete;
+    }
+
+    /**
+     * @return string
+     */
+    public function alterSQL()
+    {
+        $sql = "ALTER TABLE `".$this->column->getTable()->getName()."` ADD ";
+        if($this->name){
+            $sql .= "CONSTRAINT ".$this->name." ";
+        }
+        $sql .= "FOREIGN KEY (`".$this->column->getName()."`) REFERENCES `".$this->target->getTable()->getName()."`(`".$this->target->getName()."`) ";
+        if($this->ondelete){
+            $sql .= "ON DELETE ".$this->ondelete." ";
+        }
+        if($this->onupdate){
+            $sql .= "ON UPDATE ".$this->onupdate." ";
+        }
+        return $sql;
+    }
+
+    /**
+     * @return string
+     */
+    public function dropSQL()
+    {
+        $sql = "ALTER TABLE `".$this->column->getTable()->getName()."` ";
+        $sql .= "DROP FOREIGN KEY ".$this->name." ";
+
+        return $sql;
+    }
+}
+
+/**
+ * Class class_mysql_table
+ */
+class class_mysql_table{
+    static $INNODB = 'INNODB';
+    static $MYISAM = 'MYISAM';
+
+    private $name;
+    private $engine;
+    private $columns;
+    private $indexs;
+    private $foreignkeys;
+    private $charaset;
+
+    function __construct($name,$engine=null,$charaset=null)
+    {
+        $this->name = $name;
+        $this->engine = $engine;
+        $this->columns = array();
+        $this->charaset = $charaset;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return null
+     */
+    public function getEngine()
+    {
+        return $this->engine;
+    }
+
+    /**
+     * @return null
+     */
+    public function getCharaset()
+    {
+        return $this->charaset;
+    }
+
+    /**
+     * @param class_mysql_column $column
+     * @return $this
+     */
+    public function addColumn(class_mysql_column $column)
+    {
+        $column->setTable($this);
+        $this->columns[] = $column;
+        return $this;
+    }
+
+    /**
+     * @param $num
+     * @return class_mysql_column
+     */
+    public function getColumn($num)
+    {
+        return $this->columns[$num];
+    }
+
+    /**
+     * @return int
+     */
+    public function getColumnNum()
+    {
+        return count($this->columns);
+    }
+
+    /**
+     * @param $name
+     * @return class_mysql_column
+     */
+    public function findColumn($name)
+    {
+        $column = null;
+        foreach($this->columns as $c){
+            if($c->getName() == $name){
+                $column = $c;
+                break;
+            }
+        }
+        return $column;
+    }
+
+    /**
+     * @param class_mysql_index $column
+     * @return $this
+     */
+    public function addIndex(class_mysql_index $index)
+    {
+        $index->setTable($this);
+        $this->indexs[] = $index;
+        return $this;
+    }
+
+    /**
+     * @param $num
+     * @return class_mysql_index
+     */
+    public function getIndex($num)
+    {
+        return $this->indexs[$num];
+    }
+
+    /**
+     * @return int
+     */
+    public function getIndexNum()
+    {
+        return count($this->indexs);
+    }
+
+    /**
+     * @param $name
+     * @return class_mysql_index
+     */
+    public function findIndex($name)
+    {
+        $index = null;
+        foreach($this->indexs as $c){
+            if($c->getName() == $name){
+                $index = $c;
+                break;
+            }
+        }
+        return $index;
+    }
+
+    /**
+     * @param class_mysql_foreignkey $foreignkeys
+     * @return $this
+     */
+    public function addForeignkey(class_mysql_foreignkey $foreignkeys)
+    {
+        $this->foreignkeys[] = $foreignkeys;
+        return $this;
+    }
+
+    /**
+     * @param $num
+     * @return mixed
+     */
+    public function getForeignkeys($num)
+    {
+        return $this->foreignkeys[$num];
+    }
+
+    /**
+     * @return int
+     */
+    public function getForeignkeysNum()
+    {
+        return count($this->foreignkeys);
+    }
+
+    /**
+     * @param $name
+     * @return class_mysql_foreignkey
+     */
+    public function findForeignkeys($name)
+    {
+        $index = null;
+        foreach($this->foreignkeys as $c){
+            if($c->getName() == $name){
+                $index = $c;
+                break;
+            }
+        }
+        return $index;
+    }
+
+    /**
+     * @param $ifexsist
+     */
+    public function createSQL($ifexist=false)
+    {
+        $sql = "CREATE TABLE ";
+        if($ifexist){
+            $sql .= 'IF NOT EXISTS ';
+        }
+        $sql .= '`'.$this->name.'` '."\n";
+        if(count($this->columns) > 0){
+            $columns = array();
+            foreach($this->columns as $field_key => $field_val){
+                $columns[] = $field_val->infoSQL(true);
+            }
+            $sql .= '('."\n".implode(",\n",$columns)."\n".')';
+
+            if($this->engine){
+                $sql .= ' ENGINE `'.$this->engine.'` ';
+            }
+            if($this->charaset){
+                $sql .= 'CHARACTER SET `'.$this->charaset.'` ';
+            }
+        }
+        return $sql;
+    }
+
+    /**
+     * @return string
+     */
+    public function dropSQL()
+    {
+        return 'DROP TABLE `'.$this->name.'` ';
+    }
+
+    /**
+     * @param $list
+     */
+    public function setDBColumns($columns)
+    {
+        $this->columns = array();
+        foreach($columns as $column){
+            $c = new class_mysql_column();
+            if($c->setDBColumn($column)){
+                $this->addColumn($c);
+            }else{
+                throw new Exception('un support DB Table Field.');
+            }
+        }
+    }
+    public function setDBIndexs($indexs)
+    {
+        $this->indexs = array();
+        foreach($indexs as $index){
+            $c = new class_mysql_index($index);
+            $this->addIndex($c);
+        }
+    }
+}
+
 /**
  * Class class_mysql_connect
  */
@@ -31,6 +1031,16 @@ class class_mysql_connect{
             $this->mysql_mode = MYSQL_MODE_MYSQLI;
         }
     }
+
+    /**
+     * @param $message
+     * @throws Exception
+     */
+    private function exception($message)
+    {
+        throw new Exception($message);
+    }
+
     // DB設定
     function setDBName($name){
         $this->dbName = $name;
@@ -374,187 +1384,247 @@ class class_mysql_connect{
         }
         return $str;
     }
-    //----------------------------------------
-    // テープル作成・削除
-    //----------------------------------------
-    // テーブル作成SQL文を作成
-    function createTableSQL($dbname,$fields=array(),$charaset="",$engine="InnoDB"){
-        $sql = "CREATE TABLE `".$dbname."` ";
-        if(is_array($fields) && count($fields) > 0){
-            $column = array();
-            foreach($fields as $field_key => $field_val){
-                $s = $this->createColumnSQL($field_key,$field_val);
-                if($s != ""){
-                    $column[] = $s."\n";
-                }
-            }
-            $fields_sql = '';
-            $fields_sql .= "("."\n";
-            $fields_sql .= implode(",",$column);
-            // インデックス
-            if(isset($fields["INDEX"])){
-                $p = array();
-                foreach($fields["INDEX"] as $index_name => $index_value){
-                    $p[] = "INDEX ".$index_name." ( '".$index_value."' )\n";
-                }
-                $fields_sql .= implode(',',$p);
-            }
-            /*
-            // プライマリキー
-            if($primary_key != ""){
-                  $fields_sql .= "PRIMARY KEY ( '".$primary_key."' )\n";
-            }
-            */
-            $fields_sql .= ") ";
 
-            $sql .= $fields_sql;
-            if($engine != ""){
-                $sql .= 'ENGINE `'.$engine.'` ';
+    /**
+     * @param $dbname
+     * @param array $fields
+     * @param string $charaset
+     * @param string $engine
+     * @return array
+     */
+    public function migrationTableSQL($dbname,$fields=array(),$charaset="",$engine="InnoDB")
+    {
+        $sqls = array();
+        // 現在のテーブル情報を取得
+        $sql = 'SHOW FULL COLUMNS FROM `'.$dbname.'`;';
+        // SQL
+        $this->query($sql,true,true);
+        if($this->numRows() > 0){
+            $list = array();
+            while($value = $this->fetchArray()){
+                $list[] = $value;
             }
-            if($charaset != ""){
-                $sql .= 'CHARACTER SET `'.$charaset.'` ';
+            // 現在のテーブル
+            $current_table = new class_mysql_table($dbname,$engine,$engine);
+            $current_table->setDBColumns($list);
+            // 新しいテーブル
+            $table = new class_mysql_table($dbname,$engine,$charaset);
+            foreach($fields as $key => $field){
+                $table->addColumn(new class_mysql_column($key,$field));
             }
+
+            for($i=0;$i<$table->getColumnNum();$i++){
+                $column = $table->getColumn($i);
+                if($c = $current_table->findColumn($column->getName())){
+                    if(!$column->isEnqueColumn($c)){
+                        if($column->getAutoincrement() != $c->getAutoincrement()){
+                            if($column->getAutoincrement()) {
+                                $sqls[] = $column->addPrimaryKeySQL();
+                            }else{
+                                $sqls[] = $column->dropPrimaryKeySQL();
+                            }
+                        }
+                        if($column->isUnique() != $c->isUnique()){
+                            if($column->isUnique()) {
+                                $sqls[] = $column->addUniqueSQL();
+                            }else{
+                                $sqls[] = $column->dropUniqueSQL();
+                            }
+                        }
+                        $sqls[] = $column->alterSQL('MODIFY');
+                    }
+                }else{
+                    $sqls[] = $column->alterSQL();
+                }
+            }
+        }else{
+            $sqls[] = $this->createTableSQL($dbname,$fields,$charaset,$engine);
         }
-        return $sql;
+        return $sqls;
     }
-    // References
-    function createReferencesSQL($dbname,$key_name,$field){
-        list($tn,$tv) = explode('.',$field['TARGET']);
-        $sql = "ALTER TABLE `".$dbname."` ADD ";
-        if(isset($field['CONSTRAINT'])){
-            $sql .= "CONSTRAINT ".$field['CONSTRAINT']." ";
+
+    /**
+     * テーブル作成SQL文を作成
+     *
+     * @param $dbname
+     * @param array $fields
+     * @param string $charaset
+     * @param string $engine
+     * @return string
+     */
+    public function createTableSQL($dbname,$fields=array(),$charaset="",$engine="InnoDB")
+    {
+        $table = new class_mysql_table($dbname,$engine,$charaset);
+        foreach($fields as $key => $field){
+            if(is_array($field)){
+                $table->addColumn(new class_mysql_column($key,$field));
+            }else{
+                $table->addColumn($field);
+            }
         }
-        $sql .= "FOREIGN KEY (`".$key_name."`) REFERENCES `".$tn."`(`".$tv."`) ";
+        return $table->createSQL();
+    }
+
+    /**
+     * References
+     *
+     * @param $dbname
+     * @param $key_name
+     * @param $field
+     * @return string
+     */
+    public function createReferencesSQL($dbname,$key_name,$field){
+        list($tn,$tv) = explode('.',$field['TARGET']);
+
+        $column = new class_mysql_column($key_name);
+        $column->setTable(new class_mysql_table($dbname));
+        $target = new class_mysql_column($tv);
+        $target->setTable(new class_mysql_table($tn));
+        $references = new class_mysql_foreignkey($column,$target);
+        if(isset($field['CONSTRAINT'])){
+            $references->setName($field['CONSTRAINT']);
+        }
         if(isset($field['DELETE'])){
-            $sql .= "ON DELETE ".$field['DELETE']." ";
+            $references->setOndelete($field['DELETE']);
         }
         if(isset($field['UPDATE'])){
-            $sql .= "ON UPDATE ".$field['UPDATE']." ";
+            $references->setOnupdate($field['UPDATE']);
         }
-
-        return $sql;
+        return $references->alterSQL();
     }
-    function deleteReferencesSQL($dbname,$key_name){
-        $sql = "ALTER TABLE `".$dbname."` ";
-        $sql .= "DROP FOREIGN KEY ".$key_name." ";
 
-        return $sql;
+    /**
+     * @param $dbname
+     * @param $key_name
+     * @return string
+     */
+    public function deleteReferencesSQL($dbname,$key_name){
+        $column = new class_mysql_column($key_name);
+        $column->setTable(new class_mysql_table($dbname));
+        $references = new class_mysql_foreignkey($column);
+
+        return $references->dropSQL();
     }
-    // INDEX作成
-    function createIndexSQL($dbname,$fields=array()){
-        /*// CREATE INDEX版
-        $sql = "";
-        if(is_array($fields) && count($fields) > 0){
-              foreach($fields as $field_key => $field_val){
-                    $val = array();
-                    foreach($field_val as $key => $v){
-                            $val[] = "`".$v."`";
-                    }
-                    $sql .= "CREATE INDEX `".$field_key."` ON `".$dbname."`(".implode(",",$val)."); \n";
-              }
-        }*/
-        // ALTER TABLE版
-        $sql = "ALTER TABLE `".$dbname."` ";
-        if(is_array($fields) && count($fields) > 0){
-            $i = 0;
-            $fields_count = count($fields);
+
+    /**
+     * @param $dbname
+     * @param array $fields
+     * @param string $charaset
+     * @param string $engine
+     * @return array
+     */
+    public function migrationReferencesSQL($dbname,$fields=array())
+    {
+        $sqls = array();
+        // TODO : migration References Key
+        return $sqls;
+    }
+
+    /**
+     * @param $dbname
+     * @param array $fields
+     * @param string $charaset
+     * @param string $engine
+     * @return array
+     */
+    public function migrationIndexSQL($dbname,$fields=array())
+    {
+        $sqls = array();
+        // 現在のテーブル情報を取得
+        $sql = 'SHOW INDEX FROM `'.$dbname.'`;';
+        // SQL
+        $this->query($sql,true,true);
+        if($this->numRows() > 0){
+            $list = array();
+            while($value = $this->fetchArray()){
+                $list[] = $value;
+            }
+
+            // 現在のテーブル
+            $current_table = new class_mysql_table($dbname);
+            $current_table->setDBIndexs($list);
+            // 新しいテーブル
+            $table = new class_mysql_table($dbname);
+
+            $index_columns = array();
             foreach($fields as $field_key => $field_val){
-                $val = array();
+                $index_column = new class_mysql_index($field_key);
                 foreach($field_val as $key => $v){
-                    $val[] = "`".$v."`";
+                    $index_column->addColumn(new class_mysql_column($v));
                 }
-                $sql .= "ADD INDEX `".$field_key."`(".implode(",",$val).") ";
-                $i ++;
-                if($i < $fields_count){
-                    $sql .= ",\n";
+                $table->addIndex($index_column);
+            }
+
+            for($i=0;$i<$table->getIndexNum();$i++){
+                $index = $table->getIndex($i);
+                if($c = $current_table->findIndex($index->getName())){
                 }else{
-                    $sql .= "\n";
+                    $sqls[] = $index->alterSQL();
                 }
             }
-        }
-        return $sql;
-
-        /*
-              $sql = "CREATE INDEX ".$dbname." ";
-              if(is_array($fields) && count($fields) > 0){
-                    $i = 0;
-                    $fields_count = count($fields);
-
-                    $fields_sql = '';
-                    $fields_sql .= "("."\n";
-                    foreach($fields as $field_key => $field_val){
-                          if(is_array($field_val)){
-                                if(is_int($field_val["SIZE"]) && $field_val["SIZE"] > 0){
-                                      $type = $field_val["TYPE"]."(".$field_val["SIZE"].")";
-                                }else{
-                                      $type = $field_val["TYPE"];
-                                }
-                                $attr = array();
-                                if(isset($field_val["NULL"]) && $field_val["NULL"]){
-                                      $attr[] = "NULL";
-                                }else{
-                                      $attr[] = "NOT NULL";
-                                }
-                                if(isset($field_val["AUTO_INCREMENT"]) && $field_val["AUTO_INCREMENT"]){
-                                      $attr[] = "AUTO_INCREMENT PRIMARY KEY";
-                                }
-                                if(isset($field_val["DEFAULT"]) && $field_val["DEFAULT"] != ""){
-                                      $attr[] = "DEFAULT ".$field_val["DEFAULT"];
-                                }
-                                if(isset($field_val["UNIQUE"]) && $field_val["UNIQUE"] == true){
-                                      $attr[] = "UNIQUE";
-                                }
-                                $fields_sql .= "`".$field_key."` ".$type." ".implode(" ",$attr);
-
-                                $i ++;
-                                // if($i < $fields_count || $primary_key != ""){
-                                if($i < $fields_count){
-                                      $fields_sql .= ",\n";
-                                }else{
-                                      $fields_sql .= "\n";
-                                }
-                          }
-                    }
-              }
-              */
-    }
-    // COLUMN作成
-    function createColumnSQL($name,$fields=array()){
-        if(is_int($fields["SIZE"]) && $fields["SIZE"] > 0){
-            $type = $fields["TYPE"]."(".$fields["SIZE"].")";
         }else{
-            $type = $fields["TYPE"];
+            $sqls[] = $this->createIndexSQL($dbname,$fields);
         }
-        $attr = array();
-        if(isset($fields["ATTRIBTE"]) && $fields["ATTRIBTE"] != ""){
-            $attr[] = $fields["ATTRIBTE"];
-        }
-        if(isset($fields["NULL"]) && $fields["NULL"]){
-            $attr[] = "NULL";
-        }else{
-            $attr[] = "NOT NULL";
-        }
-        if(isset($fields["AUTO_INCREMENT"]) && $fields["AUTO_INCREMENT"]){
-            $attr[] = "AUTO_INCREMENT PRIMARY KEY";
-        }
-        if(isset($fields["DEFAULT"])){
-            $attr[] = "DEFAULT ".(is_null($fields["DEFAULT"]) ? "NULL" : $fields["DEFAULT"]);
-        }
-        if(isset($fields["UNIQUE"]) && $fields["UNIQUE"] == true){
-            $attr[] = "UNIQUE";
-        }
-        $sql = "`".$name."` ".$type." ".implode(" ",$attr);
-        return $sql;
+        return $sqls;
     }
-    // テーブル削除SQL文を作成
-    function deleteTableSQL($dbname){
-        $sql = 'DROP TABLE `'.$dbname.'` ';
-        return $sql;
+
+    /**
+     * INDEX作成
+     *
+     * @param $dbname
+     * @param array $fields
+     * @return string
+     */
+    public function createIndexSQL($dbname,$fields=array())
+    {
+        $index_columns = array();
+        foreach($fields as $field_key => $field_val){
+            $index_column = new class_mysql_index($field_key);
+            foreach($field_val as $key => $v){
+                $index_column->addColumn(new class_mysql_column($v));
+            }
+            $index_columns[] = $index_column;
+        }
+        return class_mysql_index::alterMutableSQL($dbname,$index_columns);
     }
-    // カラム追加
-    function alterTableSQL($dbname,$name,$column=array(),$after=""){
-        $sql = 'ALTER TABLE `'.$dbname.'` ADD '.$this->createColumnSQL($name,$column)." ".$after;
-        return $sql;
+
+    /**
+     * COLUMN作成
+     *
+     * @param $name
+     * @param array $fields
+     * @return string
+     */
+    public function createColumnSQL($name,$fields=array()){
+        $column = new class_mysql_column($name,$fields);
+        return $column->infoSQL(true);
+    }
+
+    /**
+     * テーブル削除SQL文を作成
+     *
+     * @param $dbname
+     * @return string
+     */
+    public function deleteTableSQL($dbname){
+        $table = new class_mysql_table($dbname);
+        return $table->dropSQL();
+    }
+
+    /**
+     * カラム追加
+     *
+     * @param $dbname
+     * @param $name
+     * @param array $column
+     * @param string $after
+     * @return string
+     */
+    public function alterTableSQL($dbname,$name,$column=array(),$after=""){
+        $column = new class_mysql_column($name,$column);
+        $column->setTable(new class_mysql_table($dbname));
+
+        return $column->alterSQL().(($after != '') ? ' '.$after : '');
     }
     //----------------------------------------
     // SQL作成
@@ -645,31 +1715,31 @@ class class_mysql_connect{
         }
         //return addslashes($str);
     }
-    // DB用に値を変換する
-    function toStringSQL($str,$default=NULL){
+
+    /**
+     * DB用に値を変換する
+     *
+     * @param $str
+     * @param null $default
+     * @return string
+     */
+    public function toStringSQL($str,$default=NULL){
         if(isset($str)){
-            //if($html){
-            //      $str = htmlspecialchars($str);
-            //}
-            //$str = addslashes($str);
             $str = $this->escapeSQL($str);
-            return "'".$str."'";
+            return class_mysql_column::toStringSQL($str,$default);
         }
-        if(is_null($default) == false){
-            return "'".$default."'";
-        }
-        return "NULL";
+        return class_mysql_column::toStringSQL($str,$default);
     }
-    function toNumberSQL($str,$default=NULL){
-        if(isset($str)){
-            if(is_numeric($str)){
-                return $str;
-            }
-        }
-        if(is_null($default) == false){
-            return intval($default);
-        }
-        return "NULL";
+
+    /**
+     * DB用に値を変換する
+     *
+     * @param $str
+     * @param null $default
+     * @return int|string
+     */
+    public function toNumberSQL($str,$default=NULL){
+        return class_mysql_column::toNumberSQL($str,$default);
     }
 
     /**
@@ -680,69 +1750,19 @@ class class_mysql_connect{
      * @param bool $unsigned
      * @return int|string
      */
-    function toSqlValueSQL($val,$type,$default=NULL,$length=0,$unsigned=false){
-        $type = strtoupper($type);
-        switch($type){
-            // 文字列変換
-            case 'CHAR':
-            case 'VARCHAR':
-            case 'TEXT':
-                if($length > 0){
-                    $val = mb_substr($val,0,$length);
-                }
-                $val = $this->toStringSQL($val,$default);
-                break;
-            case 'DATE':
-            case 'DATETIME':
-                if(is_null($default)){
-                    if($val == "" || is_null($val)){
-                        return "NULL";
-                    }
-                }
-                $val = $this->toStringSQL($val,$default);
-                break;
-            // 数値変換
-            case 'TINYINT':
-            case 'SMALLINT':
-            case 'MEDIUMINT':
-            case 'INT':
-            case 'BIGINT':
-            case 'FLOAT':
-            case 'DOUBLE':
-            case 'LONG':
-                $min = 0;
-                $max = 0;
-                if($type == 'TINYINT') {
-                    $min = -128;
-                    $max = 127;
-                }else if($type == 'SMALLINT'){
-                    $min = -32768;
-                    $max = 32767;
-                }else if($type == 'MEDIUMINT'){
-                    $min = -8388608;
-                    $max = 8388607;
-                }else if($type == 'INT'){
-                    $min = -2147483648;
-                    $max = 2147483647;
-                }else if($type == 'BIGINT'){
-                    $min = -9223372036854775808;
-                    $max = 9223372036854775807;
-                }
-                if($min < 0 || $max > 0){
-                    if($unsigned){
-                        $max = ($max + ($min * -1));
-                        $min = 0;
-                    }
-                    $val = max($val,$min);
-                    $val = min($val,$max);
-                }
-                /*if(isset($default) == false){
-                      $default = "0";
-                }*/
-                $val = $this->toNumberSQL($val,$default);
-                break;
+    public function toSqlValueSQL($val,$type,$default=NULL,$length=0,$unsigned=false)
+    {
+        $column = new class_mysql_column('');
+        $column->setFieldType($type,$length);
+        $column->setUnsigned($unsigned);
+        $column->setDefault($default);
+
+        $val = $column->rangeValue($val);
+
+        if(class_mysql_column::isStringType($column->getType())){
+            return $this->toStringSQL($val,$column->getDefault());
         }
-        return $val;
+        return $this->toNumberSQL($val,$column->getDefault());
     }
 
     /**
@@ -750,7 +1770,7 @@ class class_mysql_connect{
      * @param $tablevalue
      * @return mixed
      */
-    function toSqlValueListSQL($valuelist,$tablevalue){
+    public function toSqlValueListSQL($valuelist,$tablevalue){
         foreach($valuelist as $key => $val){
             //if(in_array($tkey,$valuelist)){
             $tv = $tablevalue[$key];
@@ -767,7 +1787,12 @@ class class_mysql_connect{
         return $valuelist;
     }
 }
-// マルチDBクラス
+
+/**
+ * マルチDBクラス
+ *
+ * Class class_mysql
+ */
 class class_mysql{
     var     $db;
     var     $current;
@@ -1069,6 +2094,18 @@ class class_mysql{
     // カラム追加
     function alterTableSQL($dbname,$name,$column=array(),$after=""){
         return $this->db[$this->current]->alterTableSQL($dbname,$name,$column,$after);
+    }
+    // マイグレーション
+    function migrationTableSQL($dbname,$fields=array(),$charaset="",$engine="InnoDB"){
+        return $this->db[$this->current]->migrationTableSQL($dbname,$fields,$charaset,$engine);
+    }
+    // マイグレーション
+    function migrationIndexSQL($dbname,$fields=array()){
+        return $this->db[$this->current]->migrationIndexSQL($dbname,$fields);
+    }
+    // マイグレーション
+    function migrationReferencesSQL($dbname,$key_name,$fields){
+        return $this->db[$this->current]->migrationReferencesSQL($dbname,$key_name,$fields);
     }
     //----------------------------------------
     // SQL作成
