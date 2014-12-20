@@ -134,10 +134,10 @@ class TemplateVarParser{
                 $tmp = '';
             }else if(in_array($s,array("[","]"))){
                 if($tmp != ""){
-                    $tmp .= $s;
-                }else{
-                    $params[] = $s;
+                    $params[] = $tmp;
+                    $tmp = "";
                 }
+                $params[] = $s;
             }else if(in_array($s,array("(",")",",",":"))){
                 if($tmp != ""){
                     $params[] = $tmp;
@@ -222,7 +222,7 @@ class TemplateVarParser{
                 }
             }
             if(!$success){
-                $this->error('Parse Error '.$this->original_str);
+                $this->error('Parse Error VarList '.$this->original_str);
             }
             return $o;
             // array
@@ -262,7 +262,7 @@ class TemplateVarParser{
                                 break;
                             }
                         }else{
-                            $this->error('Parse Error '.$this->original_str);
+                            $this->error('Parse Error Array '.$this->original_str);
                         }
                     }else{
                         $o->addParam($p1);
@@ -270,7 +270,7 @@ class TemplateVarParser{
                 }
             }
             if(!$success){
-                $this->error('Parse Error '.$this->original_str);
+                $this->error('Parse Error Array '.$this->original_str);
             }
             return $o;
         }else if(in_array($s,array('===','!=','==','<=','>=','<','>','-','+','*','/','%','!','||','&&'))){
