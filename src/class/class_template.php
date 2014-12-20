@@ -207,9 +207,7 @@ class TemplateVarParser{
             $skip = 0;
             for($num+=1;$num<count($params);$num++){
                 $ss = $params[$num];
-                if($ss == '(') {
-                    $skip ++;
-                }else if($ss == ')'){
+                if($ss == ')'){
                     $skip --;
                     if($skip < 0){
                         if(count($o->getParams()) > 0){
