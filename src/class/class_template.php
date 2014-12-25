@@ -997,7 +997,7 @@ class class_template {
         $result = array();
         foreach($node->getParams() as $key => $p){
             $key = $this->evaString($key);
-            $result[$key] = $this->convertTemplateVar($p,true);
+            $result[$key] = $this->convertTemplateVar($p,false);
         }
         return $result;
     }
@@ -1075,6 +1075,9 @@ class class_template {
                     break;
                 case 'is_string':
                     $result = is_string($params[0]);
+                    break;
+                case 'in_array':
+                    $result = in_array($params[0],$params[1]);
                     break;
                 case 'boolval':
                     $result = boolval($params[0]);
