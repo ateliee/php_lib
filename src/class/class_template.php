@@ -914,6 +914,64 @@ class class_template {
     }
 
     /**
+     * @param $str
+     * @param $variables
+     * @param bool $set_output
+     * @return null
+     */
+    private function getStringVariable($str,&$variables,$set_output=true)
+    {
+        // , explode
+        $vlist = $this->explodeWrap(".","[","]", $str);
+        $tmp_output = null;
+        foreach ($vlist as $v) {
+            // array inside
+            if (preg_match("/^([_a-zA-Z0-9]+)(\[(.+)\])?$/", $v, $m)) {
+                $key = $m[1];
+                if (isset($result)) {
+                    if(is_object($result)) {
+                        $result = $result->$key;
+                    }else if (!array_key_exists($key, $result)) {
+                        $this->error("template : not found [" . $str . "] value;");
+                        $result = NULL;
+                    } else {
+                        //$tmp_output[$key] = (is_array($value[$key])) ? array() : true;
+                        if($set_output){
+                            if(!isset($tmp_output[$key])){
+                                if(!is_array($tmp_output)){
+                                    $tmp_output = array();
+                                }
+                                $tmp_output[$key] = (is_array($result[$key])) ? array() : true;
+                            }
+                            $tmp_output = &$tmp_output[$key];
+                        }
+                        $result = $result[$key];
+                    }
+                } else {
+                    if (array_key_exists($key,$variables)) {
+                        $result = $variables[$key];
+                    }else{
+                        $this->error("template : not found value ".$str." in [" . $key . "] value;");
+                    }
+                    if(isset($variables[$key]) && $set_output){
+                        if(!isset($this->outputVars[$key])){
+                            $this->outputVars[$key] = (is_array($variables[$key])) ? array() : true;
+                        }
+                        $tmp_output = &$this->outputVars[$key];
+                    }
+                }
+                if (isset($m[3])) {
+                    $key = $this->evaString($m[3]);
+                    $result = $result[$key];
+                }
+            }else{
+                $this->error('not found format '.$str.'.');
+            }
+        }
+        return $result;
+    }
+
+    /**
      * @param TemplateVarNode $node
      */
     private function convertNodeToVar(TemplateVarNode $node,&$variables,$set_output=true)
@@ -925,53 +983,7 @@ class class_template {
             $result = (string)$matchs[1];
             // array
         } elseif (preg_match("/^\\\$([\[\]_a-zA-Z0-9\.\\\$]+)$/", $node->getName(), $matchs)) {
-            // , explode
-            $vlist = $this->explodeWrap(".","[","]", $matchs[1]);
-            $tmp_output = null;
-            foreach ($vlist as $v) {
-                // array inside
-                if (preg_match("/^([_a-zA-Z0-9]+)(\[(.+)\])?$/", $v, $m)) {
-                    $key = $m[1];
-                    if (isset($result)) {
-                        if(is_object($result)) {
-                            $result = $result->$key;
-                        }else if (!array_key_exists($key, $result)) {
-                            $this->error("template : not found [" . $matchs[1] . "] value;");
-                            $result = NULL;
-                        } else {
-                            //$tmp_output[$key] = (is_array($value[$key])) ? array() : true;
-                            if($set_output){
-                                if(!isset($tmp_output[$key])){
-                                    if(!is_array($tmp_output)){
-                                        $tmp_output = array();
-                                    }
-                                    $tmp_output[$key] = (is_array($result[$key])) ? array() : true;
-                                }
-                                $tmp_output = &$tmp_output[$key];
-                            }
-                            $result = $result[$key];
-                        }
-                    } else {
-                        if (array_key_exists($key,$variables)) {
-                            $result = $variables[$key];
-                        }else{
-                            $this->error("template : not found value ".$node->getName()." in [" . $key . "] value;");
-                        }
-                        if(isset($variables[$key]) && $set_output){
-                            if(!isset($this->outputVars[$key])){
-                                $this->outputVars[$key] = (is_array($variables[$key])) ? array() : true;
-                            }
-                            $tmp_output = &$this->outputVars[$key];
-                        }
-                    }
-                    if (isset($m[3])) {
-                        $key = $this->evaString($m[3]);
-                        $result = $result[$key];
-                    }
-                }else{
-                    $this->error('not found format '.$node->getName().'.');
-                }
-            }
+            $result = $this->getStringVariable($matchs[1],$variables,$set_output);
         } elseif (is_numeric($node->getName())) {
             $result = intval($node->getName());
         } elseif (strtoupper($node->getName()) == "TRUE") {
@@ -1048,7 +1060,23 @@ class class_template {
                 $error = $e;
             }
         }
-        if(isset(self::$Functions[$node->getName()])){
+        // if object
+        if (preg_match("/^\\\$([\[\]_a-zA-Z0-9\.\\\$]+)$/", $node->getName(), $matchs)) {
+            $vlist = explode('.',$matchs[1]);
+            if(count($vlist) > 1){
+                $str = array_slice($vlist,0,-1);
+                $func = $vlist[count($vlist) - 1];
+                $obj = $this->getStringVariable(implode('.',$str),$this->Vars,false);
+                if(is_object($obj)){
+                    $func = 'get'.ucfirst($func);
+                    $result = call_user_func_array(array($obj,$func),$params);
+                }else{
+                    $this->error('not found object function '.$node->getName());
+                }
+            }else{
+                $this->error('parse Error function '.$node->getName());
+            }
+        }else if(isset(self::$Functions[$node->getName()])){
             if($error){
                 throw $error;
             }
