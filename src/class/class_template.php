@@ -113,6 +113,7 @@ class TemplateVarParser{
         // string to convert
         $tmp = "";
         $str_length = mb_strlen($str, $this->encoding);
+        $wrap_count = 0;
         for($i = 0; $i < $str_length; $i++){
             $s = mb_substr($str,$i,1,$this->encoding);
             if(in_array($s,array("'","\""))){
@@ -132,12 +133,22 @@ class TemplateVarParser{
                 }
                 $params[] = $tmp;
                 $tmp = '';
-            }else if($tmp == "" && in_array($s,array("[","]"))){
-                if($tmp != ""){
-                    $params[] = $tmp;
-                    $tmp = "";
+            }else if(in_array($s,array("[","]"))){
+                if(($tmp == '') && ($s == '[')){
+                    $wrap_count ++;
                 }
-                $params[] = $s;
+                if($wrap_count <= 0){
+                    $tmp .= $s;
+                }else{
+                    if($tmp != ""){
+                        $params[] = $tmp;
+                        $tmp = "";
+                    }
+                    $params[] = $s;
+                    if($s == ']'){
+                        $wrap_count --;
+                    }
+                }
             }else if(in_array($s,array("(",")",",",":"))){
                 if($tmp != ""){
                     $params[] = $tmp;
