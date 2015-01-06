@@ -155,7 +155,7 @@ class class_mysql_column extends class_mysql_column_obj{
                 }
             }else if($key == 'key'){
                 if(preg_match('/PRI/i',$val)) {
-                    $this->autoincrement = true;
+                    //$this->autoincrement = true;
                 }else if(preg_match('/UNI/i',$val)){
                     $this->unique = true;
                 }
@@ -1409,6 +1409,22 @@ class class_mysql_connect{
             // 現在のテーブル
             $current_table = new class_mysql_table($dbname,$engine,$charaset);
             $current_table->setDBColumns($list);
+
+            // 現在のテーブル情報を取得
+            $sql = 'SHOW INDEX FROM `'.$dbname.'`;';
+            // SQL
+            if($this->query($sql,true,false) && $this->numRows() > 0){
+                while($value = $this->fetchArray()){
+                    if($c = $current_table->findColumn($value['Column_name'])){
+                        if($value['Key_name'] == 'PRIMARY') {
+                            $c->setAutoincrement(true);
+                        }else if($value['Non_unique'] == 0){
+                            $c->setUnique(true);
+                        }
+                    }
+                }
+            }
+
             // 新しいテーブル
             $table = new class_mysql_table($dbname,$engine,$charaset);
             foreach($fields as $key => $field){
@@ -1535,7 +1551,7 @@ class class_mysql_connect{
         // 現在のテーブル情報を取得
         $sql = 'SHOW INDEX FROM `'.$dbname.'`;';
         // SQL
-        $this->query($sql,true,true);
+        $this->query($sql,true,false);
         if($this->numRows() > 0){
             $list = array();
             while($value = $this->fetchArray()){
