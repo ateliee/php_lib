@@ -1401,8 +1401,7 @@ class class_mysql_connect{
         // 現在のテーブル情報を取得
         $sql = 'SHOW FULL COLUMNS FROM `'.$dbname.'`;';
         // SQL
-        $this->query($sql,true,true);
-        if($this->numRows() > 0){
+        if($this->query($sql,true,false) && $this->numRows() > 0){
             $list = array();
             while($value = $this->fetchArray()){
                 $list[] = $value;
