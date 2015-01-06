@@ -67,6 +67,11 @@ function is_android_tablet_agent($agent = NULL)
     return (is_android_mobile_agent($agent) ? false : true);
 }
 
+function is_bot_agent($agent = NULL){
+    return is_user_agent(array(
+        $robot = "/(ICC-Crawler|Teoma|Y!J-BSC|Pluggd\/Nutch|psbot|CazoodleBot|Googlebot|Antenna|BlogPeople|AppleWebKitOpenbot|NaverBot|PlantyNet|livedoor|msnbot|FlashGet|WebBooster|MIDown|moget|InternetLinkAgent|Wget|InterGet|WebFetch|WebCrawler|ArchitextSpider|Scooter|WebAuto|InfoNaviRobot|httpdown|Inetdown|Slurp|Spider|^Iron33|^fetch|^PageDown|^BMChecker|^Jerky|^Nutscrape|Baiduspider|TMCrawler)/m"),get_agent($agent));
+}
+
 function is_tablet_agent($agent = NULL)
 {
     return (is_ipad_agent($agent) || is_android_tablet_agent($agent));
