@@ -381,7 +381,7 @@ class class_mysql_column extends class_mysql_column_obj{
      */
     public function dropUniqueSQL()
     {
-        return 'ALTER TABLE `'.$this->getTable()->getName().'` DROP INDEX '.$this->getName();
+        return 'DROP INDEX `'.$this->getName().'` ON `'.$this->getTable()->getName().'`';
     }
 
     /**
@@ -1407,7 +1407,7 @@ class class_mysql_connect{
                 $list[] = $value;
             }
             // 現在のテーブル
-            $current_table = new class_mysql_table($dbname,$engine,$engine);
+            $current_table = new class_mysql_table($dbname,$engine,$charaset);
             $current_table->setDBColumns($list);
             // 新しいテーブル
             $table = new class_mysql_table($dbname,$engine,$charaset);
@@ -1423,6 +1423,7 @@ class class_mysql_connect{
                             if($column->getAutoincrement()) {
                                 $sqls[] = $column->addPrimaryKeySQL();
                             }else{
+                                $sqls[] = $column->dropUniqueSQL();
                                 $sqls[] = $column->dropPrimaryKeySQL();
                             }
                         }
