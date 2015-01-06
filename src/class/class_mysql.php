@@ -1423,7 +1423,6 @@ class class_mysql_connect{
                             if($column->getAutoincrement()) {
                                 $sqls[] = $column->addPrimaryKeySQL();
                             }else{
-                                $sqls[] = $column->dropUniqueSQL();
                                 $sqls[] = $column->dropPrimaryKeySQL();
                             }
                         }
