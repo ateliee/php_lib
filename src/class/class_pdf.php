@@ -4,28 +4,23 @@
 //   v.1.1      : テーブル描画追加
 //============================================
 
-$LIB_DIR = dirname(__FILE__) . '/../library/';
-require_once($LIB_DIR . 'tcpdf/tcpdf.php');
-require_once($LIB_DIR . 'fpdi/fpdi.php');
 
-//+++++++++++++++++++++++++++++
-// PDFクラス
-//+++++++++++++++++++++++++++++
+require_once(dirname(__FILE__) . '/../library/' . 'tcpdf/tcpdf.php');
+require_once(dirname(__FILE__) . '/../library/' . 'fpdi/fpdi.php');
+
+/**
+ * Class class_pdf
+ */
 class class_pdf extends FPDI
 {
     protected $templates; // 読み込んだテンプレートのリスト
-    /*// 好みの初期化を行う
-    function myInit() {
-        $this->SetMargins(0, 0, 0);		// 用紙の余白を設定
-        $this->SetCellPadding(0);		// セルのパディングを設定
-        $this->SetAutoPageBreak(false);	// 自動改ページ
-           
-        $this->setPrintHeader(false);	// ヘッダを使用しない
-        $this->setPrintFooter(false);	// フッタを使用しない
-    }*/
-    // テンプレートPDFファイルをロードする。
-    // @param string	$filepath	PDFファイルのパス
-    function myLoadTemplate($filepath)
+
+    /**
+     * テンプレートPDFファイルをロードする
+     *
+     * @param $filepath PDFファイルのパス
+     */
+    public function myLoadTemplate($filepath)
     {
         $page_count = $this->setSourceFile($filepath);
         $template_id = array();
@@ -39,10 +34,14 @@ class class_pdf extends FPDI
             )
         );
     }
-    // 指定したPDFファイルの指定したページをテンプレートとして使用する。
-    // @param string    $filepath   PDFファイルのパス
-    // @param int       $page       ページ番号（1から）
-    function myUseTemplate($filepath, $page)
+    /**
+     * 指定したPDFファイルの指定したページをテンプレートとして使用する
+     *
+     * @param $filepath PDFファイルのパス
+     * @param $page ページ番号（1から）
+     * @throws Exception
+     */
+    public function myUseTemplate($filepath, $page)
     {
         if (!isset($this->templates[$filepath])) {
             $this->myLoadTemplate($filepath);
@@ -54,7 +53,22 @@ class class_pdf extends FPDI
         }
     }
 
-    function Cell_AutoFontSize($fontSize, $w = 0, $h = 0, $txt = '', $border = 0, $ln = 0, $align = '', $fill = false, $link = '', $stretch = 0, $ignore_min_height = false, $calign = 'T', $valign = 'M')
+    /**
+     * @param $fontSize
+     * @param int $w
+     * @param int $h
+     * @param string $txt
+     * @param int $border
+     * @param int $ln
+     * @param string $align
+     * @param bool $fill
+     * @param string $link
+     * @param int $stretch
+     * @param bool $ignore_min_height
+     * @param string $calign
+     * @param string $valign
+     */
+    public function Cell_AutoFontSize($fontSize, $w = 0, $h = 0, $txt = '', $border = 0, $ln = 0, $align = '', $fill = false, $link = '', $stretch = 0, $ignore_min_height = false, $calign = 'T', $valign = 'M')
     {
         // 幅によってフォントサイズを6段階で縮小する。
         $size = $fontSize;
@@ -69,8 +83,12 @@ class class_pdf extends FPDI
         $this->Cell($w, $h, $txt, $border, $ln, $align, $fill, $link, $stretch, $ignore_min_height, $calign, $valign);
     }
 
-    // HEX ⇒ RGB変換
-    function convertHEXtoRGB($hex)
+    /**
+     * HEX ⇒ RGB変換
+     * @param $hex
+     * @return array
+     */
+    public function convertHEXtoRGB($hex)
     {
         $color = preg_replace("/^#/", '', $hex);
         $r = hexdec(substr($color, 0, 2));
@@ -79,46 +97,81 @@ class class_pdf extends FPDI
         return array($r, $g, $b);
     }
 
-    // ポイント数値をmmに変換
-    function getPtToMM($p)
+    /**
+     * ポイント数値をmmに変換
+     *
+     * @param $p
+     * @return mixed
+     */
+    public function getPtToMM($p)
     {
         return ($p * 0.35);
     }
 
-    function getPtToCM($p)
+    /**
+     * @param $p
+     * @return mixed
+     */
+    public function getPtToCM($p)
     {
         return ($p * 0.035);
     }
 
-    function getInchToMM($p)
+    /**
+     * @param $p
+     * @return mixed
+     */
+    public function getInchToMM($p)
     {
         return ($p * 25.4);
     }
 
-    function getInchToCM($p)
+    /**
+     * @param $p
+     * @return mixed
+     */
+    public function getInchToCM($p)
     {
         return ($p * 2.54);
     }
 
-    function getInchToPt($p)
+    /**
+     * @param $p
+     * @return float
+     */
+    public function getInchToPt($p)
     {
         return ($p * 2.54 / 0.35);
     }
 
-    function getPtToInch($p)
+    /**
+     * @param $p
+     * @return float
+     */
+    public function getPtToInch($p)
     {
         return ($p * 0.35 / 2.54);
     }
 
-    // テーブルの書き出し
-    function writeTable($table, $settings = array(), $rowsettings = array())
+    /**
+     * テーブルの書き出し
+     *
+     * @param $table
+     * @param array $settings
+     * @param array $rowsettings
+     */
+    public function writeTable($table, $settings = array(), $rowsettings = array())
     {
         foreach ($table as $key => $rows) {
             $this->writeTableRow($rows, isset($rowsettings[$key]) ? array_merge($settings, $rowsettings[$key]) : $settings);
         }
     }
 
-    function writeTableRow($rows, $setting = array())
+    /**
+     * @param $rows
+     * @param array $setting
+     */
+    public function writeTableRow($rows, $setting = array())
     {
         $max_height = 0;
         $reseth = true;
