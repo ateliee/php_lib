@@ -300,6 +300,16 @@ class class_form
     }
 
     /**
+     * @param $key
+     * @param null $default
+     * @return null
+     */
+    public function getValue($key,$default=null)
+    {
+        return isset($this->values[$key]) ? $this->values[$key] : $default;
+    }
+
+    /**
      *
      */
     private function setDefaultValues()
