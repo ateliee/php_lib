@@ -107,6 +107,8 @@ include_once( SYSTEM_PATH_CLASS . 'class_pdf.php' );
 include_once(SYSTEM_PATH_CLASS . 'class_pager.php');
 include_once(SYSTEM_PATH_CLASS . 'class_routing.php');
 include_once(SYSTEM_PATH_CLASS . 'class_pnkz.php');
+include_once(SYSTEM_PATH_CLASS . 'class_server.php');
+include_once(SYSTEM_PATH_CLASS . 'class_form.php');
 // function
 include_once(SYSTEM_PATH_FUNC . 'func_php.php');
 include_once(SYSTEM_PATH_FUNC . 'func_system.php');
