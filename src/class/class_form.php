@@ -30,26 +30,24 @@ class class_formColumn
     function __construct($data)
     {
         if(is_array($data)){
-            if(isset($data['name'])){
-                $this->setName($data['name']);
-            }
-            if(isset($data['default'])){
-                $this->setDefault($data['default']);
-            }
-            if(isset($data['field'])) {
-                $this->setField($data['field']);
-            }
-            if(isset($data['format'])) {
-                $this->setFormat($data['format']);
-            }
-            if(isset($data['check'])) {
-                $this->setCheck($data['check']);
-            }
-            if(isset($data['min'])){
-                $this->setMin($data['min']);
-            }
-            if(isset($data['max'])){
-                $this->setMax($data['max']);
+            foreach($data as $key => $val){
+                if($key == 'name') {
+                    $this->setName($val);
+                }else if($key == 'default'){
+                    $this->setDefault($val);
+                }else if($key == 'field'){
+                    $this->setField($val);
+                }else if($key == 'format'){
+                    $this->setFormat($val);
+                }else if($key == 'check'){
+                    $this->setCheck($val);
+                }else if($key == 'min'){
+                    $this->setMin($val);
+                }else if($key == 'max'){
+                    $this->setMax($val);
+                }else{
+                    trigger_error('class_form : un support data key "'.$key.'"',E_USER_NOTICE);
+                }
             }
         }else{
             throw new Exception('column __construct type not support. array give.');
