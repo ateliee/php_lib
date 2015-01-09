@@ -266,6 +266,9 @@ class class_form
         $this->values = array();
         $this->errorfunc = array($this,'getError');
         $this->errors = array();
+        if(func_num_args() > 0){
+            $this->setColumns(func_get_arg(0));
+        }
     }
 
     /**
@@ -285,6 +288,36 @@ class class_form
                 throw new Exception('column type not support.');
             }
         }
+        $this->setDefaultValues();
+    }
+
+    /**
+     * @return array
+     */
+    public function getValues()
+    {
+        return $this->values;
+    }
+
+    /**
+     *
+     */
+    private function setDefaultValues()
+    {
+        $this->values = array();
+        foreach($this->columns as $key => $val){
+            $this->setDefaultValue($key);
+        }
+    }
+
+    /**
+     * @param $key
+     */
+    private function setDefaultValue($key)
+    {
+        $field = $this->getColumn($key);
+        $value = $field->getDefault();
+        $this->values[$key] = $value;
     }
 
     /**
@@ -294,6 +327,7 @@ class class_form
     public function addColumn($key,class_formColumn $column)
     {
         $this->columns[$key] = $column;
+        $this->setDefaultValue($key);
     }
 
     /**
@@ -313,24 +347,24 @@ class class_form
         $values = array();
         foreach($this->columns as $key => $val){
             $field = $this->getColumn($key);
-            $check = false;
-            $field->getDefault();
-            if(isset($field->getDefault())){
-                $value = $field->getDefault();
-                $check = false;
-            }
+            $value = $field->getDefault();
             if(isset($postvalue[$prex.$key])){
                 $value = $field->convertValue($postvalue[$prex.$key]);
-                $check = false;
             }
-            if($check){
-                $values[$key] = $value;
-            }
+            $values[$key] = $value;
         }
-        $this->values = $value;
+        $this->values = $values;
         $this->checkErrors();
 
         return $values;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isValid()
+    {
+        return (count($this->errors) ? true : false);
     }
 
     /**
@@ -360,7 +394,7 @@ class class_form
         foreach($this->errors as $key => $val){
             $e = array();
             foreach($val as $k => $v){
-                $e[] = call_user_func($this->errorfunc,array($v));
+                $e[] = call_user_func($this->errorfunc,$v,$this->getColumn($key),$this->values[$key]);
             }
             $errors[$key] = $e;
         }
@@ -402,7 +436,7 @@ class class_form
      * @param $value
      * @return string
      */
-    public function getError($key,$value,class_formColumn $column)
+    public function getError($key,class_formColumn $column,$value)
     {
         $message = "";
         switch($key){
