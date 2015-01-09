@@ -371,7 +371,7 @@ class class_form
      * @param null $callback
      * @return array
      */
-    public function getErrorsSingle($callback=null)
+    public function getErrorsSingleArray($callback=null)
     {
         $errors = $this->getErrors($callback);
         $err = array();
