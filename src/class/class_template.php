@@ -1055,6 +1055,32 @@ class class_template {
     }
 
     /**
+     * @return mixed
+     */
+    public function callFilter()
+    {
+        if(func_num_args() > 0){
+            $name = func_get_arg(0);
+            $params = array();
+            for($i=1;$i<func_num_args();$i++){
+                $params[] = func_get_arg($i);
+            }
+            if ( is_callable( self::$Functions[$name] ) ) {
+                try{
+                    $result = call_user_func_array(self::$Functions[$name],$params);
+                }catch (TemplateException $e){
+                    $this->error('Error Functions '.$name.'('.implode(",",$params).')');
+                }
+            }else{
+                $this->error('Error Functions '.$name.'('.implode(",",$params).')');
+            }
+        }else{
+            $this->error('Error Functions Must Be paramater.');
+        }
+        return $result;
+    }
+
+    /**
      * @param $func
      * @param $val
      * @return bool
