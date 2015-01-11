@@ -1057,7 +1057,7 @@ class class_template {
     /**
      * @return mixed
      */
-    public function callFilter()
+    static public function callFilter()
     {
         if(func_num_args() > 0){
             $name = func_get_arg(0);
@@ -1069,13 +1069,13 @@ class class_template {
                 try{
                     $result = call_user_func_array(self::$Functions[$name],$params);
                 }catch (TemplateException $e){
-                    $this->error('Error Functions '.$name.'('.implode(",",$params).')');
+                    new TemplateException('Template : Error Functions '.$name.'('.implode(",",$params).')');
                 }
             }else{
-                $this->error('Error Functions '.$name.'('.implode(",",$params).')');
+                new TemplateException('Template : Error Functions '.$name.'('.implode(",",$params).')');
             }
         }else{
-            $this->error('Error Functions Must Be paramater.');
+            new TemplateException('Template : Error Functions Must Be paramater.');
         }
         return $result;
     }
