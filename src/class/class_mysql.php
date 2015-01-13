@@ -1961,11 +1961,14 @@ class class_mysql{
      * @return mixed
      */
     function exec($q,$params = array()){
+        return $this->query($this->execFormat($q,$params));
+    }
+    function execFormat($q,$params = array()){
         foreach($params as $key => $val){
             $q = str_replace(':'.$key.':',$val,$q);
             $q = str_replace(':%'.$key.'%:',$this->escapeSQL($val),$q);
         }
-        return $this->query($q);
+        return $q;
     }
     // 最新の追加IDを取得
     function lastId(){
