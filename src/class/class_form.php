@@ -424,9 +424,9 @@ class class_form
             }
         }
         if(count($this->errors) > 0){
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
     /**
