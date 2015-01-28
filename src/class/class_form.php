@@ -362,17 +362,8 @@ class class_form
             $values[$key] = $value;
         }
         $this->values = $values;
-        $this->checkErrors();
 
         return $values;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isValid()
-    {
-        return (count($this->errors) ? true : false);
     }
 
     /**
@@ -412,7 +403,7 @@ class class_form
     /**
      * @return bool
      */
-    public function checkErrors()
+    public function isValid()
     {
         $this->errors = array();
         foreach($this->columns as $key => $val){
