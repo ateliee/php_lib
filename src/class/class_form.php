@@ -22,7 +22,13 @@ class class_formColumn
     private $name;
     private $default;
     private $max;
+    private $maxc;
     private $min;
+    private $minc;
+    private $range_max;
+    private $range_maxc;
+    private $range_min;
+    private $range_minc;
     private $check;
     private $field;
     private $format;
@@ -45,6 +51,10 @@ class class_formColumn
                     $this->setMin($val);
                 }else if($key == 'max'){
                     $this->setMax($val);
+                }else if($key == 'range_min'){
+                    $this->setRangeMin($val);
+                }else if($key == 'range_max'){
+                    $this->setRangeMax($val);
                 }else{
                     trigger_error('class_form : un support data key "'.$key.'"',E_USER_NOTICE);
                 }
@@ -80,9 +90,24 @@ class class_formColumn
                 $errors[] = 'mail';
             }
         }
-        if(preg_match("/".self::$CHECK_URL."/",$this->check)){
-            if(($value != "") && checkURL($value) == false){
-                $errors[] = 'mail';
+        if($this->maxc){
+            if($value > $this->max){
+                $errors[] = 'max';
+            }
+        }
+        if($this->minc){
+            if($value < $this->min){
+                $errors[] = 'min';
+            }
+        }
+        if($this->range_maxc){
+            if(mb_strlen($value) > $this->range_max){
+                $errors[] = 'range_max';
+            }
+        }
+        if($this->range_minc){
+            if(mb_strlen($value) < $this->range_min){
+                $errors[] = 'range_min';
             }
         }
         if($this->format){
@@ -125,11 +150,29 @@ class class_formColumn
     }
 
     /**
+     * @return mixed
+     */
+    public function getMax()
+    {
+        return $this->max;
+    }
+
+
+    /**
      * @param mixed $max
      */
     public function setMax($max)
     {
         $this->max = $max;
+        $this->maxc = true;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMin()
+    {
+        return $this->min;
     }
 
     /**
@@ -138,6 +181,41 @@ class class_formColumn
     public function setMin($min)
     {
         $this->min = $min;
+        $this->minc = true;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRangeMax()
+    {
+        return $this->range_max;
+    }
+
+    /**
+     * @param mixed $range_max
+     */
+    public function setRangeMax($range_max)
+    {
+        $this->range_max = $range_max;
+        $this->range_maxc = true;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRangeMin()
+    {
+        return $this->range_min;
+    }
+
+    /**
+     * @param mixed $range_min
+     */
+    public function setRangeMin($range_min)
+    {
+        $this->range_min = $range_min;
+        $this->range_minc = true;
     }
 
     /**
@@ -453,6 +531,18 @@ class class_form
                 break;
             case "url";
                 $message = $column->getName()."が間違っています。";
+                break;
+            case "min";
+                $message = $column->getName()."は".$column->getMin()."以上の数字を入力して下さい。";
+                break;
+            case "max";
+                $message = $column->getName()."は".$column->getMax()."以下の数字を入力して下さい。";
+                break;
+            case "range_min";
+                $message = $column->getName()."は".$column->getRangeMin()."文字以上で入力して下さい。";
+                break;
+            case "range_max";
+                $message = $column->getName()."は".$column->getRangeMax()."文字以下で入力して下さい。";
                 break;
             case "format";
             default;
