@@ -312,12 +312,6 @@ class class_formColumn
             if (preg_match("/KV/", $this->field)) {
                 $value = mb_convert_kana($value, "KV", mb_internal_encoding());
             }
-            if (isset($this->min)) {
-                $value = max($value, $this->min);
-            }
-            if (isset($this->max)) {
-                $value = min($value, $this->max);
-            }
         }
         return $value;
     }
