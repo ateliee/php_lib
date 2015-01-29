@@ -1019,8 +1019,6 @@ class class_mail
         $header = implode("\n", $header);
         $subject = $this->encodeMiMeHeader($subject);
 
-        var_dump($to);
-        var_dump($header);
         // 送信（第1引数はSMTPのRCPT TO（エンベロープTO）にも使われる）
         //if (mb_send_mail($this->to, $subject, $body, $header)) {
         $result = false;
