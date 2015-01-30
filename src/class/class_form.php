@@ -380,6 +380,14 @@ class class_form
     }
 
     /**
+     * @param $key
+     */
+    public function setValue($key,$value)
+    {
+        $this->values[$key] = $value;
+    }
+
+    /**
      *
      */
     private function setDefaultValues()
