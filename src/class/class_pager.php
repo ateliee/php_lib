@@ -157,7 +157,9 @@ class class_pager{
         $arr['visible'] = $this->visible;
         $arr['current'] = $this->current;
         $arr['prev'] = max($this->current - 1,0);
+        $arr['prev_url'] = ($this->current > 0) ? $this->getPagesUrl($this->current - 1) : null;
         $arr['next'] = max(min($this->current + 1,$this->pager_count),0);
+        $arr['next_url'] = (($this->current + 1) <  $this->page_count) ? $this->getPagesUrl($this->current + 1) : null;
         $arr['page_count'] = $this->page_count;
         $arr['start'] = $this->page_start;
         $arr['end'] = $this->page_end;
