@@ -81,11 +81,11 @@ class class_pager{
     }
 
     /**
-     * @param $current
+     * @param int $current
      * @return $this
      */
     public function setCurrent($current){
-        $this->current = $current;
+        $this->current = intval($current);
         return $this;
     }
 
