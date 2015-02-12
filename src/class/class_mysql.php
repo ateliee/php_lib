@@ -1036,6 +1036,23 @@ class class_mysql_connect{
     }
 
     /**
+     * @return int
+     */
+    public function getMysqlMode()
+    {
+        return $this->mysql_mode;
+    }
+
+    /**
+     * @param int $mysql_mode
+     */
+    public function setMysqlMode($mysql_mode)
+    {
+        $this->mysql_mode = $mysql_mode;
+    }
+
+
+    /**
      * @param $message
      * @throws Exception
      */
