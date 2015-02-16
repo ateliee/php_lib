@@ -186,6 +186,39 @@ class class_routing{
     }
 
     /**
+     * @param $key
+     * @param $params
+     * @return mixed
+     * @throws Exception
+     */
+    public function generateUrl($key,$params=array())
+    {
+        $role = $this->getRule($key);
+        if(!$role){
+            throw new Exception(sprintf('Not Found generateUrl() Of %s',$key));
+        }
+        $url = $role->getRule();
+        if(preg_match_all('/(\(.+\))/',$role->getRule(),$matchs)){
+            $p = $matchs[1];
+            if(count($p) > count($params)){
+                throw new Exception(sprintf('generateUrl(%s) Paramater Error.',$key));
+            }
+            $keys = array_keys($role->getUrlParams());
+            if(count($p) > count($keys)){
+                throw new Exception(sprintf('Roule(%s) Paramater Num Enough Amount',$key));
+            }
+            foreach($p as $k => $v){
+                $param_key = $keys[$k];
+                if(!array_key_exists($param_key,$params)){
+                    throw new Exception(sprintf('generateUrl(%s) Must Paramater "%s".',$key,$param_key));
+                }
+                $url = preg_replace('/'.preg_quote($v,'/').'/',$params[$param_key],$url,1);
+            }
+        }
+        return $url;
+    }
+
+    /**
      * @param $url
      * @return RoutingRuleMatch|null
      */
