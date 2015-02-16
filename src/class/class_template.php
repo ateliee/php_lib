@@ -473,6 +473,31 @@ class class_template {
     }
 
     /**
+     * @return array
+     */
+    public function getHeaders()
+    {
+        return $this->headers;
+    }
+
+    /**
+     * @param array $headers
+     */
+    public function setHeaders($headers)
+    {
+        $this->headers = $headers;
+    }
+
+    /**
+     * @param $key
+     * @param $val
+     */
+    public function addHeader($key,$val)
+    {
+        $this->headers[$key] = $val;
+    }
+
+    /**
      * @param $str
      */
     private function error($str){
