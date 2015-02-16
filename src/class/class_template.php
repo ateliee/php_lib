@@ -1225,7 +1225,9 @@ class class_template {
                     break;
                 case 'dump':
                     ob_start();
+                    print '<pre>';
                     var_dump($params[0]);
+                    print '</pre>';
                     $result = ob_get_contents();
                     ob_end_clean();
                     break;
