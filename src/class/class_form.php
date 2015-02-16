@@ -427,6 +427,14 @@ class class_form
     }
 
     /**
+     * @return class_formColumn[]
+     */
+    public function getColumns()
+    {
+        return $this->columns;
+    }
+
+    /**
      * @param $postvalue
      * @return array
      */
