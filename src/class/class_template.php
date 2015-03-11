@@ -1200,6 +1200,13 @@ class class_template {
                 case 'explode':
                     $result = explode($params[0],$params[1]);
                     break;
+                case 'array_filter':
+                    if(isset($params[1])){
+                        $result = array_filter($params[0],$params[1]);
+                    }else{
+                        $result = array_filter($params[0]);
+                    }
+                    break;
                 case 'upper':
                     $result = strtoupper($params[0]);
                     break;
