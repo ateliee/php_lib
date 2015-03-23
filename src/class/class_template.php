@@ -1440,6 +1440,20 @@ class class_template {
     }
 
     /**
+     * @param $mt
+     * @return mixed
+     */
+    public function _setStripTemplateCallBack($mt){
+        if(isset($mt[2])){
+            $t = $mt[2];
+            $t = preg_replace("/[\r\n\t]/","",$t);
+            $t = preg_replace("/(\s){2,}/","$1",$t);
+            return $t;
+        }
+        return $mt[1];
+    }
+
+    /**
      * @param $template
      * @return mixed
      */
@@ -1459,15 +1473,7 @@ class class_template {
                     "/(" . preg_quote($this->left_delimiter, "/") . "\/?[^" . preg_quote($this->right_delimiter, "/") . "]+" . preg_quote($this->right_delimiter, "/") . ")".
                     "|".
                     "([^" . preg_quote($this->left_delimiter, "/") . "]+)/",
-                    function($mt){
-                        if(isset($mt[2])){
-                            $t = $mt[2];
-                            $t = preg_replace("/[\r\n\t]/","",$t);
-                            $t = preg_replace("/(\s){2,}/","$1",$t);
-                            return $t;
-                        }
-                        return $mt[1];
-                    },
+                    array($this,'_setStripTemplateCallBack'),
                     $matchs[$i]);
                 $tpl .= $t;
             }else{
