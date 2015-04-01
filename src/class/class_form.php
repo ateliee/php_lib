@@ -90,29 +90,31 @@ class class_formColumn
                 $errors[] = 'mail';
             }
         }
-        if($this->maxc){
-            if($value > $this->max){
-                $errors[] = 'max';
+        if($value != ""){
+            if($this->maxc){
+                if($value > $this->max){
+                    $errors[] = 'max';
+                }
             }
-        }
-        if($this->minc){
-            if($value < $this->min){
-                $errors[] = 'min';
+            if($this->minc){
+                if($value < $this->min){
+                    $errors[] = 'min';
+                }
             }
-        }
-        if($this->range_maxc){
-            if(mb_strlen($value) > $this->range_max){
-                $errors[] = 'range_max';
+            if($this->range_maxc){
+                if(mb_strlen($value) > $this->range_max){
+                    $errors[] = 'range_max';
+                }
             }
-        }
-        if($this->range_minc){
-            if(mb_strlen($value) < $this->range_min){
-                $errors[] = 'range_min';
+            if($this->range_minc){
+                if(mb_strlen($value) < $this->range_min){
+                    $errors[] = 'range_min';
+                }
             }
-        }
-        if($this->format){
-            if(($value != "") && !preg_match("/".$this->format."/",$value)){
-                $errors[] = 'format';
+            if($this->format){
+                if(!preg_match("/".$this->format."/",$value)){
+                    $errors[] = 'format';
+                }
             }
         }
         return $errors;
@@ -283,6 +285,14 @@ class class_formColumn
     }
 
     /**
+     * @param mixed $check
+     */
+    public function addCheck($check)
+    {
+        $this->check .= $check;
+    }
+
+    /**
      * @param $value
      * @return float|int|string
      */
@@ -322,6 +332,7 @@ class class_formColumn
  */
 class class_form
 {
+    private $form_name;
     private $columns;
     private $values;
     private $errorfunc;
@@ -332,13 +343,32 @@ class class_form
      */
     function __construct()
     {
+        $this->form_name = null;
         $this->columns = array();
         $this->values = array();
         $this->errorfunc = array($this,'getError');
         $this->errors = array();
-        if(func_num_args() > 0){
+        if(func_num_args() > 1) {
+            $this->form_name = func_get_arg(0);
+            $this->setColumns(func_get_arg(1));
+        }else if(func_num_args() > 0){
             $this->setColumns(func_get_arg(0));
         }
+    }
+
+    /**
+     * @param mixed $form_name
+     */
+    public function setFormName($form_name)
+    {
+        $this->form_name = $form_name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFormName(){
+        return $this->form_name;
     }
 
     /**
