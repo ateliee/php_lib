@@ -198,7 +198,7 @@ class class_routing{
             throw new Exception(sprintf('Not Found generateUrl() Of %s',$key));
         }
         $url = $role->getRule();
-        if(preg_match_all('/(\(.+\))/',$role->getRule(),$matchs)){
+        if(preg_match_all('/(\(.+?\))/',$role->getRule(),$matchs)){
             $p = $matchs[1];
             if(count($p) > count($params)){
                 throw new Exception(sprintf('generateUrl(%s) Paramater Error.',$key));
