@@ -1343,6 +1343,24 @@ class class_template {
                 case 'time':
                     $result = time();
                     break;
+                case 'floor':
+                    if(!isset($params[0]) || !is_numeric($params[0])){
+                        $this->error('floor() paramater must be number.');
+                    }
+                    $result = floor($params[0]);
+                    break;
+                case 'ceil':
+                    if(!isset($params[0]) || !is_numeric($params[0])){
+                        $this->error('floor() paramater must be number.');
+                    }
+                    $result = ceil($params[0]);
+                    break;
+                case 'round':
+                    if(!isset($params[0]) || !is_numeric($params[0])){
+                        $this->error('floor() paramater must be number.');
+                    }
+                    $result = round($params[0]);
+                    break;
                 default:
                     $this->error('Error Functions '.$node->getName());
                     break;
