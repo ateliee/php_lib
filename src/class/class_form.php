@@ -90,6 +90,11 @@ class class_formColumn
                 $errors[] = 'mail';
             }
         }
+        if(preg_match("/".self::$CHECK_URL."/",$this->check)){
+            if(($value != "") && checkMail($value) == false){
+                $errors[] = 'url';
+            }
+        }
         if($value != ""){
             if($this->maxc){
                 if($value > $this->max){
