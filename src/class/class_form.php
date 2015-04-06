@@ -91,7 +91,7 @@ class class_formColumn
             }
         }
         if(preg_match("/".self::$CHECK_URL."/",$this->check)){
-            if(($value != "") && checkMail($value) == false){
+            if(($value != "") && checkURL($value) == false){
                 $errors[] = 'url';
             }
         }
