@@ -1340,6 +1340,14 @@ class class_template {
                     }
                     $result = date($params[0],$time);
                     break;
+                case 'week':
+                    $week = array('日','月','火','水','木','金','土');
+                    if(isset($week[$params[0]])){
+                        $result = $week[$params[0]];
+                    }else{
+                        $this->error('week() paramater is numeric range 0〜6.'.$params[0].' given.');
+                    }
+                    break;
                 case 'time':
                     $result = time();
                     break;
