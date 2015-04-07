@@ -74,7 +74,7 @@ class class_formColumn
      * @return int
      */
     private function checkJp($str){
-        return preg_match("/^[ぁ-んァ-ヶー一-龠]+$/u", $str);
+        return preg_match("/^[ぁ-んァ-ヶー一-龠 　]+$/u", $str);
     }
 
     /**
@@ -82,7 +82,7 @@ class class_formColumn
      * @return int
      */
     private function checkHirakana($str){
-        return preg_match("/^[ぁ-んー]+$/u", $str);
+        return preg_match("/^[ぁ-んー 　]+$/u", $str);
     }
 
     /**
@@ -90,7 +90,7 @@ class class_formColumn
      * @return int
      */
     private function checkKana($str){
-        return preg_match("/^[ァ-ヶー]+$/u", $str);
+        return preg_match("/^[ァ-ヶー 　]+$/u", $str);
     }
 
     /**
