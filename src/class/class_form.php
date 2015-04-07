@@ -82,7 +82,7 @@ class class_formColumn
      * @return int
      */
     private function checkHirakana($str){
-        return preg_match("/^[ぁ-ん]+$/u", $str);
+        return preg_match("/^[ぁ-んー]+$/u", $str);
     }
 
     /**
