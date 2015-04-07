@@ -17,6 +17,9 @@ class class_formColumn
     static $CHECK_ALPHABET = 'a';
     static $CHECK_MAIL = 'm';
     static $CHECK_URL = 'u';
+    static $CHECK_JP = 'j';
+    static $CHECK_ZIP = 'z';
+    static $CHECK_TEL = 't';
     static $CHECK_FORMAT = '';
 
     private $name;
@@ -65,6 +68,46 @@ class class_formColumn
     }
 
     /**
+     * @param $str
+     * @return int
+     */
+    private function checkJp($str){
+        return preg_match("/^[ぁ-んァ-ヶー一-龠]+$/u", $str);
+    }
+
+    /**
+     * @param $zip
+     * @return int
+     */
+    private function checkZip($zip){
+        return preg_match('/^[0-9]{3}-[0-9]{4}$/', $zip);
+    }
+
+    /**
+     * @param $tel
+     * @return int
+     */
+    private function checkTel($tel){
+        return preg_match('/^[0-9]{2,4}-[0-9]{2,4}-[0-9]{3,4}$/', $tel);
+    }
+
+    /**
+     * @param $url
+     * @return int
+     */
+    private function checkURL($url){
+        return preg_match('/^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/', $url);
+    }
+
+    /**
+     * @param $mail
+     * @return int
+     */
+    private function checkMail($mail){
+        return preg_match("/^([a-zA-Z0-9])+([a-zA-Z0-9\\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\\._-]+)+$/", $mail);
+    }
+
+    /**
      * @param $value
      * @return array
      */
@@ -85,13 +128,28 @@ class class_formColumn
                 $errors[] = 'alphabet';
             }
         }
+        if(preg_match("/".self::$CHECK_JP."/",$this->check)){
+            if(($value != "") && $this->checkJp($value) == false){
+                $errors[] = 'jp';
+            }
+        }
+        if(preg_match("/".self::$CHECK_ZIP."/",$this->check)){
+            if(($value != "") && $this->checkZip($value) == false){
+                $errors[] = 'zip';
+            }
+        }
+        if(preg_match("/".self::$CHECK_TEL."/",$this->check)){
+            if(($value != "") && $this->checkTel($value) == false){
+                $errors[] = 'tel';
+            }
+        }
         if(preg_match("/".self::$CHECK_MAIL."/",$this->check)){
-            if(($value != "") && checkMail($value) == false){
+            if(($value != "") && $this->checkMail($value) == false){
                 $errors[] = 'mail';
             }
         }
         if(preg_match("/".self::$CHECK_URL."/",$this->check)){
-            if(($value != "") && checkURL($value) == false){
+            if(($value != "") && $this->checkURL($value) == false){
                 $errors[] = 'url';
             }
         }
@@ -576,6 +634,15 @@ class class_form
                 break;
             case "url";
                 $message = $column->getName()."が間違っています。";
+                break;
+            case "zip";
+                $message = $column->getName()."が間違っています。";
+                break;
+            case "tel";
+                $message = $column->getName()."が間違っています。";
+                break;
+            case "jp";
+                $message = $column->getName()."が日本語ではありません。";
                 break;
             case "min";
                 $message = $column->getName()."は".$column->getMin()."以上の数字を入力して下さい。";
