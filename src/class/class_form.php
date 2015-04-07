@@ -18,6 +18,8 @@ class class_formColumn
     static $CHECK_MAIL = 'm';
     static $CHECK_URL = 'u';
     static $CHECK_JP = 'j';
+    static $CHECK_HIRAGANA = 'h';
+    static $CHECK_KANA = 'k';
     static $CHECK_ZIP = 'z';
     static $CHECK_TEL = 't';
     static $CHECK_FORMAT = '';
@@ -126,6 +128,16 @@ class class_formColumn
         if(preg_match("/".self::$CHECK_ALPHABET."/",$this->check)){
             if(($value != "") && preg_match("/^([0-9a-zA-Z\.]+)$/",$value) == false){
                 $errors[] = 'alphabet';
+            }
+        }
+        if(preg_match("/".self::$CHECK_HIRAGANA."/",$this->check)){
+            if(($value != "") && preg_match("/^([ぁ-ん]+)$/",$value) == false){
+                $errors[] = 'hirakana';
+            }
+        }
+        if(preg_match("/".self::$CHECK_KANA."/",$this->check)){
+            if(($value != "") && preg_match("/^([ァ-ヶ]+)$/",$value) == false){
+                $errors[] = 'kana';
             }
         }
         if(preg_match("/".self::$CHECK_JP."/",$this->check)){
@@ -385,6 +397,12 @@ class class_formColumn
             if (preg_match("/KV/", $this->field)) {
                 $value = mb_convert_kana($value, "KV", mb_internal_encoding());
             }
+            if (preg_match("/c/", $this->field)) {
+                $value = mb_convert_kana($value, "c", mb_internal_encoding());
+            }
+            if (preg_match("/C/", $this->field)) {
+                $value = mb_convert_kana($value, "C", mb_internal_encoding());
+            }
         }
         return $value;
     }
@@ -643,6 +661,12 @@ class class_form
                 break;
             case "jp";
                 $message = $column->getName()."が日本語ではありません。";
+                break;
+            case "hirakana";
+                $message = $column->getName()."がひらがなではありません。";
+                break;
+            case "kana";
+                $message = $column->getName()."がカタカナではありません。";
                 break;
             case "min";
                 $message = $column->getName()."は".$column->getMin()."以上の数字を入力して下さい。";
