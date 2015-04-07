@@ -78,6 +78,22 @@ class class_formColumn
     }
 
     /**
+     * @param $str
+     * @return int
+     */
+    private function checkHirakana($str){
+        return preg_match("/^[ぁ-ん]+$/u", $str);
+    }
+
+    /**
+     * @param $str
+     * @return int
+     */
+    private function checkKana($str){
+        return preg_match("/^[ァ-ヶー]+$/u", $str);
+    }
+
+    /**
      * @param $zip
      * @return int
      */
@@ -131,12 +147,12 @@ class class_formColumn
             }
         }
         if(preg_match("/".self::$CHECK_HIRAGANA."/",$this->check)){
-            if(($value != "") && preg_match("/^([ぁ-ん]+)$/",$value) == false){
+            if(($value != "") && ($this->checkHirakana($value) == false)){
                 $errors[] = 'hirakana';
             }
         }
         if(preg_match("/".self::$CHECK_KANA."/",$this->check)){
-            if(($value != "") && preg_match("/^([ァ-ヶ]+)$/",$value) == false){
+            if(($value != "") && ($this->checkKana($value) == false)){
                 $errors[] = 'kana';
             }
         }
