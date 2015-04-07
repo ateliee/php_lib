@@ -405,7 +405,9 @@ class class_formColumn
                 $value = mb_convert_kana($value, "n", mb_internal_encoding());
             }
             if (preg_match("/t/", $this->field)) {
-                $value = trim($value);
+                //$value = trim($value);
+                $value = preg_replace('/^[ 　]+/u', '', $value);
+                $value = preg_replace('/[ 　]+$/u', '', $value);
             }
             if (preg_match("/a/", $this->field)) {
                 $value = mb_convert_kana($value, "a", mb_internal_encoding());
