@@ -635,7 +635,7 @@ class class_mysql_index extends class_mysql_column_obj
         foreach($this->columns as $field_val){
             $val[] = "`".$field_val->getName()."`";
         }
-        return "INDEX `".$this->name."`(".implode(",",$val).") ";
+        return "INDEX `".$this->name."`".((count($val) > 0) ? "(".implode(",",$val).") " : "");
     }
 
     /**
@@ -1171,7 +1171,13 @@ class class_mysql_connect{
         }
         return $this->linkId;
     }
-    // SQL文を発行する
+
+    /**
+     * SQL文を発行する
+     *
+     * @param $sql
+     * @return bool|mysqli_result|null|resource
+     */
     function sqlQuery($sql){
         if($this->mysql_mode == MYSQL_MODE_MYSQL){
             return mysql_query($sql, $this->linkId);
@@ -1180,6 +1186,13 @@ class class_mysql_connect{
         }
         return null;
     }
+
+    /**
+     * @param $sql
+     * @param $auto
+     * @param $debug
+     * @return bool|mixed|mysqli_result|null|resource
+     */
     function query($sql,$auto,$debug){
         if($auto && !$this->linkId){
             $this->connect();
@@ -1202,7 +1215,13 @@ class class_mysql_connect{
         }
         return $this->resResult;
     }
-    // 最新の追加IDを取得
+
+    /**
+     * 最新の追加IDを取得
+     *
+     * @param $auto
+     * @return mixed
+     */
     function lastId($auto){
         $sql = 'SELECT LAST_INSERT_ID()';
         $result = $this->sqlQuery($sql);
@@ -1213,16 +1232,29 @@ class class_mysql_connect{
         }
         return $lastID[0];
     }
-    // 実行結果の行数を取得
+
+    /**
+     * 実行結果の行数を取得
+     *
+     * @return int
+     */
     function numRows(){
-        if($this->mysql_mode == MYSQL_MODE_MYSQL){
-            return mysql_num_rows($this->resResult);
-        }else if($this->mysql_mode == MYSQL_MODE_MYSQLI){
-            return mysqli_num_rows($this->resResult);
+        if($this->resResult){
+            if($this->mysql_mode == MYSQL_MODE_MYSQL){
+                return mysql_num_rows($this->resResult);
+            }else if($this->mysql_mode == MYSQL_MODE_MYSQLI){
+                return mysqli_num_rows($this->resResult);
+            }
+            return 0;
         }
         return 0;
     }
-    // 影響された行数を取得
+
+    /**
+     * 影響された行数を取得
+     *
+     * @return int
+     */
     function affectedRows(){
         if($this->mysql_mode == MYSQL_MODE_MYSQL){
             return mysql_affected_rows($this->linkId);
@@ -1230,7 +1262,13 @@ class class_mysql_connect{
             return mysqli_affected_rows($this->linkId);
         }
     }
-    // 実行結果を配列・連想配列に格納する
+
+    /**
+     * 実行結果を配列・連想配列に格納する
+     *
+     * @param int $result_type
+     * @return array|null
+     */
     function fetchArray($result_type = MYSQL_ASSOC){
         if($this->numRows() > 0){
             if($this->mysql_mode == MYSQL_MODE_MYSQL){
@@ -1253,6 +1291,12 @@ class class_mysql_connect{
         }
         return NULL;
     }
+
+    /**
+     * @param $list
+     * @param int $result_type
+     * @return int
+     */
     function fetchArrayAll(&$list,$result_type = MYSQL_ASSOC){
         if($this->numRows() > 0){
             $list = array();
@@ -1262,7 +1306,10 @@ class class_mysql_connect{
         }
         return $this->numRows();
     }
-    // 実行結果を最初に戻す
+
+    /**
+     * 実行結果を最初に戻す
+     */
     function refresh(){
         if($this->mysql_mode == MYSQL_MODE_MYSQL){
             mysql_data_seek($this->resResult, 0);
@@ -1270,7 +1317,12 @@ class class_mysql_connect{
             mysqli_data_seek($this->resResult, 0);
         }
     }
-    // 直前のエラーを返す
+
+    /**
+     * 直前のエラーを返す
+     *
+     * @return null|string
+     */
     function error(){
         if($this->mysql_mode == MYSQL_MODE_MYSQL){
             return mysql_error($this->linkId);
@@ -1537,6 +1589,7 @@ class class_mysql_connect{
         $column = new class_mysql_column($key_name);
         $column->setTable(new class_mysql_table($dbname));
         $references = new class_mysql_foreignkey($column);
+        $references->setName($key_name);
 
         return $references->dropSQL();
     }
@@ -1544,14 +1597,81 @@ class class_mysql_connect{
     /**
      * @param $dbname
      * @param array $fields
-     * @param string $charaset
-     * @param string $engine
      * @return array
      */
     public function migrationReferencesSQL($dbname,$fields=array())
     {
         $sqls = array();
         // TODO : migration References Key
+        $sql = 'SHOW CREATE TABLE `'.$dbname.'`;';
+        $this->query($sql,true,false);
+
+        $table = new class_mysql_table($dbname);
+        if($this->fetchArrayAll($list)){
+            $data = $list[0]['Create Table'];
+            $now_fields = array();
+            $now_keys = array();
+            if(preg_match_all('/CONSTRAINT\s(.+)\\sFOREIGN\sKEY\s\((.+)\)\sREFERENCES\s(.+)\s\((.+)\)\s(.+)/',$data,$matchs)){
+                foreach($matchs[1] as $k => $v){
+                    $name = preg_replace('/^`(.+)`$/','$1',trim($v));
+                    $column = preg_replace('/^`(.+)`$/','$1',trim($matchs[2][$k]));
+                    $target_table = preg_replace('/^`(.+)`$/','$1',trim($matchs[3][$k]));
+                    $target_column = preg_replace('/^`(.+)`$/','$1',trim($matchs[4][$k]));
+                    $ondelete = 'RESTRICT';
+                    $onupdate = 'RESTRICT';
+                    if(preg_match('/ON\sDELETE\s([^\s,]+)/',$matchs[5][$k],$mts)){
+                        $ondelete = $mts[1];
+                    }
+                    if(preg_match('/ON\sUPDATE\s([^\s,]+)/',$matchs[5][$k],$mts)){
+                        $onupdate = $mts[1];
+                    }
+                    $now_fields[$column] = array(
+                        'constraint' => $name,
+                        'target' => $target_table,
+                        'target_column' => $target_column,
+                        'ondelete' => $ondelete,
+                        'onupdate' => $onupdate,
+                    );
+                }
+            }
+            if(preg_match_all('/\sKEY\s([^\s,]+)\s\(([^\s,]+?)\)/',$data,$matchs)){
+                foreach($matchs[1] as $k => $v){
+                    $name = preg_replace('/^`(.+)`$/','$1',trim($v));
+                    $target = preg_replace('/^`(.+)`$/','$1',trim($matchs[2][$k]));
+                    $now_keys[$name] = $target;
+                }
+            }
+            foreach($fields as $key => $field){
+                if(!isset($now_fields[$key])){
+                    if(isset($now_keys[$field['CONSTRAINT']])){
+                        $index_column = new class_mysql_index($field['CONSTRAINT']);
+                        $index_column->setTable($table);
+                        $sqls[] = $index_column->alterSQL('DROP');
+                    }
+                    $sqls[] = $this->createReferencesSQL($dbname,$key,$field);
+                }else{
+                    $change = false;
+                    if($field['CONSTRAINT'] != $now_fields[$key]['constraint']) {
+                        $change = true;
+                    }else if($field['TARGET'] != $now_fields[$key]['target'].'.'.$now_fields[$key]['target_column']){
+                        $change = true;
+                    }else if($field['DELETE'] != $now_fields[$key]['ondelete']){
+                        $change = true;
+                    }else if($field['UPDATE'] != $now_fields[$key]['onupdate']){
+                        $change = true;
+                    }
+                    if($change){
+                        $sqls[] = $this->deleteReferencesSQL($dbname,$field['CONSTRAINT']);
+                        if(isset($now_keys[$field['CONSTRAINT']])){
+                            $index_column = new class_mysql_index($field['CONSTRAINT']);
+                            $index_column->setTable($table);
+                            $sqls[] = $index_column->alterSQL('DROP');
+                        }
+                        $sqls[] = $this->createReferencesSQL($dbname,$key,$field);
+                    }
+                }
+            }
+        }
         return $sqls;
     }
 
@@ -2142,8 +2262,8 @@ class class_mysql{
         return $this->db[$this->current]->migrationIndexSQL($dbname,$fields);
     }
     // マイグレーション
-    function migrationReferencesSQL($dbname,$key_name,$fields){
-        return $this->db[$this->current]->migrationReferencesSQL($dbname,$key_name,$fields);
+    function migrationReferencesSQL($dbname,$fields=array()){
+        return $this->db[$this->current]->migrationReferencesSQL($dbname,$fields);
     }
     //----------------------------------------
     // SQL作成
