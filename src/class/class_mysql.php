@@ -1602,7 +1602,6 @@ class class_mysql_connect{
     public function migrationReferencesSQL($dbname,$fields=array())
     {
         $sqls = array();
-        // TODO : migration References Key
         $sql = 'SHOW CREATE TABLE `'.$dbname.'`;';
         $this->query($sql,true,false);
 
