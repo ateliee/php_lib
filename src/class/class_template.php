@@ -1072,7 +1072,11 @@ class class_template {
             if($parser->getFirst()) {
                 $result = $this->convertTemplateVar($parser->getFirst(), true);
                 if ($output_html && ($this->default_modifiers != "")) {
-                    if ($parser->getFirst()->getType() != TemplateVarNode::$TYPE_FUNCTION) {
+                    if (
+                        ($parser->getFirst()->getType() != TemplateVarNode::$TYPE_FUNCTION)
+                        ||
+                        (!$this->isEscapeFunc($parser->getFirst()))
+                    ) {
                         $node = new TemplateVarNode(TemplateVarNode::$TYPE_FUNCTION, $this->default_modifiers);
                         $node->addParam(new TemplateVarNode(TemplateVarNode::$TYPE_VAR, '"' . str_replace('"', '\"', $result) . '"'));
                         $result = $this->convertNodeToFunction($node, false);
@@ -1112,6 +1116,29 @@ class class_template {
             new TemplateException('Template : Error Functions Must Be paramater.');
         }
         return $result;
+    }
+
+    /**
+     * @param TemplateVarNode $node
+     * @return bool
+     */
+    private function isEscapeFunc(TemplateVarNode $node){
+        if(in_array($node->getName(),array(
+            'escape',
+            'htmlentities',
+            'htmlspecialchars',
+            'escape_br',
+            'nl2br',
+            'strip_tags',
+            'print_r',
+            'dump',
+            'quotes',
+            'urlencode',
+            'nofilter'
+        ))){
+            return true;
+        }
+        return false;
     }
 
     /**
