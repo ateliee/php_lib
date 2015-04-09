@@ -1075,7 +1075,7 @@ class class_template {
                     if (
                         ($parser->getFirst()->getType() != TemplateVarNode::$TYPE_FUNCTION)
                         ||
-                        (!$this->isEscapeFunc($parser->getFirst()))
+                        ($this->isEscapeFunc($this->default_modifiers) && !$this->isEscapeFunc($parser->getFirst()->getName()))
                     ) {
                         $node = new TemplateVarNode(TemplateVarNode::$TYPE_FUNCTION, $this->default_modifiers);
                         $node->addParam(new TemplateVarNode(TemplateVarNode::$TYPE_VAR, '"' . str_replace('"', '\"', $result) . '"'));
@@ -1119,11 +1119,11 @@ class class_template {
     }
 
     /**
-     * @param TemplateVarNode $node
+     * @param $name
      * @return bool
      */
-    private function isEscapeFunc(TemplateVarNode $node){
-        if(in_array($node->getName(),array(
+    private function isEscapeFunc($name){
+        if(in_array($name,array(
             'escape',
             'htmlentities',
             'htmlspecialchars',
