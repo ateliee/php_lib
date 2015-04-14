@@ -615,7 +615,7 @@ class class_mysql_index extends class_mysql_column_obj
     static function alterMutableSQL($name,$columns)
     {
         $columns_sql = array();
-        for($i=1;$i<count($columns);$i++){
+        for($i=0;$i<count($columns);$i++){
             $column = $columns[$i];
             if($column instanceof class_mysql_index){
                 $columns_sql[] = 'ADD '.$column->infoSQL();
@@ -1618,12 +1618,33 @@ class class_mysql_connect{
                     $target_column = preg_replace('/^`(.+)`$/','$1',trim($matchs[4][$k]));
                     $ondelete = 'RESTRICT';
                     $onupdate = 'RESTRICT';
-                    if(preg_match('/ON\sDELETE\s([^\s,]+)/',$matchs[5][$k],$mts)){
-                        $ondelete = $mts[1];
+
+                    $words = explode(' ',$matchs[5][$k]);
+                    $options = array();
+                    for($i=0;$i<count($words);$i++){
+                        if($words[$i] == 'ON'){
+                            $i ++;
+                            if(in_array($words[$i],array('DELETE','UPDATE'))){
+                                $key = $words[$i];
+                                $opt = array();
+                                for($i++;$i<count($words);$i++){
+                                    if(in_array($words[$i],array('ON',',',' '))){
+                                        $i --;
+                                        break;
+                                    }
+                                    $opt[] = preg_replace('/^([^,]+)(,?)$/','$1',$words[$i]);
+                                }
+                                $options[$key] = implode(' ',$opt);
+                            }
+                        }
                     }
-                    if(preg_match('/ON\sUPDATE\s([^\s,]+)/',$matchs[5][$k],$mts)){
-                        $onupdate = $mts[1];
+                    if(isset($options['DELETE'])){
+                        $ondelete = $options['DELETE'];
                     }
+                    if(isset($options['UPDATE'])){
+                        $onupdate = $options['UPDATE'];
+                    }
+
                     $now_fields[$column] = array(
                         'constraint' => $name,
                         'target' => $target_table,
