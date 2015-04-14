@@ -103,11 +103,13 @@ class TemplateVarParser{
     private $original_str;
     private $nodes;
     private $encoding;
+    private $modifier_flag;
 
     function  __construct($str,$encoding)
     {
         $this->original_str = $str;
         $this->encoding = $encoding;
+        $this->modifier_flag = false;
 
         $params = array();
         // string to convert
@@ -182,6 +184,22 @@ class TemplateVarParser{
         }
         $this->createNode($params);
 
+    }
+
+    /**
+     * @param boolean $modifier_flag
+     */
+    public function setModifierFlag($modifier_flag)
+    {
+        $this->modifier_flag = $modifier_flag;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getModifierFlag()
+    {
+        return $this->modifier_flag;
     }
 
     /**
@@ -414,6 +432,40 @@ class TemplateBlock{
     }
 }
 
+class TemplateFunction
+{
+    private $func;
+    private $set_template;
+
+    function __construct($func,$set_template = false)
+    {
+        $this->func = $func;
+        $this->set_template = $set_template;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFunc()
+    {
+        return $this->func;
+    }
+
+    /**
+     * @param $params
+     * @param $template
+     * @return mixed
+     */
+    public function callFunc($params,$template)
+    {
+        $p = $params;
+        if($this->set_template){
+            array_unshift($p,$template);
+        }
+        return call_user_func_array($this->func,$p);
+    }
+}
+
 /**
  * Class class_template
  */
@@ -434,6 +486,10 @@ class class_template {
     private $base_filename;
     private $auto_header;
     private $headers;
+    /**
+     * @var TemplateVarParser
+     */
+    private $current_node;
 
     static private $Functions = array();
 
@@ -470,6 +526,14 @@ class class_template {
      */
     public function getAutoHeader(){
         return $this->auto_header;
+    }
+
+    /**
+     * @return TemplateVarParser
+     */
+    public function getCurrentNode()
+    {
+        return $this->current_node;
     }
 
     /**
@@ -635,6 +699,7 @@ class class_template {
         $this->clearOutputVars();
         $template = $this->Template;
         if ($set) {
+            $this->current_node = null;
             // include setting
             $template = $this->setInclude($template);
             // import setting
@@ -747,10 +812,11 @@ class class_template {
     /**
      * @param $id
      * @param $val
+     * @param bool $set_template
      */
-    static public function filter($id, $val)
+    static public function filter($id, $val, $set_template=false)
     {
-        self::$Functions[$id] = $val;
+        self::$Functions[$id] = new TemplateFunction($val,$set_template);
     }
 
     /**
@@ -1068,6 +1134,7 @@ class class_template {
     public function evaString($str,$output_html=false)
     {
         $parser = new TemplateVarParser($str,$this->system_Encoding);
+        $this->current_node = $parser;
         try{
             if($parser->getFirst()) {
                 $result = $this->convertTemplateVar($parser->getFirst(), true);
@@ -1075,7 +1142,12 @@ class class_template {
                     if (
                         ($parser->getFirst()->getType() != TemplateVarNode::$TYPE_FUNCTION)
                         ||
-                        ($this->isEscapeFunc($this->default_modifiers) && !$this->isEscapeFunc($parser->getFirst()->getName()))
+                        (
+                            ($parser->getFirst()->getName() != $this->default_modifiers)
+                            &&
+                            $this->isEscapeFunc($this->default_modifiers)
+                            &&
+                            (!$this->current_node->getModifierFlag()))
                     ) {
                         $node = new TemplateVarNode(TemplateVarNode::$TYPE_FUNCTION, $this->default_modifiers);
                         $node->addParam(new TemplateVarNode(TemplateVarNode::$TYPE_VAR, '"' . str_replace('"', '\"', $result) . '"'));
@@ -1095,7 +1167,7 @@ class class_template {
     /**
      * @return mixed
      */
-    static public function callFilter()
+    public function callFilter()
     {
         if(func_num_args() > 0){
             $name = func_get_arg(0);
@@ -1103,9 +1175,9 @@ class class_template {
             for($i=1;$i<func_num_args();$i++){
                 $params[] = func_get_arg($i);
             }
-            if ( is_callable( self::$Functions[$name] ) ) {
+            if ( is_callable( self::$Functions[$name]->getFunc() ) ) {
                 try{
-                    $result = call_user_func_array(self::$Functions[$name],$params);
+                    $result = self::$Functions[$name]->callFunc($params,$this);
                 }catch (TemplateException $e){
                     new TemplateException('Template : Error Functions '.$name.'('.implode(",",$params).')');
                 }
@@ -1183,9 +1255,9 @@ class class_template {
             if($error){
                 throw $error;
             }
-            if ( is_callable( self::$Functions[$node->getName()] ) ) {
+            if ( is_callable( self::$Functions[$node->getName()]->getFunc() ) ) {
                 try{
-                    $result = call_user_func_array(self::$Functions[$node->getName()],$params);
+                    $result = self::$Functions[$node->getName()]->callFunc($params,$this);
                 }catch (TemplateException $e){
                     $this->error('Error Functions '.$node->getName().'('.implode(",",$node->getParams()).')');
                 }
@@ -1253,6 +1325,7 @@ class class_template {
                     }else{
                         $result = null;
                     }
+                    $this->current_node->setModifierFlag(true);
                     break;
                 case 'htmlentities':
                     if(!is_object($params[0])){
@@ -1260,6 +1333,7 @@ class class_template {
                     }else{
                         $result = null;
                     }
+                    $this->current_node->setModifierFlag(true);
                     break;
                 case 'htmlspecialchars':
                     if(!is_object($params[0])){
@@ -1267,6 +1341,7 @@ class class_template {
                     }else{
                         $result = null;
                     }
+                    $this->current_node->setModifierFlag(true);
                     break;
                 case 'escape_br':
                 case 'nl2br':
@@ -1276,12 +1351,14 @@ class class_template {
                     }else{
                         $result = null;
                     }
+                    $this->current_node->setModifierFlag(true);
                     break;
                 case 'strip_tags':
                     $result = strip_tags($params[0],(array_key_exists(1,$params) ? $params[1] : ""));
                     break;
                 case 'print_r':
                     $result = print_r($params[0], true);
+                    $this->current_node->setModifierFlag(true);
                     break;
                 case 'dump':
                     ob_start();
@@ -1290,6 +1367,7 @@ class class_template {
                     print '</pre>';
                     $result = ob_get_contents();
                     ob_end_clean();
+                    $this->current_node->setModifierFlag(true);
                     break;
                 case 'quotes':
                     if(!is_object($params[0])){
@@ -1297,6 +1375,7 @@ class class_template {
                     }else{
                         $result = null;
                     }
+                    $this->current_node->setModifierFlag(true);
                     break;
                 case 'urlencode':
                     if(!is_object($params[0])){
@@ -1304,6 +1383,7 @@ class class_template {
                     }else{
                         $result = null;
                     }
+                    $this->current_node->setModifierFlag(true);
                     break;
                 // format
                 case 'number_format':
@@ -1332,6 +1412,7 @@ class class_template {
                     break;
                 case 'nofilter':
                     $result = $params[0];
+                    $this->current_node->setModifierFlag(true);
                     break;
                 case 'rest':
                     $result = '';
