@@ -1385,6 +1385,12 @@ class class_template {
                     }
                     $this->current_node->setModifierFlag(true);
                     break;
+                case 'json_decode':
+                    $result = json_decode($params[0]);
+                    break;
+                case 'json_encode':
+                    $result = json_encode($params[0]);
+                    break;
                 // format
                 case 'number_format':
                     $result = number_format($params[0]);
