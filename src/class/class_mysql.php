@@ -324,7 +324,11 @@ class class_mysql_column extends class_mysql_column_obj{
         if($this->nullable && is_null($this->default)) {
             $attr[] = "DEFAULT NULL";
         }else if(!is_null($this->default)){
-            $attr[] = "DEFAULT ".$this->default;
+            if(is_numeric($this->default)){
+                $attr[] = "DEFAULT ".$this->default;
+            }else{
+                $attr[] = "DEFAULT '".$this->default."'";
+            }
         }
         if($create && $this->unique){
             $attr[] = "UNIQUE";
