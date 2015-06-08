@@ -1295,10 +1295,25 @@ class class_template {
                     $result = floatval($params[0]);
                     break;
                 case 'implode':
+                    if(!is_array($params[0])){
+                        $this->error('error implode() paramater must array.');
+                    }
                     $result = implode($params[0],$params[1]);
                     break;
                 case 'explode':
                     $result = explode($params[0],$params[1]);
+                    break;
+                case 'max':
+                    if(!is_numeric($params[0]) || is_numeric($params[1])){
+                        $this->error('error max() paramater must numeric.');
+                    }
+                    $result = max($params[0],$params[1]);
+                    break;
+                case 'min':
+                    if(!is_numeric($params[0]) || is_numeric($params[1])){
+                        $this->error('error min() paramater must numeric.');
+                    }
+                    $result = min($params[0],$params[1]);
                     break;
                 case 'array_filter':
                     if(isset($params[1])){
