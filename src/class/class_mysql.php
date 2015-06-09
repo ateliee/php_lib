@@ -1973,10 +1973,22 @@ class class_mysql_connect{
  * Class class_mysql
  */
 class class_mysql{
-    var     $db;
-    var     $current;
-    var     $auto_connect = true;
-    var     $debug = false;
+    /**
+     * @var class_mysql_connect[]
+     */
+    private $db;
+    /**
+     * @var int
+     */
+    private $current;
+    /**
+     * @var bool
+     */
+    private $auto_connect;
+    /**
+     * @var bool
+     */
+    private $debug;
 
     /**
      * コンストラクタ
@@ -1984,6 +1996,8 @@ class class_mysql{
     function class_mysql(){
         $this->db = array();
         $this->current = 0;
+        $this->auto_connect = true;
+        $this->debug = false;
     }
 
     /**
@@ -1993,7 +2007,7 @@ class class_mysql{
      * @param $sep
      * @return string
      */
-    function arrayToSqlString($ary,$sep){
+    public function arrayToSqlString($ary,$sep){
         $str = "";
         if(is_array($ary)){
             $i = 0;
@@ -2013,7 +2027,7 @@ class class_mysql{
      * @param $sep
      * @return array
      */
-    function sqlStringToArray($str,$sep){
+    public function sqlStringToArray($str,$sep){
         $ary = preg_split("/".preg_quote($sep)."/",$str);
         // 配列の最初と最後を取り除く
         array_shift($ary);
@@ -2026,7 +2040,7 @@ class class_mysql{
      * @param $date
      * @return bool|string
      */
-    function dateFormat($format,$date){
+    public function dateFormat($format,$date){
         return date($format,$this->dateToTimestamp($date));
     }
 
@@ -2036,7 +2050,7 @@ class class_mysql{
      * @param $date
      * @return int
      */
-    function dateToTimestamp($date){
+    public function dateToTimestamp($date){
         return strtotime($date);
     }
 
@@ -2045,7 +2059,7 @@ class class_mysql{
      * @param null $timestamp
      * @return bool|null|string
      */
-    function timestampToDatetime($timestamp){
+    public function timestampToDatetime($timestamp){
         if(is_null($timestamp)){
             return null;
         }
@@ -2056,61 +2070,113 @@ class class_mysql{
      * @param null $timestamp
      * @return bool|string
      */
-    function timestampToDate($timestamp){
+    public function timestampToDate($timestamp){
         if(is_null($timestamp)){
             return null;
         }
         return date("Y-m-d",$timestamp);
     }
 
-    //====================================
-    // DBサーバー追加
-    //====================================
-    // DB追加
-    function addDB($server,$user,$password){
+    /**
+     * DB追加
+     *
+     * @param $server
+     * @param $user
+     * @param $password
+     */
+    public function addDB($server,$user,$password){
         $db = new class_mysql_connect($server,$user,$password);
         $this->db[] = $db;
     }
-    // DB選択
-    function setCurrentDB($num){
+
+    /**
+     * DB選択
+     *
+     * @param $num
+     */
+    public function setCurrentDB($num){
         $this->current = $num;
     }
-    function setAutoConnect($flg){
+
+    /**
+     * @param $flg
+     */
+    public function setAutoConnect($flg){
         $this->auto_connect = $flg;
     }
-    function setDebug($flg){
+
+    /**
+     * @param $flg
+     */
+    public function setDebug($flg){
         $this->debug = $flg;
     }
-    function get($id=-1){
+
+    /**
+     * @param int $id
+     * @return mixed
+     */
+    public function get($id=-1){
         if($id < 0){
             $id = $this->current;
         }
         return $this->db[$id];
     }
-    // DB設定
-    function setDBName($name){
+
+    /**
+     * DB設定
+     *
+     * @param $name
+     * @return mixed
+     */
+    public function setDBName($name){
         return $this->db[$this->current]->setDBName($name);
     }
-    // DB作成
-    function createDB($dbname){
+
+    /**
+     * DB作成
+     *
+     * @param $dbname
+     * @return mixed
+     */
+    public function createDB($dbname){
         return $this->db[$this->current]->createDB($dbname);
     }
-    function dropDB($dbname){
+
+    /**
+     * @param $dbname
+     * @return mixed
+     */
+    public function dropDB($dbname){
         return $this->db[$this->current]->dropDB($dbname);
     }
-    //====================================
-    // TABLE操作
-    //====================================
-    // SQL文を発行する(シンプル)
-    function query_simple($q){
+
+    /**
+     * SQL文を発行する(シンプル)
+     *
+     * @param $q
+     * @return mixed
+     */
+    public function query_simple($q){
         return $this->db[$this->current]->query_simple($q,$this->debug);
     }
-    // DB接続
-    function connect(){
+
+    /**
+     * DB接続
+     *
+     * @return mixed
+     */
+    public function connect(){
         return $this->db[$this->current]->connect();
     }
-    // SQL文を発行する
-    function query($q){
+
+    /**
+     * SQL文を発行する
+     *
+     * @param $q
+     * @return mixed
+     */
+    public function query($q){
         return $this->db[$this->current]->query($q,$this->auto_connect,$this->debug);
     }
 
@@ -2121,36 +2187,72 @@ class class_mysql{
      * @param array $params
      * @return mixed
      */
-    function exec($q,$params = array()){
+    public function exec($q,$params = array()){
         return $this->query($this->execFormat($q,$params));
     }
-    function execFormat($q,$params = array()){
+
+    /**
+     * @param $q
+     * @param array $params
+     * @return mixed
+     */
+    public function execFormat($q,$params = array()){
         foreach($params as $key => $val){
             $q = str_replace(':'.$key.':',$val,$q);
             $q = str_replace(':%'.$key.'%:',$this->escapeSQL($val),$q);
         }
         return $q;
     }
-    // 最新の追加IDを取得
-    function lastId(){
+
+    /**
+     * 最新の追加IDを取得
+     *
+     * @return mixed
+     */
+    public function lastId(){
         return $this->db[$this->current]->lastId($this->auto_connect);
     }
-    // 実行結果の行数を取得
-    function numRows(){
+
+    /**
+     * 実行結果の行数を取得
+     *
+     * @return mixed
+     */
+    public function numRows(){
         return $this->db[$this->current]->numRows();
     }
-    // 影響された行数を取得
-    function affectedRows(){
+    /**
+     * 影響された行数を取得
+     *
+     * @return mixed
+     */
+    public function affectedRows(){
         return $this->db[$this->current]->affectedRows();
     }
-    // 実行結果を配列・連想配列に格納する
-    function fetchArray($result_type = MYSQL_ASSOC){
+    /**
+     * 実行結果を配列・連想配列に格納する
+     *
+     * @param int $result_type
+     * @return mixed
+     */
+    public function fetchArray($result_type = MYSQL_ASSOC){
         return $this->db[$this->current]->fetchArray($result_type);
     }
-    function fetchArrayAll(&$list,$result_type = MYSQL_ASSOC){
+
+    /**
+     * @param $list
+     * @param int $result_type
+     * @return mixed
+     */
+    public function fetchArrayAll(&$list,$result_type = MYSQL_ASSOC){
         return $this->db[$this->current]->fetchArrayAll($list,$result_type);
     }
-    function fetchArrayResult($prex=null){
+
+    /**
+     * @param null $prex
+     * @return array|null
+     */
+    public function fetchArrayResult($prex=null){
         $result = $this->fetchArray(MYSQL_ASSOC);
         if(!$result){
             return null;
@@ -2160,14 +2262,24 @@ class class_mysql{
         }
         return $result;
     }
-    function fetchArrayResults($prex=null){
+
+    /**
+     * @param null $prex
+     * @return array
+     */
+    public function fetchArrayResults($prex=null){
         $valuelist = array();
         while($value = $this->fetchArrayResult($prex)){
             $valuelist[] = $value;
         }
         return $valuelist;
     }
-    function findOneColum($default=null){
+
+    /**
+     * @param null $default
+     * @return null
+     */
+    public function findOneColum($default=null){
         if($this->numRows() > 0){
             $res = $this->fetchArray(MYSQL_BOTH);
             if($res && isset($res[0])){
@@ -2176,7 +2288,44 @@ class class_mysql{
         }
         return $default;
     }
-    function foundRows(){
+
+    /**
+     * @param null $default
+     * @return int|null
+     */
+    public function findOneColumInt($default=null){
+        if(!is_null($res = $this->findOneColum(null))){
+            return intval($res);
+        }
+        return $default;
+    }
+
+    /**
+     * @param null $default
+     * @return float|null
+     */
+    public function findOneColumFloat($default=null){
+        if(!is_null($res = $this->findOneColum(null))){
+            return floatval($res);
+        }
+        return $default;
+    }
+
+    /**
+     * @param null $default
+     * @return int|null
+     */
+    public function findOneColumString($default=null){
+        if(!is_null($res = $this->findOneColum(null))){
+            return strval($res);
+        }
+        return $default;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function foundRows(){
         $sql = 'SELECT FOUND_ROWS() as `all`';
         $this->query($sql);
         if($this->numRows() > 0){
@@ -2184,8 +2333,15 @@ class class_mysql{
         }
         return 0;
     }
-    // プレックスの追加
-    function addPrex($value,$prex){
+
+    /**
+     * プレックスの追加
+     *
+     * @param $value
+     * @param $prex
+     * @return array
+     */
+    public function addPrex($value,$prex){
         if($value){
             $postvalue = array();
             foreach($value as $k => $v){
@@ -2195,14 +2351,27 @@ class class_mysql{
         }
         return $value;
     }
-    function addPrexArray($valuelist,$prex){
+
+    /**
+     * @param $valuelist
+     * @param $prex
+     * @return mixed
+     */
+    public function addPrexArray($valuelist,$prex){
         foreach($valuelist as $key => $value){
             $valuelist[$key] = $this->addPrex($value,$prex);
         }
         return $valuelist;
     }
-    // プレックスの変更
-    function replacePrex($value,$prex,$rename_prex){
+
+    /**
+     * プレックスの変更
+     * @param $value
+     * @param $prex
+     * @param $rename_prex
+     * @return array
+     */
+    public function replacePrex($value,$prex,$rename_prex){
         if($value){
             $result = array();
             foreach($value as $key => $val){
@@ -2216,102 +2385,222 @@ class class_mysql{
         }
         return $value;
     }
-    function replacePrexArray($valuelist,$prex,$rename_prex){
+
+    /**
+     * @param $valuelist
+     * @param $prex
+     * @param $rename_prex
+     * @return mixed
+     */
+    public function replacePrexArray($valuelist,$prex,$rename_prex){
         foreach($valuelist as $key => $value){
             $valuelist[$key] = $this->replacePrex($value,$prex,$rename_prex);
         }
         return $valuelist;
     }
-    // 実行結果を最初に戻す
-    function refresh(){
+
+    /**
+     * 実行結果を最初に戻す
+     * @return mixed
+     */
+    public function refresh(){
         return $this->db[$this->current]->refresh();
     }
-    // 直前のエラーを返す
-    function error(){
+
+    /**
+     * 直前のエラーを返す
+     * @return mixed
+     */
+    public function error(){
         return $this->db[$this->current]->error();
     }
-    // DB切断
-    function close(){
+
+    /**
+     * DB切断
+     * @return mixed
+     */
+    public function close(){
         return $this->db[$this->current]->close();
     }
-    // テーブル情報を取得する
-    function dbInfo(){
+
+    /**
+     * テーブル情報を取得する
+     * @return mixed
+     */
+    public function dbInfo(){
         return $this->db[$this->current]->dbInfo();
     }
-    // テーブル情報を取得する
-    function tableInfo($table_name){
+
+    /**
+     * テーブル情報を取得する
+     * @param $table_name
+     * @return mixed
+     */
+    public function tableInfo($table_name){
         return $this->db[$this->current]->tableInfo($table_name);
     }
-    // データベースをエクスポートする
-    function exportCSV($table_name,$option=null){
+
+    /**
+     * データベースをエクスポートする
+     * @param $table_name
+     * @param null $option
+     * @return mixed
+     */
+    public function exportCSV($table_name,$option=null){
         return $this->db[$this->current]->exportCSV($table_name,$option);
     }
 
-    //----------------------------------------
-    // テープル作成・削除
-    //----------------------------------------
-    // テーブル作成SQL文を作成
-    function createTableSQL($dbname,$fields=array(),$charaset="",$engine="InnoDB"){
+    /**
+     * テーブル作成SQL文を作成
+     * @param $dbname
+     * @param array $fields
+     * @param string $charaset
+     * @param string $engine
+     * @return mixed
+     */
+    public function createTableSQL($dbname,$fields=array(),$charaset="",$engine="InnoDB"){
         return $this->db[$this->current]->createTableSQL($dbname,$fields,$charaset,$engine);
     }
-    // INDEX作成
-    function createIndexSQL($dbname,$fields=array()){
+
+    /**
+     * INDEX作成
+     * @param $dbname
+     * @param array $fields
+     * @return mixed
+     */
+    public function createIndexSQL($dbname,$fields=array()){
         return $this->db[$this->current]->createIndexSQL($dbname,$fields);
     }
-    // References作成
-    function createReferencesSQL($dbname,$key_name,$fields){
+
+    /**
+     * References作成
+     * @param $dbname
+     * @param $key_name
+     * @param $fields
+     * @return mixed
+     */
+    public function createReferencesSQL($dbname,$key_name,$fields){
         return $this->db[$this->current]->createReferencesSQL($dbname,$key_name,$fields);
     }
-    function deleteReferencesSQL($dbname,$key_name){
+
+    /**
+     * @param $dbname
+     * @param $key_name
+     * @return mixed
+     */
+    public function deleteReferencesSQL($dbname,$key_name){
         return $this->db[$this->current]->deleteReferencesSQL($dbname,$key_name);
     }
-    // COLUMN作成
-    function createColumnSQL($dbname,$fields=array()){
+
+    /**
+     * COLUMN作成
+     * @param $dbname
+     * @param array $fields
+     * @return mixed
+     */
+    public function createColumnSQL($dbname,$fields=array()){
         return $this->db[$this->current]->createColumnSQL($dbname,$fields);
     }
-    // テーブル削除SQL文を作成
-    function deleteTableSQL($dbname){
+
+    /**
+     * テーブル削除SQL文を作成
+     * @param $dbname
+     * @return mixed
+     */
+    public function deleteTableSQL($dbname){
         return $this->db[$this->current]->deleteTableSQL($dbname);
     }
-    // カラム追加
-    function alterTableSQL($dbname,$name,$column=array(),$after=""){
+
+    /**
+     * カラム追加
+     * @param $dbname
+     * @param $name
+     * @param array $column
+     * @param string $after
+     * @return mixed
+     */
+    public function alterTableSQL($dbname,$name,$column=array(),$after=""){
         return $this->db[$this->current]->alterTableSQL($dbname,$name,$column,$after);
     }
-    // マイグレーション
-    function migrationTableSQL($dbname,$fields=array(),$charaset="",$engine="InnoDB"){
+
+    /**
+     * マイグレーション
+     * @param $dbname
+     * @param array $fields
+     * @param string $charaset
+     * @param string $engine
+     * @return mixed
+     */
+    public function migrationTableSQL($dbname,$fields=array(),$charaset="",$engine="InnoDB"){
         return $this->db[$this->current]->migrationTableSQL($dbname,$fields,$charaset,$engine);
     }
-    // マイグレーション
-    function migrationIndexSQL($dbname,$fields=array()){
+
+    /**
+     * マイグレーション
+     * @param $dbname
+     * @param array $fields
+     * @return mixed
+     */
+    public function migrationIndexSQL($dbname,$fields=array()){
         return $this->db[$this->current]->migrationIndexSQL($dbname,$fields);
     }
-    // マイグレーション
-    function migrationReferencesSQL($dbname,$fields=array()){
+
+    /**
+     * マイグレーション
+     * @param $dbname
+     * @param array $fields
+     * @return mixed
+     */
+    public function migrationReferencesSQL($dbname,$fields=array()){
         return $this->db[$this->current]->migrationReferencesSQL($dbname,$fields);
     }
-    //----------------------------------------
-    // SQL作成
-    //----------------------------------------
-    // レコード追加SQL文を作成
-    function insertRecodeSQL($dbname,$args){
+    /**
+     * レコード追加SQL文を作成
+     * @param $dbname
+     * @param $args
+     * @return mixed
+     */
+    public function insertRecodeSQL($dbname,$args){
         return $this->db[$this->current]->insertRecodeSQL($dbname,$args);
     }
-    // レコード更新SQL文を作成
-    function updateRecodeSQL($dbname,$args,$where){
+
+    /**
+     * レコード更新SQL文を作成
+     * @param $dbname
+     * @param $args
+     * @param $where
+     * @return mixed
+     */
+    public function updateRecodeSQL($dbname,$args,$where){
         return $this->db[$this->current]->updateRecodeSQL($dbname,$args,$where);
     }
-    // レコード削除SQL文を作成
-    function deleteRecodeSQL($dbname,$where){
+
+    /**
+     * レコード削除SQL文を作成
+     * @param $dbname
+     * @param $where
+     * @return mixed
+     */
+    public function deleteRecodeSQL($dbname,$where){
         return $this->db[$this->current]->deleteRecodeSQL($dbname,$where);
     }
-    //----------------------------------------
-    // データ変換
-    //----------------------------------------
+
     // エスケープ
-    function escapeSQL($str){
+    /**
+     * エスケープ
+     * @param $str
+     * @return mixed
+     */
+    public function escapeSQL($str){
         return $this->db[$this->current]->escapeSQL($str);
     }
-    function toSqlValueListSQL($valuelist,$tablevalue){
+
+    /**
+     * @param $valuelist
+     * @param $tablevalue
+     * @return mixed
+     */
+    public function toSqlValueListSQL($valuelist,$tablevalue){
         return $this->db[$this->current]->toSqlValueListSQL($valuelist,$tablevalue);
     }
 }
