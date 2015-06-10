@@ -1513,7 +1513,8 @@ class class_template {
                     if(!isset($params[0]) || !is_numeric($params[0])){
                         $this->error('floor() paramater must be number.');
                     }
-                    $result = round($params[0]);
+                    $precision = isset($params[1]) ? $params[1] : 0;
+                    $result = round($params[0],$precision);
                     break;
                 default:
                     $this->error('Error Functions '.$node->getName());
