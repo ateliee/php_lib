@@ -352,8 +352,21 @@ class class_mysql_column extends class_mysql_column_obj{
      */
     public function alterSQL($action="ADD")
     {
-        $sql = 'ALTER TABLE `'.$this->getTable()->getName().'` '.$action.' '.$this->infoSQL($action == 'ADD');
+        if($action == 'DROP') {
+            $sql = $this->dropSQL();
+        }else{
+            $sql = 'ALTER TABLE `'.$this->getTable()->getName().'` '.$action;
+            $sql .= ' '.$this->infoSQL($action == 'ADD');
+        }
         return $sql;
+    }
+
+    /**
+     * @return string
+     */
+    public function dropSQL()
+    {
+        return 'ALTER TABLE `'.$this->getTable()->getName().'` DROP COLUMN `'.$this->getName().'`';
     }
 
     /**
@@ -1770,13 +1783,30 @@ class class_mysql_connect{
     /**
      * COLUMN作成
      *
-     * @param $name
-     * @param array $fields
+     * @param $table_name
+     * @param $column_name
+     * @param array $field
      * @return string
      */
-    public function createColumnSQL($name,$fields=array()){
-        $column = new class_mysql_column($name,$fields);
-        return $column->infoSQL(true);
+    public function createColumnSQL($table_name,$column_name,$field){
+        $column = new class_mysql_column($column_name,$field);
+        $table = new class_mysql_table($table_name);
+        $column->setTable($table);
+        return $column->alterSQL('ADD');
+    }
+
+    /**
+     * COLUMN作成
+     *
+     * @param $table_name
+     * @param $column_name
+     * @return string
+     */
+    public function deleteColumnSQL($table_name,$column_name){
+        $column = new class_mysql_column($column_name);
+        $table = new class_mysql_table($table_name);
+        $column->setTable($table);
+        return $column->alterSQL('DROP');
     }
 
     /**
@@ -2494,12 +2524,23 @@ class class_mysql{
 
     /**
      * COLUMN作成
-     * @param $dbname
-     * @param array $fields
-     * @return mixed
+     * @param $table_name
+     * @param $column_name
+     * @param $field
+     * @return string
      */
-    public function createColumnSQL($dbname,$fields=array()){
-        return $this->db[$this->current]->createColumnSQL($dbname,$fields);
+    public function createColumnSQL($table_name,$column_name,$field){
+        return $this->db[$this->current]->createColumnSQL($table_name,$column_name,$field);
+    }
+
+    /**
+     * COLUMN削除
+     * @param $table_name
+     * @param $column_name
+     * @return string
+     */
+    public function deleteColumnSQL($table_name,$column_name){
+        return $this->db[$this->current]->deleteColumnSQL($table_name,$column_name);
     }
 
     /**
