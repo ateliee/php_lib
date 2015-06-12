@@ -1509,6 +1509,12 @@ class class_template {
                     }
                     $result = ceil($params[0]);
                     break;
+                case 'abs':
+                    if(!isset($params[0]) || !is_numeric($params[0])){
+                        $this->error('abs() paramater must be number.');
+                    }
+                    $result = abs($params[0]);
+                    break;
                 case 'round':
                     if(!isset($params[0]) || !is_numeric($params[0])){
                         $this->error('floor() paramater must be number.');
