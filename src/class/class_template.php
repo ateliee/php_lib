@@ -1510,7 +1510,7 @@ class class_template {
                     $result = ceil($params[0]);
                     break;
                 case 'abs':
-                    if(!isset($params[0])){
+                    if(!array_key_exists(0,$params)){
                         $this->error('abs() paramater must be number.');
                     }
                     $result = abs($params[0]);
