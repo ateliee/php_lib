@@ -1408,7 +1408,11 @@ class class_template {
                     break;
                 // format
                 case 'number_format':
-                    $result = number_format($params[0]);
+                    $decimals = 0;
+                    if(array_key_exists(1,$params)){
+                        $decimals = $params[1];
+                    }
+                    $result = number_format($params[0],$decimals);
                     break;
                 case 'strimw':
                     $str = $params[0];
