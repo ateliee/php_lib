@@ -1392,6 +1392,10 @@ class class_template {
                     }
                     $this->current_node->setModifierFlag(true);
                     break;
+                case 'nl2rm':
+                    $result = $params[0];
+                    $result = str_replace(array("\r\n", "\r", "\n"), '', $result);
+                    break;
                 case 'urlencode':
                     if(!is_object($params[0])){
                         $result = urlencode($params[0]);
