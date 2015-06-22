@@ -90,6 +90,7 @@ class RoutingRule{
  * Class RoutingRuleMatch
  */
 class RoutingRuleMatch extends RoutingRule{
+    private $original_value;
     private $params;
     /**
      * @param RoutingRule $rule
@@ -97,6 +98,8 @@ class RoutingRuleMatch extends RoutingRule{
      */
     function __construct(RoutingRule $rule,$params = array()){
         parent::__construct($rule->getRule(),$rule->getValue(),$rule->getNo());
+
+        $this->original_value = $rule->getValue();
 
         $params_list = $rule->getUrlParams();
         $keys = array_keys($params_list);
@@ -111,6 +114,11 @@ class RoutingRuleMatch extends RoutingRule{
             $this->params[$key] = $val;
             $i ++;
         }
+        $value = $rule->getValue();
+        foreach($this->params as $key => $val){
+            $value = preg_replace('/{'.preg_quote($key,'/').'}/',$val,$value);
+        }
+        $this->setValue($value);
     }
 
     /**
@@ -134,6 +142,15 @@ class RoutingRuleMatch extends RoutingRule{
         $this->params[$key] = $val;
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getOriginalValue()
+    {
+        return $this->original_value;
+    }
+
 }
 
 /**
