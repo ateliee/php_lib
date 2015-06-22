@@ -31,8 +31,8 @@ class class_facebook{
         if($verndor_dir = getVendorDir('',self::$VENDOR_DIR)){
             if (version_compare(phpversion(), '5.4.0', '>=')) {
                 define('FACEBOOK_SDK_OFFICIAL',true);
-                define('FACEBOOK_SDK_V4_SRC_DIR', $verndor_dir.'/facebook/fb-php-sdk-v4/src/Facebook/');
-                require_once($verndor_dir.'/facebook/fb-php-sdk-v4/autoload.php');
+                define('FACEBOOK_SDK_V4_SRC_DIR', $verndor_dir.'/facebook/php-sdk-v4/src/Facebook/');
+                require_once($verndor_dir.'/facebook/php-sdk-v4/autoload.php');
             }else{
                 define('FACEBOOK_SDK_OFFICIAL',false);
                 define('FACEBOOK_SDK_V4_SRC_DIR', $verndor_dir.'/sleepwalker/facebook-php-sdk-v4/src/Facebook/');
