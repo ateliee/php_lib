@@ -40,11 +40,18 @@ class class_image
     // コンストラクタ
     function class_image()
     {
+        $this->C_TYPETRUE_DIR = dirname(__FILE__) . "/../exe/ttfont/";
+    }
+
+    /**
+     * @return bool
+     */
+    public function checkGD(){
         // GDライブラリチェック
         if(!function_exists('imagecreatefrompng')){
-            throw new Exception('php-gd uninstall!');
+            return false;
         }
-        $this->C_TYPETRUE_DIR = dirname(__FILE__) . "/../exe/ttfont/";
+        return true;
     }
 
     // 処理の設定
