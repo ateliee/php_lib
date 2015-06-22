@@ -1,20 +1,24 @@
 {
-    "name": "ateliee/php_lib",
-    "type": "library",
-    "description": "php4/5 library",
-    "keywords": [],
-    "homepage": "https://github.com/ateliee/php_lib",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "ateliee",
-            "email": "ateliee@gmail.com"
-        }
-    ],
-    "require": {
-        "php": ">=4.4.0"
-    },
-    "autoload": {
-        "files": ["src/init_lib.php"]
+  "name": "ateliee/php_lib",
+  "type": "library",
+  "description": "php4/5 library",
+  "keywords": [],
+  "homepage": "https://github.com/ateliee/php_lib",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "ateliee",
+      "email": "ateliee@gmail.com"
     }
+  ],
+  "require": {
+    "php": ">=4.4.0"
+  },
+  "require-dev": {
+    "facebook/php-sdk-v4" : "4.0.*",
+    "sleepwalker/facebook-php-sdk-v4": "dev-master"
+  },
+  "autoload": {
+    "files": ["src/init_lib.php"]
+  }
 }

@@ -1204,4 +1204,17 @@ function resizeCalculation($width, $height, $max_width = 0, $max_height = 0)
     return array($width, $height);
 }
 
-?>
+/**
+ * get vendor dir
+ */
+function getVendorDir($filename='',$vendor_dir = 'vendor'){
+    $dirs = explode(DIRECTORY_SEPARATOR,dirname(__FILE__));
+    while(count($dirs) > 0){
+        $dir = implode(DIRECTORY_SEPARATOR,$dirs).'/'.$vendor_dir;
+        if(file_exists($dir) && is_dir($dir)){
+            return $dir;
+        }
+        array_pop($dirs);
+    }
+    return false;
+}
