@@ -14,7 +14,7 @@
   "require": {
     "php": ">=4.4.0",
     "facebook/php-sdk-v4" : "4.0.*",
-    "sleepwalker/facebook-php-sdk-v4": "dev-master"
+    "sleepwalker/facebook-php-sdk-v4": "4.0.8"
   },
   "autoload": {
     "files": ["src/init_lib.php"]
