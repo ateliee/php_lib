@@ -1,22 +1,19 @@
 <?php
-//============================================
-// class_image.php
-//============================================
-
 // 画像加工タイプ
 define('C_IMAGE_PRO_RESIZE', 1); // リサイズ処理(荒いがはっきり)
 define('C_IMAGE_PRO_RESAMPLE', 2); // サンプリング処理(きれいだがぼける)
 
-if (!function_exists('mime_content_type')) {
+if (!function_exists('mime_content_type')){
     function mime_content_type($filename)
     {
         $mime_type = exec('file -Ib ' . $filename);
         return $mime_type;
     }
 }
-//+++++++++++++++++++++++++++++
-// 画像クラス
-//+++++++++++++++++++++++++++++
+
+/**
+ * Class class_image
+ */
 class class_image
 {
     var $image = NULL;
@@ -38,39 +35,44 @@ class class_image
     );
 
     // コンストラクタ
-    function class_image()
+    public function class_image()
     {
+        // GDライブラリチェック
+        if(!function_exists('ImageCreateFromPNG')){
+            //throw new Exception('php-gd uninstall!');
+        }
         $this->C_TYPETRUE_DIR = dirname(__FILE__) . "/../exe/ttfont/";
     }
 
     /**
-     * @return bool
+     * 処理の設定
+     *
+     * @param $processing
+     * @return int
      */
-    public function checkGD(){
-        // GDライブラリチェック
-        if(!function_exists('imagecreatefrompng')){
-            return false;
-        }
-        return true;
-    }
-
-    // 処理の設定
-    function setProcessing($processing)
+    public function setProcessing($processing)
     {
         $this->processing = $processing;
         return $this->processing;
     }
 
-    function setQuality($quality)
+    /**
+     * @param $quality
+     * @return int
+     */
+    public function setQuality($quality)
     {
         $this->quality = $quality;
         return $this->quality;
     }
-//-----------------------------
-// 情報取得
-//-----------------------------
-    // 指定画像の情報を取得
-    function getImageInfo($filename)
+
+    /**
+     * 指定画像の情報を取得
+     *
+     * @param $filename
+     * @return array
+     */
+    public function getImageInfo($filename)
     {
         $img_info = getimagesize($filename);
         $info = array();
@@ -84,13 +86,24 @@ class class_image
         return $info;
     }
 
-    // カラー情報を生成
-    function colorRGB($r, $g, $b)
+    /**
+     * カラー情報を生成
+     *
+     * @param $r
+     * @param $g
+     * @param $b
+     * @return int
+     */
+    public function colorRGB($r, $g, $b)
     {
         return (0xff << 24) | (($r & 0xff) << 16) | (($g & 0xff) << 8) | ($b & 0xff);
     }
 
-    function getRGB($rgb)
+    /**
+     * @param $rgb
+     * @return array
+     */
+    public function getRGB($rgb)
     {
         $r = ((0x00ff0000 & $rgb) >> 16);
         $g = ((0x0000ff00 & $rgb) >> 8);
@@ -98,8 +111,12 @@ class class_image
         return array($r, $g, $b);
     }
 
-    // GDライブラリが使用可能か調べる
-    function enableGD()
+    /**
+     * GDライブラリが使用可能か調べる
+     *
+     * @return bool
+     */
+    public function enableGD()
     {
         if (function_exists('imagecreatefromjpeg')) {
             return true;
@@ -109,8 +126,15 @@ class class_image
 //-----------------------------
 // 画像処理関数
 //-----------------------------
-    // 画像をブラウザまたはファイルに出力する
-    function outputImage($image, $filename = false, $quality = 90)
+    /**
+     * 画像をブラウザまたはファイルに出力する
+     *
+     * @param $image
+     * @param bool $filename
+     * @param int $quality
+     * @return bool|null
+     */
+    public function outputImage($image, $filename = false, $quality = 90)
     {
         if ($image) {
             return $this->outputImageData($image, $filename, null, $quality);
@@ -118,7 +142,14 @@ class class_image
         return NULL;
     }
 
-    function outputImageData($image, $filename = false, $type = false, $quality = 90)
+    /**
+     * @param $image
+     * @param bool $filename
+     * @param bool $type
+     * @param int $quality
+     * @return bool|null
+     */
+    public function outputImageData($image, $filename = false, $type = false, $quality = 90)
     {
         if ($image) {
             $ext = "";
@@ -139,20 +170,40 @@ class class_image
         return NULL;
     }
 
-    function ImageOutput($filename = false, $quality = 100)
+    /**
+     * @param bool $filename
+     * @param int $quality
+     * @return bool|null
+     */
+    public function ImageOutput($filename = false, $quality = 100)
     {
         return $this->outputImage($this->image, $filename, $quality);
     }
 
-    // 画像読み込み
-    function loadImage($filename)
+    /**
+     * 画像読み込み
+     *
+     * @param $filename
+     * @return mixed|null|resource
+     */
+    public function loadImage($filename)
     {
         $this->image = $this->createImageFromFile($filename);
         return $this->image;
     }
 
-    // 新規画像を作成
-    function createImageFromFile($filename, $type = NULL, $dx = 0, $dy = 0, $dw = 0, $dh = 0)
+    /**
+     * 新規画像を作成
+     *
+     * @param $filename
+     * @param null $type
+     * @param int $dx
+     * @param int $dy
+     * @param int $dw
+     * @param int $dh
+     * @return mixed|null|resource
+     */
+    public function createImageFromFile($filename, $type = NULL, $dx = 0, $dy = 0, $dw = 0, $dh = 0)
     {
         // 画像のファイルタイプを取得
         $ext = '';
@@ -193,21 +244,42 @@ class class_image
             }
         } else {
             // 画像生成
-            if ($ext == 'jpg' || $ext == 'jpeg') $image = @imagecreatefromjpeg($filename);
-            else if ($ext == 'gif') $image = @imagecreatefromgif($filename);
-            else if ($ext == 'png') $image = @imagecreatefrompng($filename);
+            $func = '';
+            if ($ext == 'jpg' || $ext == 'jpeg'){
+                $func = 'imagecreatefromjpeg';
+            }else if ($ext == 'gif'){
+                $func = 'imagecreatefromgif';
+            }else if ($ext == 'png'){
+                $func = 'imagecreatefrompng';
+            }
+            if($func && function_exists($func)){
+                $image = @call_user_func($func,$filename);
+            }else{
+                trigger_error(sprintf('Not Found Method "%s".',$func),E_USER_NOTICE);
+            }
             return $image;
         }
         return null;
     }
 
-    // 空の画像を作成
-    function getImageResource()
+    /**
+     * 空の画像を作成
+     *
+     * @return null
+     */
+    public function getImageResource()
     {
         return $this->image;
     }
 
-    function createImageResource($w, $h, $bgcolor = false, $transparent = false)
+    /**
+     * @param $w
+     * @param $h
+     * @param bool $bgcolor
+     * @param bool $transparent
+     * @return null|resource
+     */
+    public function createImageResource($w, $h, $bgcolor = false, $transparent = false)
     {
         // イメージリソースを作成
         $this->image = @imagecreatetruecolor($w, $h);
@@ -231,7 +303,10 @@ class class_image
         return $this->image;
     }
 
-    function destoryImageResource()
+    /**
+     *
+     */
+    public function destoryImageResource()
     {
         // メモリ開放
         if ($this->image) {
@@ -239,8 +314,16 @@ class class_image
         }
     }
 
-    // 画像を回転
-    function rotate($image, $angle, $bgd_color, $ignore_transparent = 0)
+    /**
+     * 画像を回転
+     *
+     * @param $image
+     * @param $angle
+     * @param $bgd_color
+     * @param int $ignore_transparent
+     * @return null|resource
+     */
+    public function rotate($image, $angle, $bgd_color, $ignore_transparent = 0)
     {
         if ($image) {
             return imagerotate($image, $angle, $bgd_color, $ignore_transparent);
@@ -248,14 +331,26 @@ class class_image
         return NULL;
     }
 
-    function imageRotate($angle, $bgd_color, $ignore_transparent = 0)
+    /**
+     * @param $angle
+     * @param $bgd_color
+     * @param int $ignore_transparent
+     * @return null|resource
+     */
+    public function imageRotate($angle, $bgd_color, $ignore_transparent = 0)
     {
         $this->image = $this->rotate($this->image, $angle, $bgd_color, $ignore_transparent);
         return $this->image;
     }
 
-    // 画像の方向を正す
-    function orientationFixedImage($output, $filename)
+    /**
+     * 画像の方向を正す
+     *
+     * @param $output
+     * @param $filename
+     * @return bool
+     */
+    public function orientationFixedImage($output, $filename)
     {
         $exif_datas = @exif_read_data($filename);
         if (isset($exif_datas['Orientation'])) {
@@ -298,8 +393,13 @@ class class_image
         return false;
     }
 
-    // 左右反転
-    function flop($image)
+    /**
+     * 左右反転
+     *
+     * @param $image
+     * @return resource
+     */
+    public function flop($image)
     {
         // 画像の幅を取得
         $w = imagesx($image);
@@ -318,14 +418,22 @@ class class_image
         return $destImage;
     }
 
-    function imageFlop()
+    /**
+     * @return null|resource
+     */
+    public function imageFlop()
     {
         $this->image = $this->flop($this->image);
         return $this->image;
     }
 
-    // 上下反転
-    function flip($image)
+    /**
+     * 上下反転
+     *
+     * @param $image
+     * @return resource
+     */
+    public function flip($image)
     {
         // 画像の幅を取得
         $w = imagesx($image);
@@ -344,17 +452,28 @@ class class_image
         return $destImage;
     }
 
-    function imageFlip()
+    /**
+     * @return null|resource
+     */
+    public function imageFlip()
     {
         $this->image = $this->flip($this->image);
         return $this->image;
     }
-    // 直線を描画
-    //    x1,y1 : 始点
-    //    x2,y2 : 終点
-    //    color : 色
-    //    thick : 太さ
-    function writeLine($image, $x1, $y1, $x2, $y2, $color, $thick = 1)
+
+    /**
+     * 直線を描画
+     *
+     * @param $image
+     * @param $x1 始点
+     * @param $y1 始点
+     * @param $x2 終点
+     * @param $y2 終点
+     * @param $color 色
+     * @param int $thick 太さ
+     * @return bool|null
+     */
+    public function writeLine($image, $x1, $y1, $x2, $y2, $color, $thick = 1)
     {
         if ($image) {
             // 塗りつぶし
@@ -382,7 +501,16 @@ class class_image
         return NULL;
     }
 
-    function imageWriteLine($x1, $y1, $x2, $y2, $color, $thick = 1)
+    /**
+     * @param $x1
+     * @param $y1
+     * @param $x2
+     * @param $y2
+     * @param $color
+     * @param int $thick
+     * @return bool|null
+     */
+    public function imageWriteLine($x1, $y1, $x2, $y2, $color, $thick = 1)
     {
         return $this->writeLine($this->image, $x1, $y1, $x2, $y2, $color, $thick);
     }
@@ -412,7 +540,14 @@ class class_image
       }
 
     */
-    function writeImageText($text, $font, $color, $align = "LT", $option = array())
+    /**
+     * @param $text
+     * @param $font
+     * @param $color
+     * @param string $align
+     * @param array $option
+     */
+    public function writeImageText($text, $font, $color, $align = "LT", $option = array())
     {
         if ($this->image) {
             $from_encode = mb_internal_encoding();
@@ -577,7 +712,14 @@ class class_image
         }
     }
 
-    function calculateTextBox($text, $fontFile, $fontSize, $fontAngle)
+    /**
+     * @param $text
+     * @param $fontFile
+     * @param $fontSize
+     * @param $fontAngle
+     * @return array
+     */
+    public function calculateTextBox($text, $fontFile, $fontSize, $fontAngle)
     {
         $rect = imagettfbbox($fontSize, $fontAngle, $fontFile, $text);
         $minX = min(array($rect[0], $rect[2], $rect[4], $rect[6]));
@@ -594,8 +736,16 @@ class class_image
         );
     }
 
-    // 空の画像を作成する
-    function createImage($filename, $w, $h, $transparent = false)
+    /**
+     * 空の画像を作成する
+     *
+     * @param $filename
+     * @param $w
+     * @param $h
+     * @param bool $transparent
+     * @return null|resource
+     */
+    public function createImage($filename, $w, $h, $transparent = false)
     {
         // イメージリソースを作成
         $img = @imagecreatetruecolor($w, $h);
@@ -616,8 +766,14 @@ class class_image
         return NULL;
     }
 
-    // 画像フォーマット変換
-    function formatImage($dest, $src)
+    /**
+     * 画像フォーマット変換
+     *
+     * @param $dest
+     * @param $src
+     * @return bool
+     */
+    public function formatImage($dest, $src)
     {
         $img = $this->createImageFromFile($src);
         if ($img && $this->outputImage($img, $dest, 100)) {
@@ -630,8 +786,22 @@ class class_image
         return false;
     }
 
-    // 画像の大きさを変換する
-    function processingImage($dest, $src, $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h)
+    /**
+     * 画像の大きさを変換する
+     *
+     * @param $dest
+     * @param $src
+     * @param $dst_x
+     * @param $dst_y
+     * @param $src_x
+     * @param $src_y
+     * @param $dst_w
+     * @param $dst_h
+     * @param $src_w
+     * @param $src_h
+     * @return bool|null
+     */
+    public function processingImage($dest, $src, $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h)
     {
         switch ($this->processing) {
             // リサイズ処理(荒いがはっきり)
@@ -653,8 +823,18 @@ class class_image
         return NULL;
     }
 
-    // 一部分の画像を作成
-    function clipImage($dest, $src, $x = 0, $y = 0, $w = 0, $h = 0)
+    /**
+     * 一部分の画像を作成
+     *
+     * @param $dest
+     * @param $src
+     * @param int $x
+     * @param int $y
+     * @param int $w
+     * @param int $h
+     * @return bool
+     */
+    public function clipImage($dest, $src, $x = 0, $y = 0, $w = 0, $h = 0)
     {
         // 画像のインスタンスを作成します
         $src_img = $this->createImageFromFile($src);
@@ -670,8 +850,20 @@ class class_image
         return false;
     }
 
-    // 画像の大きさを変換する
-    function resizeImageFromResource($resource, $w, $h, $fit = false, $dx = 0, $dy = 0, $dw = 0, $dh = 0)
+    /**
+     * 画像の大きさを変換する
+     *
+     * @param $resource
+     * @param $w
+     * @param $h
+     * @param bool $fit
+     * @param int $dx
+     * @param int $dy
+     * @param int $dw
+     * @param int $dh
+     * @return resource
+     */
+    public function resizeImageFromResource($resource, $w, $h, $fit = false, $dx = 0, $dy = 0, $dw = 0, $dh = 0)
     {
         // 画像のサイズを取得。
         $sw = imagesx($resource);
@@ -721,7 +913,20 @@ class class_image
         return $dest_img;
     }
 
-    function resizeImage($dest, $src, $w, $h, $src_type = NULL, $fit = false, $dx = 0, $dy = 0, $dw = 0, $dh = 0)
+    /**
+     * @param $dest
+     * @param $src
+     * @param $w
+     * @param $h
+     * @param null $src_type
+     * @param bool $fit
+     * @param int $dx
+     * @param int $dy
+     * @param int $dw
+     * @param int $dh
+     * @return bool
+     */
+    public function resizeImage($dest, $src, $w, $h, $src_type = NULL, $fit = false, $dx = 0, $dy = 0, $dw = 0, $dh = 0)
     {
         // 画像のサイズを取得。
         $sw = 0;
@@ -762,8 +967,20 @@ class class_image
         return false;
     }
 
-    // トリミング画像の生成
-    function trimmingImageFromResource($resource, $w, $h, $fit = false, $dx = 0, $dy = 0, $dw = 0, $dh = 0)
+    /**
+     * トリミング画像の生成
+     *
+     * @param $resource
+     * @param $w
+     * @param $h
+     * @param bool $fit
+     * @param int $dx
+     * @param int $dy
+     * @param int $dw
+     * @param int $dh
+     * @return resource
+     */
+    public function trimmingImageFromResource($resource, $w, $h, $fit = false, $dx = 0, $dy = 0, $dw = 0, $dh = 0)
     {
         // 画像のサイズを取得。
         $sw = imagesx($resource);
@@ -812,7 +1029,20 @@ class class_image
         return $dest_img;
     }
 
-    function trimmingImage($dest, $src, $w, $h, $src_type = NULL, $fit = false, $dx = 0, $dy = 0, $dw = 0, $dh = 0)
+    /**
+     * @param $dest
+     * @param $src
+     * @param $w
+     * @param $h
+     * @param null $src_type
+     * @param bool $fit
+     * @param int $dx
+     * @param int $dy
+     * @param int $dw
+     * @param int $dh
+     * @return bool
+     */
+    public function trimmingImage($dest, $src, $w, $h, $src_type = NULL, $fit = false, $dx = 0, $dy = 0, $dw = 0, $dh = 0)
     {
         // 画像のサイズを取得。
         $sw = 0;
@@ -842,16 +1072,37 @@ class class_image
         }
         return false;
     }
-    // 画像を作成する
-    // {$type}{$width}_{$height}で指定
-    // {$type}{$size}で指定
-    // $type      S:サムネイル,F:フィット,T:トリミング
-    function createImageformFileEX($dest, $src, $type_string, $src_type = NULL, $x = 0, $y = 0, $w = 0, $h = 0)
+
+    /**
+     * 画像を作成する
+     *
+     * @param $dest
+     * @param $src
+     * @param $type_string {$type}{$width}_{$height}で指定(S:サムネイル,F:フィット,T:トリミング)
+     * @param null $src_type
+     * @param int $x
+     * @param int $y
+     * @param int $w
+     * @param int $h
+     * @return bool
+     */
+    public function createImageformFileEX($dest, $src, $type_string, $src_type = NULL, $x = 0, $y = 0, $w = 0, $h = 0)
     {
         return $this->createImageFromFileEX($dest, $src, $type_string, $src_type, $x, $y, $w, $h);
     }
 
-    function createImageFromFileEX($dest, $src, $type_string, $src_type = NULL, $x = 0, $y = 0, $w = 0, $h = 0)
+    /**
+     * @param $dest
+     * @param $src
+     * @param $type_string
+     * @param null $src_type
+     * @param int $x
+     * @param int $y
+     * @param int $w
+     * @param int $h
+     * @return bool
+     */
+    public function createImageFromFileEX($dest, $src, $type_string, $src_type = NULL, $x = 0, $y = 0, $w = 0, $h = 0)
     {
         // 作成タイプを取得
         $type_string = strtoupper($type_string);
@@ -883,7 +1134,17 @@ class class_image
         return $success;
     }
 
-    function createImageFromBinaryEX($filename, $binary, $type_string, $x = 0, $y = 0, $w = 0, $h = 0)
+    /**
+     * @param $filename
+     * @param $binary
+     * @param $type_string
+     * @param int $x
+     * @param int $y
+     * @param int $w
+     * @param int $h
+     * @return null|string
+     */
+    public function createImageFromBinaryEX($filename, $binary, $type_string, $x = 0, $y = 0, $w = 0, $h = 0)
     {
         // 作成タイプを取得
         $type_string = strtoupper($type_string);
@@ -936,8 +1197,15 @@ class class_image
         return $data;
     }
 
-    // 画像の合成
-    function maskImage($dest, $src, $mask)
+    /**
+     * 画像の合成
+     *
+     * @param $dest
+     * @param $src
+     * @param $mask
+     * @return bool|null
+     */
+    public function maskImage($dest, $src, $mask)
     {
         // 元画像
         $image = $this->createImageFromFile($src);
