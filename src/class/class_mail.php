@@ -1079,9 +1079,9 @@ class class_mail
                 if(!$file->getData()){
                     continue;
                 }
-                $body .= "Content-Type: " . $file->getMimeType() . "; name=\"" . $this->encodeString($file->getFilename()->getEncodeValue()) . "\"\n";
+                $body .= "Content-Type: " . $file->getMimeType() . "; name=\"" . ($file->getFilename()->getEncodeValue()) . "\"\n";
                 $body .= "Content-Transfer-Encoding: base64\n";
-                $body .= "Content-Disposition: " . $file->getDisposition() . "; filename=\"" . $this->encodeString($file->getFilename()->getEncodeValue()) . "\"\n\n";
+                $body .= "Content-Disposition: " . $file->getDisposition() . "; filename=\"" . ($file->getFilename()->getEncodeValue()) . "\"\n\n";
                 $body .= $file->getData() . "\n";
                 $body .= "--" . $boundary . "--\n";
             }
