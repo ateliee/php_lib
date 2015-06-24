@@ -145,3 +145,12 @@ if (get_magic_quotes_gpc()) {
     $_POST = f_reMagicQuotes($_POST);
     $_GET = f_reMagicQuotes($_GET);
 }
+
+
+//$L_PROTOCOL = (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == "on")) ? "https://" : "http://";
+$protocol = "http://";
+$dir = preg_replace("/^".preg_quote($_SERVER["DOCUMENT_ROOT"],"/")."(.*)/","$1",preg_replace("/¥¥¥/","/",dirname(__FILE__)));
+$url = (isset($_SERVER["HTTP_HOST"]) ? $protocol.$_SERVER["HTTP_HOST"].$dir : '').'/exe/qr_img0.50i/php/qr_img.php';
+
+// QRライブラリ
+class_qr::setLibUrl($url);

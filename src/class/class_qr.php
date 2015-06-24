@@ -1,36 +1,83 @@
 <?php
-//============================================
-// class_qr.php
-//============================================
-
-//$L_PROTOCOL = (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == "on")) ? "https://" : "http://";
-$L_PROTOCOL = "http://";
-$L_SELF_DIR = preg_replace("/^".preg_quote($_SERVER["DOCUMENT_ROOT"],"/")."(.*)/","$1",preg_replace("/¥¥¥/","/",dirname(__FILE__)));
-$L_URL = "";
-if(isset($_SERVER["HTTP_HOST"])){
-    $L_URL = $L_PROTOCOL.$_SERVER["HTTP_HOST"].$L_SELF_DIR;
-}
-$L_LIB_PATH = $L_URL."/../exe/qr_img0.50i/php/qr_img.php";
 /**
  * Class class_qr
  */
 class class_qr{
     // 透過色
-    var $transparent = 0xffffffff;
+    private $transparent;
+    static private $lib_url;
 
-    // カラー情報を生成
-    function RGB($r,$g,$b){
+    function __construct()
+    {
+        $this->transparent = 0xffffffff;
+    }
+
+    /**
+     * @return mixed
+     */
+    public static function getLibUrl()
+    {
+        return self::$lib_url;
+    }
+
+    /**
+     * @param mixed $lib_url
+     */
+    public static function setLibUrl($lib_url)
+    {
+        self::$lib_url = $lib_url;
+    }
+
+    /**
+     * @param mixed $transparent
+     */
+    public function setTransparent($transparent)
+    {
+        $this->transparent = $transparent;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTransparent()
+    {
+        return $this->transparent;
+    }
+
+    /**
+     * カラー情報を生成
+     *
+     * @param $r
+     * @param $g
+     * @param $b
+     * @return int
+     */
+    private function RGB($r,$g,$b){
         return (0xff << 24) | (($r & 0xff) << 16) | (($g & 0xff) << 8) | ($b & 0xff);
     }
-    function getRGB($rgb){
+
+    /**
+     * @param $rgb
+     * @return array
+     */
+    private function getRGB($rgb){
         $r = ((0x00ff0000 & $rgb) >> 16);
         $g = ((0x0000ff00 & $rgb) >> 8);
         $b = ((0x000000ff & $rgb) >> 0);
         return array($r,$g,$b);
     }
-    // QRコード画像を作成する
-    function createQRCoodImage($dest,$souce,$size=100,$options = array()){
-        GLOBAL $L_LIB_PATH;
+
+    /**
+     * QRコード画像を作成する
+     *
+     * @param $dest
+     * @param $souce
+     * @param int $size
+     * @param array $options
+     * @return bool
+     * @throws Exception
+     */
+    public function createQRCoodImage($dest,$souce,$size=100,$options = array()){
         $pathinfo = pathinfo($dest);
         // 保存するファイル名
         $filename = $pathinfo["basename"];
@@ -48,7 +95,10 @@ class class_qr{
         $img_size = $size;
 
         // qr_img.phpがある場所のURL
-        $url = $L_LIB_PATH;
+        if(!self::$lib_url){
+            throw new Exception(sprintf('Unset $lib_url.please set %s::setLibUrl();',get_class($this)));
+        }
+        $url = self::$lib_url;
         // qr_img.phpのオプションでs=(サイズ指定)は指定しないでください
         // 指定するとサイズ圧縮処理で生成QRコードに白と黒以外の色が混入します
         // QRコードをJPEG形式で生成させます
