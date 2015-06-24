@@ -43,4 +43,27 @@ class class_server
         header('Location: '.$url);
         exit;
     }
+
+    /**
+     * @param $dir
+     * @param $file
+     * @return string
+     */
+    static function path_combine($dir, $file){
+        return rtrim($dir, '\\/') . DIRECTORY_SEPARATOR . $file;
+    }
+
+    /**
+     * @param $data
+     * @param string $default_encoding
+     * @param string $output_encoding
+     */
+    public function outputJson($data,$default_encoding='UTF-8',$output_encoding='UTF-8'){
+        if($output_encoding != $output_encoding){
+            $data = recursive_mb_convert_encoding($data,$output_encoding,$default_encoding);
+        }
+        header("Content-type: text/html; charset=".$output_encoding."\n\n");
+        print json_encode($data);
+        exit;
+    }
 }

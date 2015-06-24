@@ -1,12 +1,9 @@
 <?php
-//============================================
-// class_file.php
-//============================================
-
-//+++++++++++++++++++++++++++++
-// ファイルクラス
-//       ディレクトリ設定でそのディレクトリ配下のみにしかアクセスさせない
-//+++++++++++++++++++++++++++++
+/**
+ * ファイルクラス
+ *
+ * Class class_file
+ */
 class class_file
 {
     var $dirName = "";
@@ -14,20 +11,24 @@ class class_file
     var $fileHandle = NULL;
     var $accessCheck = false;
 
-    //====================================
-    // 全般
-    //====================================
-    // ディレクトリの設定
-    function setDir($dir)
+    /**
+     * ディレクトリの設定
+     *
+     * @param $dir
+     */
+    public function setDir($dir)
     {
         $this->dirName = $dir;
         $this->fileName = '';
     }
-    //====================================
-    // ファイルアクセス
-    //====================================
-    // ディレクトリの作成
-    function makeDir($dirname)
+
+    /**
+     * ディレクトリの作成
+     *
+     * @param $dirname
+     * @return bool
+     */
+    public function makeDir($dirname)
     {
         $dirname = dirname($dirname);
         $path = $this->dirName . "/" . $dirname;
@@ -42,8 +43,13 @@ class class_file
         return $success;
     }
 
-    // ディレクトリの削除
-    function deleteDir($dirname = "")
+    /**
+     * ディレクトリの削除
+     *
+     * @param string $dirname
+     * @return bool
+     */
+    public function deleteDir($dirname = "")
     {
         $dirname = dirname($dirname);
         $path = $this->dirName . "/" . $dirname;
@@ -56,8 +62,14 @@ class class_file
         return $success;
     }
 
-    // ファイルをオープンする
-    function open($filename, $mode)
+    /**
+     * ファイルをオープンする
+     *
+     * @param $filename
+     * @param $mode
+     * @return bool
+     */
+    public function open($filename, $mode)
     {
         $path = $filename;
         if ($this->dirName != "") {
@@ -74,16 +86,23 @@ class class_file
         return $success;
     }
 
-    // ファイルポインタを閉じる
-    function close()
+    /**
+     * ファイルポインタを閉じる
+     */
+    public function close()
     {
         if ($this->fileHandle) {
             fclose($this->fileHandle);
         }
     }
 
-    // ファイルの中身を全て読み取る
-    function readAll($filename)
+    /**
+     * ファイルの中身を全て読み取る
+     *
+     * @param $filename
+     * @return null|string
+     */
+    public function readAll($filename)
     {
         $data = null;
         if ($this->open($filename, 'r')) {
@@ -96,8 +115,13 @@ class class_file
         return $data;
     }
 
-    // ファイルの中身を配列で取得
-    function readArray($filename)
+    /**
+     * ファイルの中身を配列で取得
+     *
+     * @param $filename
+     * @return array
+     */
+    public function readArray($filename)
     {
         $path = $filename;
         if ($this->dirName != "") {
@@ -111,8 +135,13 @@ class class_file
         return $ret_array;
     }
 
-    // ディレクトリの中身を全て読み取る
-    function readDirAll($filename = "")
+    /**
+     * ディレクトリの中身を全て読み取る
+     *
+     * @param string $filename
+     * @return array
+     */
+    public function readDirAll($filename = "")
     {
         $data = array();
         $path = $filename;
@@ -129,11 +158,14 @@ class class_file
         }
         return $data;
     }
-    //====================================
-    // CSV
-    //====================================
-    // CSVファイル読み込み
-    function readCSV($filename)
+
+    /**
+     * CSVファイル読み込み
+     *
+     * @param $filename
+     * @return array
+     */
+    public function readCSV($filename)
     {
         $valuelist = array();
         $quotes = '{$quotes}';
@@ -168,8 +200,14 @@ class class_file
         return $valuelist;
     }
 
-    // CSVファイル書き出し
-    function writeCSV($filename, $valuelist)
+    /**
+     * CSVファイル書き出し
+     *
+     * @param $filename
+     * @param $valuelist
+     * @return mixed
+     */
+    public function writeCSV($filename, $valuelist)
     {
         if ($this->open($filename, 'w')) {
             foreach ($valuelist as $value_key => $value) {
@@ -189,8 +227,13 @@ class class_file
         return $valuelist;
     }
 
-    // CSVファイル読み込み(連想配列)
-    function readTCSV($filename)
+    /**
+     * CSVファイル読み込み(連想配列)
+     *
+     * @param $filename
+     * @return array|null
+     */
+    public function readTCSV($filename)
     {
         $valuelist = null;
         if ($this->open($filename, 'r')) {
@@ -232,8 +275,14 @@ class class_file
         return $valuelist;
     }
 
-    // CSVファイル書き出し(連想配列)
-    function writeTCSV($filename, $valuelist)
+    /**
+     * CSVファイル書き出し(連想配列)
+     *
+     * @param $filename
+     * @param $valuelist
+     * @return mixed
+     */
+    public function writeTCSV($filename, $valuelist)
     {
         if ($this->open($filename, 'w')) {
             // キーの書き出し
@@ -264,43 +313,14 @@ class class_file
         }
         return $valuelist;
     }
-    //====================================
-    // CNFファイル(オリジナル)
-    //       key=valueの形で記述
-    //====================================
-    // CNFファイル読み込み
-    function readCNF($filename)
-    {
-        $valuelist = array();
-        if ($this->open($filename, 'r')) {
-            while (!feof($this->fileHandle)) {
-                $line = fgets($this->fileHandle);
-                $list = split('=', $line);
-                $valuelist[$list[0]] = $list[1];
-//                   mb_convert_variables("UTF-8", "SJIS-win", $csv);
-            }
-            $this->close();
-        }
-        return $valuelist;
-    }
 
-    // CNFファイル書き出し
-    function writeCNF($valuelist)
-    {
-        if ($this->open($filename, 'w')) {
-            foreach ($valuelist as $key => $val) {
-                $v = $key . '=' . $val . "\n";
-                fwrite($this->fileHandle, $v);
-            }
-            $this->close();
-        }
-        return $valuelist;
-    }
-    //====================================
-    // チェック関数
-    //====================================
-    // ファイルが存在するか調べる
-    function exists($filename)
+    /**
+     * ファイルが存在するか調べる
+     *
+     * @param $filename
+     * @return bool
+     */
+    public function exists($filename)
     {
         $path = $filename;
         if ($this->dirName != "") {
@@ -320,8 +340,13 @@ class class_file
         return $success;
     }
 
-    // ファイルにアクセス可能か調べる
-    function isAccess($path)
+    /**
+     * ファイルにアクセス可能か調べる
+     *
+     * @param $path
+     * @return bool
+     */
+    public function isAccess($path)
     {
         if ($this->accessCheck && $this->dirName != "") {
             $p = $path;
