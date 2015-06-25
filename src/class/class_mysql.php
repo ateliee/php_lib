@@ -1030,14 +1030,14 @@ class class_mysql_table{
  * Class class_mysql_connect
  */
 class class_mysql_connect{
-    var     $serverName  = 'localhost';
-    var     $dbName      = '';
-    var     $userName    = '';
-    var     $passWord    = '';
-    var     $linkId      = NULL;
-    var     $charset     = 'utf8';
-    var     $resResult   = NULL;
-    var     $mysql_mode  = MYSQL_MODE_MYSQL;
+    private $serverName;
+    private $dbName;
+    private $userName;
+    private $passWord;
+    private $linkId;
+    private $charset;
+    private $resResult;
+    private $mysql_mode;
     //====================================
     // 全般
     //====================================
@@ -1046,6 +1046,8 @@ class class_mysql_connect{
         $this->serverName = $server;
         $this->userName = $user;
         $this->passWord = $password;
+        $this->charset = 'utf8';
+        $this->mysql_mode = MYSQL_MODE_MYSQL;
         // mysqliチェック
         if(function_exists("mysqli_connect")){
             $this->mysql_mode = MYSQL_MODE_MYSQLI;
@@ -1078,15 +1080,28 @@ class class_mysql_connect{
         throw new Exception($message);
     }
 
-    // DB設定
-    function setDBName($name){
+    /**
+     * DB設定
+     *
+     * @param $name
+     */
+    public function setDBName($name){
         $this->dbName = $name;
     }
-    function setCharset($charset){
+
+    /**
+     * @param $charset
+     */
+    public function setCharset($charset){
         $this->charset = $charset;
     }
-    // DB作成
-    function createDB($dbname){
+    /**
+     * DB作成
+     *
+     * @param $dbname
+     * @return bool
+     */
+    public function createDB($dbname){
         $success = false;
         // 接続
         $this->connectDB();
@@ -1113,8 +1128,14 @@ class class_mysql_connect{
         }
         return $success;
     }
-    // DB削除
-    function dropDB($dbname){
+
+    /**
+     * DB削除
+     *
+     * @param $dbname
+     * @return bool
+     */
+    public function dropDB($dbname){
         $success = false;
         // 接続
         $this->connectDB();
@@ -1141,11 +1162,15 @@ class class_mysql_connect{
         }
         return $success;
     }
-    //====================================
-    // TABLE操作
-    //====================================
-    // SQL文を発行する(シンプル)
-    function query_simple($q,$debug){
+
+    /**
+     * SQL文を発行する(シンプル)
+     *
+     * @param $q
+     * @param $debug
+     * @return bool|mixed|mysqli_result|null|resource
+     */
+    public function query_simple($q,$debug){
         $result = NULL;
         if($this->connect()){
             if((!$result = $this->query($q,false,$debug)) && $debug){
@@ -1156,16 +1181,28 @@ class class_mysql_connect{
         }
         return $result;
     }
-    // DB接続
-    function connectDB(){
+
+    /**
+     * DB接続
+     *
+     * @return mysqli|resource
+     */
+    public function connectDB(){
         if($this->mysql_mode == MYSQL_MODE_MYSQL){
-            $this->linkId = mysql_connect($this->serverName,$this->userName,$this->passWord);
+            $this->linkId = @mysql_connect($this->serverName,$this->userName,$this->passWord);
         }else if($this->mysql_mode == MYSQL_MODE_MYSQLI){
-            $this->linkId = mysqli_connect($this->serverName,$this->userName,$this->passWord);
+            $this->linkId = @mysqli_connect($this->serverName,$this->userName,$this->passWord);
+        }
+        if(!$this->linkId){
+            $message = 'Un Connect DB!';
+            if($error = error_get_last()){
+                $message = $error['message'];
+            }
+            $this->exception($message);
         }
         return $this->linkId;
     }
-    function connect(){
+    public function connect(){
         $this->connectDB();
         if($this->linkId){
 //        mysql_client_encoding()
@@ -1195,7 +1232,7 @@ class class_mysql_connect{
      * @param $sql
      * @return bool|mysqli_result|null|resource
      */
-    function sqlQuery($sql){
+    public function sqlQuery($sql){
         if($this->mysql_mode == MYSQL_MODE_MYSQL){
             return mysql_query($sql, $this->linkId);
         }else if($this->mysql_mode == MYSQL_MODE_MYSQLI){
@@ -1210,7 +1247,7 @@ class class_mysql_connect{
      * @param $debug
      * @return bool|mixed|mysqli_result|null|resource
      */
-    function query($sql,$auto,$debug){
+    public function query($sql,$auto,$debug){
         if($auto && !$this->linkId){
             $this->connect();
         }
@@ -1239,7 +1276,7 @@ class class_mysql_connect{
      * @param $auto
      * @return mixed
      */
-    function lastId($auto){
+    public function lastId($auto){
         $sql = 'SELECT LAST_INSERT_ID()';
         $result = $this->sqlQuery($sql);
         if($this->mysql_mode == MYSQL_MODE_MYSQL){
@@ -1255,7 +1292,7 @@ class class_mysql_connect{
      *
      * @return int
      */
-    function numRows(){
+    public function numRows(){
         if($this->resResult){
             if($this->mysql_mode == MYSQL_MODE_MYSQL){
                 return mysql_num_rows($this->resResult);
@@ -1272,7 +1309,7 @@ class class_mysql_connect{
      *
      * @return int
      */
-    function affectedRows(){
+    public function affectedRows(){
         if($this->mysql_mode == MYSQL_MODE_MYSQL){
             return mysql_affected_rows($this->linkId);
         }else if($this->mysql_mode == MYSQL_MODE_MYSQLI){
@@ -1286,7 +1323,7 @@ class class_mysql_connect{
      * @param int $result_type
      * @return array|null
      */
-    function fetchArray($result_type = MYSQL_ASSOC){
+    public function fetchArray($result_type = MYSQL_ASSOC){
         if($this->numRows() > 0){
             if($this->mysql_mode == MYSQL_MODE_MYSQL){
                 $type = MYSQL_BOTH;
@@ -1314,7 +1351,7 @@ class class_mysql_connect{
      * @param int $result_type
      * @return int
      */
-    function fetchArrayAll(&$list,$result_type = MYSQL_ASSOC){
+    public function fetchArrayAll(&$list,$result_type = MYSQL_ASSOC){
         if($this->numRows() > 0){
             $list = array();
             while($value = $this->fetchArray( $result_type )){
@@ -1327,7 +1364,7 @@ class class_mysql_connect{
     /**
      * 実行結果を最初に戻す
      */
-    function refresh(){
+    public function refresh(){
         if($this->mysql_mode == MYSQL_MODE_MYSQL){
             mysql_data_seek($this->resResult, 0);
         }else if($this->mysql_mode == MYSQL_MODE_MYSQLI){
@@ -1340,7 +1377,7 @@ class class_mysql_connect{
      *
      * @return null|string
      */
-    function error(){
+    public function error(){
         if($this->mysql_mode == MYSQL_MODE_MYSQL){
             return mysql_error($this->linkId);
         }else if($this->mysql_mode == MYSQL_MODE_MYSQLI){
@@ -1348,8 +1385,11 @@ class class_mysql_connect{
         }
         return null;
     }
-    // DB切断
-    function close(){
+
+    /**
+     * DB切断
+     */
+    public function close(){
         if($this->mysql_mode == MYSQL_MODE_MYSQL){
             mysql_close($this->linkId);
         }else if($this->mysql_mode == MYSQL_MODE_MYSQLI){
@@ -1357,8 +1397,13 @@ class class_mysql_connect{
         }
         $this->linkId = NULL;
     }
-    // フィールド数を取得
-    function fieldsCount(){
+
+    /**
+     * フィールド数を取得
+     *
+     * @return int|null
+     */
+    public function fieldsCount(){
         if($this->mysql_mode == MYSQL_MODE_MYSQL){
             return mysql_num_fields($this->linkId);
         }else if($this->mysql_mode == MYSQL_MODE_MYSQLI){
@@ -1366,8 +1411,15 @@ class class_mysql_connect{
         }
         return null;
     }
-    // フィールド情報を取得
-    function fieldName($result,$num){
+
+    /**
+     * フィールド情報を取得
+     *
+     * @param $result
+     * @param $num
+     * @return bool|null|object|string
+     */
+    public function fieldName($result,$num){
         if($this->mysql_mode == MYSQL_MODE_MYSQL){
             return mysql_field_name($result,$num);
         }else if($this->mysql_mode == MYSQL_MODE_MYSQLI){
@@ -1375,7 +1427,13 @@ class class_mysql_connect{
         }
         return null;
     }
-    function fieldType($result,$num){
+
+    /**
+     * @param $result
+     * @param $num
+     * @return bool|null|object|string
+     */
+    public function fieldType($result,$num){
         if($this->mysql_mode == MYSQL_MODE_MYSQL){
             return mysql_field_type($result,$num);
         }else if($this->mysql_mode == MYSQL_MODE_MYSQLI){
@@ -1383,8 +1441,13 @@ class class_mysql_connect{
         }
         return null;
     }
-    // テーブル情報を取得する
-    function dbInfo(){
+
+    /**
+     * テーブル情報を取得する
+     *
+     * @return array|null
+     */
+    public function dbInfo(){
 //  if($this->linkId){
         $query = "SHOW TABLE STATUS";
 //        mysql_query("set names ".$this->charset,$this->linkId);
@@ -1399,8 +1462,14 @@ class class_mysql_connect{
 //  }
         return null;
     }
-    // テーブル情報を取得する
-    function tableInfo($table_name){
+
+    /**
+     * テーブル情報を取得する
+     *
+     * @param $table_name
+     * @return array|null
+     */
+    public function tableInfo($table_name){
         // SQL文作成
         $sql = "SHOW COLUMNS FROM `".$table_name."`";
         // SQL発行
@@ -1413,8 +1482,15 @@ class class_mysql_connect{
         }
         return null;
     }
-    // データベースをエクスポートする
-    function exportCSV($table_name,$option=null){
+
+    /**
+     * データベースをエクスポートする
+     *
+     * @param $table_name
+     * @param null $option
+     * @return string
+     */
+    public function exportCSV($table_name,$option=null){
         // オプションの取得
         $enclosed = "'";
         $terminated = ",";
@@ -1835,11 +1911,15 @@ class class_mysql_connect{
 
         return $column->alterSQL().(($after != '') ? ' '.$after : '');
     }
-    //----------------------------------------
-    // SQL作成
-    //----------------------------------------
-    // レコード追加SQL文を作成
-    function insertRecodeSQL($dbname,$args){
+
+    /**
+     * レコード追加SQL文を作成
+     *
+     * @param $dbname
+     * @param $args
+     * @return string
+     */
+    public function insertRecodeSQL($dbname,$args){
         $sql = 'INSERT INTO `'.$dbname.'` (';
         $count = 0;
         $args_count = count($args);
@@ -1863,8 +1943,16 @@ class class_mysql_connect{
         $sql .= ') ';
         return $sql;
     }
-    // レコード更新SQL文を作成
-    function updateRecodeSQL($dbname,$args,$where){
+
+    /**
+     * レコード更新SQL文を作成
+     *
+     * @param $dbname
+     * @param $args
+     * @param $where
+     * @return string
+     */
+    public function updateRecodeSQL($dbname,$args,$where){
         $count = 0;
         $args_count = count($args);
 
@@ -1879,14 +1967,21 @@ class class_mysql_connect{
         $sql .= $where;
         return $sql;
     }
-    // レコード削除SQL文を作成
-    function deleteRecodeSQL($dbname,$where){
+
+    /**
+     * レコード削除SQL文を作成
+     *
+     * @param $dbname
+     * @param $where
+     * @return string
+     */
+    public function deleteRecodeSQL($dbname,$where){
         $sql = 'DELETE FROM `'.$dbname.'` ';
         $sql .= $where;
         return $sql;
     }
     /*// SELECT文を発行する
-    function selectSqlEx($select_keys,$db_name,$joins,$where,){
+    public function selectSqlEx($select_keys,$db_name,$joins,$where,){
           $sql = "SELECT ";
           if(is_array($select_keys)){
               $sql .= implode(",",$select_keys)." ";
@@ -1909,11 +2004,13 @@ class class_mysql_connect{
           }
           return $sql;
     }*/
-    //----------------------------------------
-    // データ変換
-    //----------------------------------------
-    // エスケープ
-    function escapeSQL($str){
+    /**
+     * エスケープ
+     *
+     * @param $str
+     * @return string
+     */
+    public function escapeSQL($str){
         if(!$this->linkId){
             $this->connect();
         }
@@ -2626,7 +2723,6 @@ class class_mysql{
         return $this->db[$this->current]->deleteRecodeSQL($dbname,$where);
     }
 
-    // エスケープ
     /**
      * エスケープ
      * @param $str
