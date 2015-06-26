@@ -35,10 +35,9 @@ define('SYSTEM_TIME_1YEAR', SYSTEM_TIME_1DAY * 365); // 1年
  * Class class_define
  */
 class class_carrer{
-
-// 携帯IPアドレス帯
-
-// DOCOMO
+    /**
+     * @var array : DOCOMO
+     */
     static $CIDR_DOCOMO = array(
         '210.153.84.0/24',
         '210.136.161.0/24',
@@ -57,7 +56,9 @@ class class_carrer{
         '111.89.191.0/24'
     );
 
-// AU
+    /**
+     * @var array : AU
+     */
     static $CIDR_AU = array(
         '210.230.128.224/28',
         '121.111.227.160/27',
@@ -102,7 +103,9 @@ class class_carrer{
         '111.86.147.192/27',
         '111.86.147.224/27'
     );
-// SOFTBANK
+    /**
+     * @var array : SOFTBANK
+     */
     static $CIDR_SOFTBANK = array(
         '123.108.237.0/27',
         '202.253.96.224/27',
@@ -133,17 +136,22 @@ class class_carrer{
         return $arr;
     }
 
-// 携帯メールアドレスのドメイン
-// NTT ドコモ
+    /**
+     * @var array : NTT ドコモ
+     */
     static $DOMAIN_DOCOMO = array(
         'docomo.ne.jp',
     );
-// KDDI au / TU-KA
+    /**
+     * @var array : KDDI au / TU-KA
+     */
     static $DOMAIN_AU = array(
         'ezweb.ne.jp',
         'yy.ezweb.ne.jp',
     );
-// ソフトバンク
+    /**
+     * @var array : ソフトバンク
+     */
     static $DOMAIN_SOFTBANK = array(
         'softbank.ne.jp',
         // ボーダフォン
@@ -157,7 +165,9 @@ class class_carrer{
         's.vodafone.ne.jp',
         'p.vodafone.ne.jp',
     );
-// ウィルコム
+    /**
+     * @var array : ウィルコム
+     */
     static $DOMAIN_WILLCOM = array(
         'pdx.ne.jp',
         'yy.pdx.ne.jp'
@@ -193,7 +203,9 @@ class class_carrer{
  * Class class_define
  */
 class class_define{
-    // 都道府県
+    /**
+     * @var array : 都道府県
+     */
     static $PREF = array(
         '1' => '北海道',
         '2' => '青森県',
@@ -244,13 +256,70 @@ class class_define{
         '47' => '沖縄県'
     );
 
-// 性別
+    /**
+     * @var array : 都道府県
+     */
+    static $PREF_EN = array(
+        '1' => 'hokkaido',
+        '2' => 'aomori',
+        '3' => 'iwate',
+        '4' => 'miyagi',
+        '5' => 'akita',
+        '6' => 'yamagata',
+        '7' => 'fukushima',
+        '8' => 'ibaragi',
+        '9' => 'totigi',
+        '10' => 'gunma',
+        '11' => 'saitama',
+        '12' => 'chiba',
+        '13' => 'tokyo',
+        '14' => 'kanagawa',
+        '15' => 'nigata',
+        '16' => 'toyama',
+        '17' => 'ishikawa',
+        '18' => 'fukui',
+        '19' => 'yamanashi',
+        '20' => 'nagano',
+        '21' => 'gifu',
+        '22' => 'shizuoka',
+        '23' => 'aichi',
+        '24' => 'mie',
+        '25' => 'shiga',
+        '26' => 'kyoto',
+        '27' => 'osaka',
+        '28' => 'hyogo',
+        '29' => 'nara',
+        '30' => 'wakayama',
+        '31' => 'tottori',
+        '32' => 'shimane',
+        '33' => 'okayama',
+        '34' => 'hiroshima',
+        '35' => 'yamaguchi',
+        '36' => 'tokushima',
+        '37' => 'kagawa',
+        '38' => 'ehime',
+        '39' => 'kochi',
+        '40' => 'fukuoka',
+        '41' => 'shiga',
+        '42' => 'nagasaki',
+        '43' => 'kumamoto',
+        '44' => 'oita',
+        '45' => 'miyazaki',
+        '46' => 'kagoshima',
+        '47' => 'okinawa'
+    );
+
+    /**
+     * @var array : 性別
+     */
     static $SEX = array(
         1 => '男',
         2 => '女',
     );
 
-// 曜日
+    /**
+     * @var array : 曜日
+     */
     static $WEEK = array(
         0 => 'sun',
         1 => 'mon',
@@ -269,7 +338,9 @@ class class_define{
         5 => '金',
         6 => '土'
     );
-// 星座
+    /**
+     * @var array : 星座
+     */
     static $CONSTELLATIONS = array(
         1 => 'おひつじ座', // 3/21-4/19 Aries (Ram)
         2 => 'おうし座', // 3/21-4/19 Taurus (Bull)
@@ -285,7 +356,9 @@ class class_define{
         12 => 'うお座', // 2/19-3/20 Pisces (Fishes)
     );
 
-// 血液型
+    /**
+     * @var array : 血液型
+     */
     static $BLOOD = array(
         'A' => 'A型',
         'B' => 'B型',
@@ -293,7 +366,9 @@ class class_define{
         'AB' => 'AB型'
     );
 
-// 和暦
+    /**
+     * @var array : 和暦
+     */
     static $WAREKI = array(
         '247' => array('name' => '明治', 'start' => '1868/09/08'),
         '248' => array('name' => '大正', 'start' => '1912/07/30'),
@@ -301,14 +376,14 @@ class class_define{
         '250' => array('name' => '平成', 'start' => '1989/01/08'),
     );
 
-// 国(IOCコード変換)
+    /**
+     * @var array : 国(IOCコード変換)
+     */
     static $COUNTRY_IOC = array(
         'AFG' => '004',
         'UAE' => '784',
         'YEM' => '887',
-        'YEM' => '887',
         'ISR' => '376',
-        'IRQ' => '368',
         'IRQ' => '368',
         'IRI' => '364',
         'IND' => '356',
@@ -337,7 +412,6 @@ class class_define{
         'MAS' => '458',
         'MYA' => '104',
         'MDV' => '462',
-        'MGL' => '496',
         'MGL' => '496',
         'JOR' => '400',
         'LAO' => '418',
@@ -388,7 +462,6 @@ class class_define{
         'CZE' => '203',
         'DEN' => '208',
         'DDR' => '278',
-        'GER' => '276',
         'GER' => '276',
         'NOR' => '578',
         'HUN' => '348',
@@ -521,7 +594,9 @@ class class_define{
         'FIJ' => '242',
         'FSM' => '583',
     );
-// 国
+    /**
+     * @var array : 国
+     */
     static $COUNTRY = array(
         "020" => "アンドラ公国",
         "784" => "アラブ首長国連邦",
