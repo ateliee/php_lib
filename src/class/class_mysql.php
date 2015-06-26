@@ -555,6 +555,8 @@ class class_mysql_column extends class_mysql_column_obj{
             return false;
         }else if($this->comment != $column->getComment()){
             return false;
+        }else if($this->unsigned != $column->getUnsigned()){
+            return false;
         }
         return true;
     }
@@ -1016,6 +1018,10 @@ class class_mysql_table{
             }
         }
     }
+
+    /**
+     * @param $indexs
+     */
     public function setDBIndexs($indexs)
     {
         $this->indexs = array();
@@ -1038,10 +1044,7 @@ class class_mysql_connect{
     private $charset;
     private $resResult;
     private $mysql_mode;
-    //====================================
-    // 全般
-    //====================================
-    // 初期化
+
     function class_mysql_connect($server,$user,$password){
         $this->serverName = $server;
         $this->userName = $user;
