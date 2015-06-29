@@ -258,7 +258,7 @@ class class_facebook{
                 $session = Facebook\FacebookSession::newAppSession($this->apiId, $this->secret_key);
             }
             $version = null;
-            if(!defined('FACEBOOK_SDK_OFFICIAL') || !FACEBOOK_SDK_OFFICIAL){
+            if((!defined('FACEBOOK_SDK_OFFICIAL')) || (!FACEBOOK_SDK_OFFICIAL)){
                 $version = self::$GRAPH_API_VERSION;
             }
             $req = (new Facebook\FacebookRequest($session, $method, $path, $parameters , $version));
