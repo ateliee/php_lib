@@ -1,20 +1,22 @@
 <?php
-//============================================
-// class_rss.php
-//============================================
 
-//+++++++++++++++++++++++++++++
-// RSSクラス
-//+++++++++++++++++++++++++++++
+/**
+ * Class class_rss
+ */
 class class_rss
 {
-    var $encode = 'UTF-8';
-    var $xml_version = '1.0';
-    var $rss_version = '2.0';
-    //-----------------------------
-    // RSSを作成
-    //-----------------------------
-    function createRSS($list, $rssdata = NULL)
+    private $encode = 'UTF-8';
+    private $xml_version = '1.0';
+    private $rss_version = '2.0';
+
+    /**
+     * RSSを作成
+     *
+     * @param $list
+     * @param null $rssdata
+     * @return string
+     */
+    public function createRSS($list, $rssdata = NULL)
     {
         // 出力するRSSデータを設定
         $rss = '';
@@ -43,7 +45,13 @@ class class_rss
         return $rss;
     }
 
-    function _readRSSArrayRoop(&$output, $i, $valuelist)
+    /**
+     * @param $output
+     * @param $i
+     * @param $valuelist
+     * @return int
+     */
+    public function _readRSSArrayRoop(&$output, $i, $valuelist)
     {
         if (isset($valuelist[$i])) {
             $data = $valuelist[$i];
@@ -94,7 +102,11 @@ class class_rss
         return $i;
     }
 
-    function getXMLparse($url)
+    /**
+     * @param $url
+     * @return bool
+     */
+    public function getXMLparse($url)
     {
         /*$def_user_agent = ini_get('user_agent');
         ini_set('user_agent', 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.5; en-US; rv:1.9.1.3) Gecko/20090824 Firefox/3.5.3');
@@ -131,7 +143,11 @@ class class_rss
         return $valuelist;
     }
 
-    function readRSSArray($url)
+    /**
+     * @param $url
+     * @return array
+     */
+    public function readRSSArray($url)
     {
         $valuelist = $this->getXMLparse($url);
         // データ
@@ -146,26 +162,108 @@ class class_rss
         return $datalist;
     }
 
-    function readRSS($url)
+    /**
+     * @param $url
+     * @return array|bool
+     */
+    public function readRSS($url)
     {
-        $list = $this->readRSSArray($url);
+        /*$def_user_agent = ini_get('user_agent');
+        ini_set('user_agent', 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.5; en-US; rv:1.9.1.3) Gecko/20090824 Firefox/3.5.3');
+        $contents = false;
+        if( function_exists( 'file_get_contents' ) ){
+              $contents = @file_get_contents( $url );
+        }else{
+              $fp = @fopen( $url, 'r' );
+              if( $fp !== FALSE ){
+                    $contents = "";
+                    while( !feof( $fp ) ){
+                          $contents .= fread( $fp, 1024 );
+                    }
+                    fclose( $fp );
+              }
+        }
+        ini_set('user_agent',$def_user_agent);*/
+        $ch = curl_init();
+        curl_setopt( $ch, CURLOPT_URL, $url );
+        curl_setopt( $ch, CURLOPT_HEADER, false );
+        curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+        curl_setopt( $ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.5; en-US; rv:1.9.1.3) Gecko/20090824 Firefox/3.5.3" );
+        curl_setopt( $ch, CURLOPT_TIMEOUT, 60 );
+        $contents = curl_exec( $ch );
+        curl_close($ch);
+
+        if($contents === false){
+            return false;
+        }
+        // XMLをパースして構造体に入れる
+        $parser = xml_parser_create($this->encode);
+        xml_parse_into_struct($parser,$contents,$valuelist);
+        xml_parser_free($parser);
+
+        // データ
         $datalist = array();
-        if (isset($list["rss"]) && isset($list["rss"]["_value"]["channel"]) && isset($list["rss"]["_value"]["channel"]["_value"]["item"])) {
-            // 整形
-            foreach ($list["rss"]["_value"]["channel"]["_value"]["item"] as $key => $val) {
-                $item = array();
-                foreach ($val["_value"] as $k => $v) {
-                    $item[$k] = $v["_value"];
+        // 連想配列から値を取得
+        if($valuelist){
+            $count = count($valuelist);
+            for($i=0;$i<$count;$i++) {
+                $data = $valuelist[$i];
+                if(isset($data['tag'])){
+                    $data["tag"] = strtolower($data["tag"]);
+                    // タグ名のよって分岐
+                    switch ($data['tag']) {
+                        // ブログアイテム
+                        case 'title':
+                        case 'link':
+                        case 'description':
+                        case 'lastBuildDate':
+                        case 'language':
+                            if(isset($data["value"])){
+                                $datalist[$data['tag']] = $data["value"];
+                            }
+                            break;
+                        // RSSアイテム
+                        case 'item':
+                            if($data['type'] == 'open'){
+                                $item_temp = array();
+                                $i ++;
+                                while($i < $count){
+                                    $data = $valuelist[$i];
+                                    if(isset($data['tag'])){
+                                        $data["tag"] = strtolower($data["tag"]);
+                                        // タグ終了
+                                        if($data['tag'] == 'item' && $data['type'] == 'close'){
+                                            break;
+                                        }
+                                        if(isset($data['value'])){
+                                            $item_temp[$data['tag']] = $data['value'];
+                                        }
+                                    }
+                                    $i ++;
+                                }
+                                if(isset($datalist['items']) == false || is_array($datalist['items']) == false){
+                                    $datalist['items'] = array();
+                                }
+                                array_push($datalist['items'],$item_temp);
+                                $item_temp = null;
+                            }
+                            break;
+                    }
                 }
-                $datalist[$key] = $item;
             }
         }
         return $datalist;
     }
-    //-----------------------------
-    // ブログRSS読み込み
-    //-----------------------------
-    function loadBlogRSS($url, $type, $count = 0)
+
+    /**
+     * ブログRSS読み込み
+     *
+     * @param $url
+     * @param $type
+     * @param int $count
+     * @return array
+     */
+    public function loadBlogRSS($url, $type, $count = 0)
     {
         $blog_data = array();
         $i = 0;
