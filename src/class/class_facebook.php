@@ -29,15 +29,15 @@ class class_facebook{
     function __construct()
     {
         if($verndor_dir = getVendorDir('',self::$VENDOR_DIR)){
-            if (version_compare(phpversion(), '5.4.0', '>=')) {
-                define('FACEBOOK_SDK_OFFICIAL',true);
+            //if (version_compare(phpversion(), '5.4.0', '>=')) {
+                //define('FACEBOOK_SDK_OFFICIAL',true);
                 define('FACEBOOK_SDK_V4_SRC_DIR', $verndor_dir.'/facebook/php-sdk-v4/src/Facebook/');
-                require_once($verndor_dir.'/facebook/php-sdk-v4/autoload.php');
-            }else{
-                define('FACEBOOK_SDK_OFFICIAL',false);
-                define('FACEBOOK_SDK_V4_SRC_DIR', $verndor_dir.'/sleepwalker/facebook-php-sdk-v4/src/Facebook/');
-                require_once($verndor_dir. '/sleepwalker/facebook-php-sdk-v4/autoload.php');
-            }
+                //require_once($verndor_dir.'/facebook/php-sdk-v4/autoload.php');
+            //}else{
+                //define('FACEBOOK_SDK_OFFICIAL',false);
+                //define('FACEBOOK_SDK_V4_SRC_DIR', $verndor_dir.'/sleepwalker/facebook-php-sdk-v4/src/Facebook/');
+                //require_once($verndor_dir. '/sleepwalker/facebook-php-sdk-v4/autoload.php');
+            //}
         }else{
             throw new Exception('Not Found Vendor Dir.');
         }
@@ -258,9 +258,9 @@ class class_facebook{
                 $session = Facebook\FacebookSession::newAppSession($this->apiId, $this->secret_key);
             }
             $version = null;
-            if((!defined('FACEBOOK_SDK_OFFICIAL')) || (!FACEBOOK_SDK_OFFICIAL)){
-                $version = self::$GRAPH_API_VERSION;
-            }
+            //if((!defined('FACEBOOK_SDK_OFFICIAL')) || (!FACEBOOK_SDK_OFFICIAL)){
+                //$version = self::$GRAPH_API_VERSION;
+            //}
             $req = (new Facebook\FacebookRequest($session, $method, $path, $parameters , $version));
             $response = $req->execute();
             return $response;
