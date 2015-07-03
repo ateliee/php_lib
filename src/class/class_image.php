@@ -376,14 +376,14 @@ class class_image
                     $this->imageFlip();
                     // 時計回りに90°回転
                 } else if ($orientation == 6) {
-                    $this->imageRotate(90, 0);
+                    $this->imageRotate(270, 0);
                     // 時計回りに90°回転 上下反転
                 } else if ($orientation == 7) {
                     $this->imageRotate(90, 0);
                     $this->imageFlip();
                     // 反時計回りに90°回転
                 } else if ($orientation == 8) {
-                    $this->imageRotate(270, 0);
+                    $this->imageRotate(90, 0);
                 }
                 // 書き出し
                 $this->ImageOutput($output);
