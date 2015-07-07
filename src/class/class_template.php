@@ -1472,7 +1472,17 @@ class class_template {
                     }else{
                         $time = time();
                     }
-                    if($time <= 0){
+                    $check_error = false;
+                    if (version_compare(phpversion(), '5.1.0', '<')) {
+                        if($time === -1){
+                            $check_error = true;
+                        }
+                    }else{
+                        if($time === false){
+                            $check_error = true;
+                        }
+                    }
+                    if($check_error){
                         $this->error('date() paramater is string or number.'.$params[1].' given.');
                     }
                     $result = date($params[0],$time);
