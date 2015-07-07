@@ -1497,7 +1497,17 @@ class class_template {
                             $week_no = date('w',$params[0]);
                         }else if(is_string($params[0])) {
                             $time = strtotime($params[0]);
-                            if($time > 0){
+                            $check_error = false;
+                            if (version_compare(phpversion(), '5.1.0', '<')) {
+                                if($time === -1){
+                                    $check_error = true;
+                                }
+                            }else{
+                                if($time === false){
+                                    $check_error = true;
+                                }
+                            }
+                            if(!$check_error){
                                 $week_no = date('w',$time);
                             }else{
                                 $this->error('week() paramater if date string then strtotime() convert string. '.$params[0].' given.');
