@@ -1295,7 +1295,7 @@ class class_template {
                     $result = floatval($params[0]);
                     break;
                 case 'implode':
-                    if(!is_array($params[0])){
+                    if(!is_array($params[1])){
                         $this->error('error implode() paramater must array.');
                     }
                     $result = implode($params[0],$params[1]);
