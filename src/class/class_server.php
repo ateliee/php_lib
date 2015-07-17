@@ -71,7 +71,7 @@ class class_server
      * @param $url
      * @return mixed|null
      */
-    public function getUrlImageData($url){
+    static function getUrlImageData($url){
         if($ch = curl_init()){
             curl_setopt ($ch,CURLOPT_URL,$url);
             curl_setopt ($ch,CURLOPT_RETURNTRANSFER, 1);
