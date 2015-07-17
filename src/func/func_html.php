@@ -1,10 +1,11 @@
 <?php
-//============================================
-// func_html.php
-//============================================
-//--------------------------------------------
-// パラメーター作成
-//--------------------------------------------
+/**
+ * パラメーター作成
+ *
+ * @param $value
+ * @param null $null_key
+ * @return string
+ */
 function makeUrlParameter($value, $null_key = null)
 {
     $param = "";
@@ -20,9 +21,12 @@ function makeUrlParameter($value, $null_key = null)
     return $param;
 }
 
-//--------------------------------------------
-// チェックボックス補助
-//--------------------------------------------
+/**
+ * チェックボックス補助
+ *
+ * @param $flag
+ * @return string
+ */
 function htmlChecked($flag)
 {
     if ($flag == true || $flag > 0) {
@@ -31,6 +35,10 @@ function htmlChecked($flag)
     return '';
 }
 
+/**
+ * @param $flag
+ * @return string
+ */
 function htmlDisabled($flag)
 {
     if ($flag == true || $flag > 0) {
@@ -39,6 +47,10 @@ function htmlDisabled($flag)
     return '';
 }
 
+/**
+ * @param $flag
+ * @return string
+ */
 function htmlReadonly($flag)
 {
     if ($flag == true || $flag > 0) {
@@ -47,17 +59,31 @@ function htmlReadonly($flag)
     return '';
 }
 
-//--------------------------------------------
-// 数値のリストを取得
-//--------------------------------------------
+/**
+ * 数値のリストを取得
+ *
+ * @param $code
+ * @param $max
+ * @param string $default
+ * @param string $default_value
+ * @return string
+ */
 function makeNumsOpts($code, $max, $default = "", $default_value = "0")
 {
     return makeNumsOptsExp($code, 1, $max, 1, $default, $default_value);
 }
 
-//--------------------------------------------
-// 数値のリストを取得(拡張版)
-//--------------------------------------------
+/**
+ * 数値のリストを取得(拡張版)
+ *
+ * @param $code
+ * @param $start
+ * @param $max
+ * @param int $skip
+ * @param string $default
+ * @param string $default_value
+ * @return string
+ */
 function makeNumsOptsExp($code, $start, $max, $skip = 1, $default = "", $default_value = "0")
 {
     // 一覧に設定
@@ -78,9 +104,15 @@ function makeNumsOptsExp($code, $start, $max, $skip = 1, $default = "", $default
     return $list;
 }
 
-//--------------------------------------------
-// 連想配列のリストを取得
-//--------------------------------------------
+/**
+ * 連想配列のリストを取得
+ *
+ * @param $code
+ * @param $value
+ * @param string $default
+ * @param string $default_value
+ * @return string
+ */
 function makeValueOpts($code, $value, $default = "", $default_value = "0")
 {
     // 一覧に設定
@@ -99,9 +131,15 @@ function makeValueOpts($code, $value, $default = "", $default_value = "0")
     return $list;
 }
 
-//--------------------------------------------
-// 連想配列のリストを取得(グループ)
-//--------------------------------------------
+/**
+ * 連想配列のリストを取得(グループ)
+ *
+ * @param $code
+ * @param $valuelist
+ * @param string $default
+ * @param string $default_value
+ * @return string
+ */
 function makeValueOptGroup($code, $valuelist, $default = "", $default_value = "0")
 {
     // 一覧に設定
@@ -124,9 +162,16 @@ function makeValueOptGroup($code, $valuelist, $default = "", $default_value = "0
     return $list;
 }
 
-//--------------------------------------------
-// 多次元連想配列のリストを取得
-//--------------------------------------------
+/**
+ * 多次元連想配列のリストを取得
+ *
+ * @param $code
+ * @param $value
+ * @param $value_key
+ * @param string $default
+ * @param string $default_value
+ * @return string
+ */
 function makeValuelistOpts($code, $value, $value_key, $default = "", $default_value = "0")
 {
     // 一覧に設定
@@ -145,14 +190,23 @@ function makeValuelistOpts($code, $value, $value_key, $default = "", $default_va
     return $list;
 }
 
-//--------------------------------------------
-// パンくずリストを生成
-//--------------------------------------------
+/**
+ * パンくずリストを生成
+ *
+ * @param $name
+ * @param string $href
+ * @return array
+ */
 function makePnkz($name, $href = "")
 {
     return array("href" => $href, "value" => $name);
 }
 
+/**
+ * @param $pnkz
+ * @param array $options
+ * @return string
+ */
 function getPnkz($pnkz, $options = array())
 {
     $count = count($pnkz);
@@ -183,9 +237,13 @@ function getPnkz($pnkz, $options = array())
     return $p->getHTML();
 }
 
-//--------------------------------------------
-// 自動リンク
-//--------------------------------------------
+/**
+ * 自動リンク
+ *
+ * @param $str
+ * @param string $attr
+ * @return mixed
+ */
 function autoURLLink($str, $attr = "")
 {
     $patterns = "/(https?|ftp)(:\/\/[[:alnum:]\+\$\;\?\.%,!#~*\/:@&=_-]+)/i";
@@ -196,6 +254,11 @@ function autoURLLink($str, $attr = "")
     return preg_replace($patterns, $replacements, $str);
 }
 
+/**
+ * @param $str
+ * @param string $attr
+ * @return mixed
+ */
 function autoTelLink($str, $attr = "")
 {
     $patterns = "/(0\d{9,10})/i";
@@ -206,6 +269,11 @@ function autoTelLink($str, $attr = "")
     return preg_replace($patterns, $replacements, $str);
 }
 
+/**
+ * @param $str
+ * @param string $attr
+ * @return mixed
+ */
 function autoMailLink($str, $attr = "")
 {
     $patterns = "/([a-zA-Z0-9_\.-]+\@)([a-zA-Z0-9_\.-]+)([a-zA-Z]+)/i";
@@ -216,20 +284,38 @@ function autoMailLink($str, $attr = "")
     return preg_replace($patterns, $replacements, $str);
 }
 
-// br→改行変換
+/**
+ * br→改行変換
+ *
+ * @param $string
+ * @return mixed
+ */
 function br2nl($string)
 {
     // 大文字・小文字を区別しない
     return preg_replace('/<br[[:space:]]*\/?[[:space:]]*>/i', "\n", $string);
 }
 
+/**
+ * @param $str
+ * @param $start
+ * @param $width
+ * @param string $append
+ * @return string
+ */
 function strimw($str,$start,$width,$append="..."){
     return mb_strimwidth($str,$start,$width,$append,SYSTEM_PHP_ENCODE);
 }
 
-//--------------------------------------------
-// 画像タグ作成
-//--------------------------------------------
+/**
+ * 画像タグ作成
+ *
+ * @param $url
+ * @param int $w
+ * @param int $h
+ * @param string $alt
+ * @return string
+ */
 function makeImgTag($url,$w=0,$h=0,$alt=""){
     $tag = '<img src="'.$url.'"';
     if($w != ""){
@@ -245,9 +331,16 @@ function makeImgTag($url,$w=0,$h=0,$alt=""){
     return $tag;
 }
 
-//--------------------------------------------
-// チェックボックスリストを生成
-//--------------------------------------------
+/**
+ * チェックボックスリストを生成
+ *
+ * @param $value_key
+ * @param $checklist
+ * @param $valuelist
+ * @param string $before
+ * @param string $after
+ * @return string
+ */
 function makeCheckboxList($value_key, $checklist, $valuelist, $before = "", $after = "")
 {
     $list = "";

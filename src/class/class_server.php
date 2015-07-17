@@ -84,4 +84,33 @@ class class_server
         }
         return null;
     }
+
+    /**
+     * @param $filename
+     * @param $data
+     * @return bool
+     */
+    static function saveImage($filename,$data){
+        if (preg_match('/^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/', $data)) {
+            $data = self::getUrlData($data);
+        }
+
+        $temp = tmpfile();
+        if ($fp = @fopen($temp, 'ab')){
+            if (@flock($fp, LOCK_EX)){
+                if (@fwrite($fp,  $data) === FALSE){
+                }
+                @flock($fp, LOCK_UN);
+            }
+            fclose($fp);
+
+            if(@getimagesize($temp)){
+                if(@copy($temp, $filename) ){
+                    @unlink($temp);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

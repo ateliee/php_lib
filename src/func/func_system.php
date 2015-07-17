@@ -1114,20 +1114,24 @@ function f_send_mail($to,$subject,$body,$from,$temp=null,$encode=''){
       return mail($to, $subject, $msg, $header);
 }
 */
-//--------------------------------------------
-// システム関係
-//--------------------------------------------
-//+++++++++++++++++++++++++++++
-// linux コマンド実行
-//+++++++++++++++++++++++++++++
+
+/**
+ * linux コマンド実行
+ *
+ * @param $command
+ * @param $output
+ * @return string
+ */
 function linuxCommand($command, $output)
 {
     return exec($command . " 2>&1", $output);
 }
 
-//+++++++++++++++++++++++++++++
-// PHPinfoを文字列で取得
-//+++++++++++++++++++++++++++++
+/**
+ * PHPinfoを文字列で取得
+ *
+ * @return mixed|string
+ */
 function phpinfo_str()
 {
     // Get PHP INFO
@@ -1184,12 +1188,15 @@ function phpinfo_str()
     return $p;
 }
 
-//--------------------------------------------
-// 計算
-//--------------------------------------------
-//+++++++++++++++++++++++++++++
-// リサイズ
-//+++++++++++++++++++++++++++++
+/**
+ * リサイズ
+ *
+ * @param $width
+ * @param $height
+ * @param int $max_width
+ * @param int $max_height
+ * @return array
+ */
 function resizeCalculation($width, $height, $max_width = 0, $max_height = 0)
 {
     $rate_w = $max_width / $width;
