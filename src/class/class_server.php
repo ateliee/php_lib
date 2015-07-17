@@ -5,6 +5,55 @@
  */
 class class_server
 {
+
+    static $MIME_TYPE = array(
+        // テキスト・文書・MSオフィス関連
+        array('MIME' => 'text/plain', 'EXT' => 'txt'),
+        array('MIME' => 'text/csv', 'EXT' => 'csv'),
+        array('MIME' => 'text/tab-separated-values', 'EXT' => 'tsv'),
+        array('MIME' => 'application/msword', 'EXT' => 'doc'),
+        array('MIME' => 'application/msword', 'EXT' => 'docx'),
+        array('MIME' => 'application/vnd.ms-excel', 'EXT' => 'xls'),
+        array('MIME' => 'application/vnd.ms-excel', 'EXT' => 'xlsx'),
+        array('MIME' => 'application/vnd.ms-powerpoint', 'EXT' => 'ppt'),
+        array('MIME' => 'application/pdf', 'EXT' => 'pdf'),
+        array('MIME' => 'application/vnd.fujixerox.docuworks', 'EXT' => 'xdw'),
+        array('MIME' => 'text/html', 'EXT' => 'htm'),
+        array('MIME' => 'text/html', 'EXT' => 'html'),
+        array('MIME' => 'text/css', 'EXT' => 'css'),
+        array('MIME' => 'text/javascript', 'EXT' => 'js'),
+        array('MIME' => 'text/x-hdml', 'EXT' => 'hdml'),
+        // 画像関連
+        array('MIME' => 'image/jpeg', 'EXT' => 'jpg'),
+        array('MIME' => 'image/jpeg', 'EXT' => 'jpeg'),
+        array('MIME' => 'image/pjpeg', 'EXT' => 'jpeg'),
+        array('MIME' => 'image/png', 'EXT' => 'png'),
+        array('MIME' => 'image/gif', 'EXT' => 'gif'),
+        array('MIME' => 'image/bmp', 'EXT' => 'bmp'),
+        array('MIME' => 'application/postscript', 'EXT' => 'ai'),
+        // 音声関連
+        array('MIME' => 'audio/mpeg', 'EXT' => 'mp3'),
+        array('MIME' => 'audio/mp4', 'EXT' => 'mp4'),
+        array('MIME' => 'audio//x-wav', 'EXT' => 'wav'),
+        array('MIME' => 'audio/midi', 'EXT' => 'mid'),
+        array('MIME' => 'audio/midi', 'EXT' => 'midi'),
+        array('MIME' => 'application/x-smaf', 'EXT' => 'mmf'),
+        // 動画関連
+        array('MIME' => 'video/mpeg', 'EXT' => 'mpg'),
+        array('MIME' => 'video/mpeg', 'EXT' => 'mpeg'),
+        array('MIME' => 'video/x-ms-wmv', 'EXT' => 'wmv'),
+        array('MIME' => 'application/x-shockwave-flash', 'EXT' => 'swf'),
+        array('MIME' => 'video/3gpp2', 'EXT' => '3g2'),
+        // アプリケーション関連
+        array('MIME' => 'application/zip', 'EXT' => 'zip'),
+        array('MIME' => 'application/x-lzh', 'EXT' => 'lha'),
+        array('MIME' => 'application/x-lzh', 'EXT' => 'lzh'),
+        array('MIME' => 'application/x-tar', 'EXT' => 'tar'),
+        array('MIME' => 'application/x-tar', 'EXT' => 'tgz'),
+        // その他
+        array('MIME' => 'application/octet-stream', 'EXT' => 'tar'),
+        array('MIME' => 'application/octet-stream', 'EXT' => 'tgz'),
+    );
     /**
      * @param $status_code
      * @return bool
@@ -86,30 +135,78 @@ class class_server
     }
 
     /**
+     * @param $data
+     * @return null|string
+     */
+    static function saveTmpFile($data)
+    {
+        if (preg_match('/^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/', $data)) {
+            $data = self::getUrlData($data);
+        }
+
+        $filename = tempnam(sys_get_temp_dir(), 'Tux');
+        if ($fp = @fopen($filename, 'ab')) {
+            $success = true;
+            if (@flock($fp, LOCK_EX)) {
+                if (@fwrite($fp, $data) === FALSE) {
+                    $success = false;
+                }
+                @flock($fp, LOCK_UN);
+            }else {
+                $success = false;
+            }
+            @fclose($fp);
+            if (!$success) {
+                unlink($filename);
+                $filename = null;
+            }
+            return $filename;
+        }
+        return null;
+    }
+
+    /**
+     * @param $filename
+     * @return null
+     */
+    static function getFileExtension($filename)
+    {
+        if($filename){
+            $mime_type = null;
+            if($finfo = finfo_open(FILEINFO_MIME_TYPE)){
+                $mime_type = finfo_file($finfo, $filename);
+                finfo_close($finfo);
+            }
+            if($mime_type){
+                $ext = null;
+                foreach(self::$MIME_TYPE as $val){
+                    if($val['MIME'] == $mime_type){
+                        $ext = $val['EXT'];
+                        break;
+                    }
+                }
+                return $ext;
+            }
+        }
+        return null;
+    }
+
+    /**
      * @param $filename
      * @param $data
      * @return bool
      */
     static function saveImage($filename,$data){
-        if (preg_match('/^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/', $data)) {
-            $data = self::getUrlData($data);
-        }
-
-        $temp = tmpfile();
-        if ($fp = @fopen($temp, 'ab')){
-            if (@flock($fp, LOCK_EX)){
-                if (@fwrite($fp,  $data) === FALSE){
-                }
-                @flock($fp, LOCK_UN);
-            }
-            fclose($fp);
-
-            if(@getimagesize($temp)){
-                if(@copy($temp, $filename) ){
-                    @unlink($temp);
-                    return true;
+        $tmpfile = self::saveTmpFile($data);
+        if($tmpfile){
+            $success = false;
+            if(@getimagesize($tmpfile)){
+                if(@copy($tmpfile, $filename) ){
+                    $success = true;
                 }
             }
+            unlink($tmpfile);
+            return $success;
         }
         return false;
     }
