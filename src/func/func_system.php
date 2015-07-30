@@ -52,12 +52,12 @@ $L_MIME_TYPE = array(
     array('MIME' => 'application/octet-stream', 'EXT' => 'tgz'),
 );
 
-//--------------------------------------------
-// 文字関係
-//--------------------------------------------
-//+++++++++++++++++++++++++++++
-// 文字コード変換機能付関数
-//+++++++++++++++++++++++++++++
+/**
+ * 文字コード変換機能付関数
+ *
+ * @param $filename
+ * @return bool
+ */
 function is_dirE($filename)
 {
     GLOBAL $G_SYSTEM_SERVER_ENCODE;
@@ -130,17 +130,24 @@ function mime_content_typeE($filename)
 // return f_convertExtentiontoMIME(pathinfo($filename,PATHINFO_EXTENSION));
 }
 
-//+++++++++++++++++++++++++++++
-// PHPからJavascriptへの文字の受け渡し
-//+++++++++++++++++++++++++++++
+/**
+ * PHPからJavascriptへの文字の受け渡し
+ *
+ * @param $str
+ * @return mixed
+ */
 function convertPHPforJavaScript($str)
 {
     return str_replace("\n", '\n', rtrim($str));
 }
 
-//+++++++++++++++++++++++++++++
-// パスから絶対URLを作成
-//+++++++++++++++++++++++++++++
+/**
+ * パスから絶対URLを作成
+ *
+ * @param $size
+ * @param int $decimals
+ * @return string
+ */
 /*
 function path_to_url($path, $default_port = 80){
     //ドキュメントルートのパスとURLの作成
@@ -169,9 +176,13 @@ function path_to_url($path, $default_port = 80){
 }
 */
 
-//+++++++++++++++++++++++++++++
-// バイト数を整形
-//+++++++++++++++++++++++++++++
+/**
+ * バイト数を整形
+ *
+ * @param $size
+ * @param int $decimals
+ * @return string
+ */
 function byte_format($size, $decimals = 0)
 {
     $nlist = array(
@@ -188,9 +199,15 @@ function byte_format($size, $decimals = 0)
     return $result;
 }
 
-//+++++++++++++++++++++++++++++
-// 中間の文字列を丸める
-//+++++++++++++++++++++++++++++
+/**
+ * 中間の文字列を丸める
+ *
+ * @param $str
+ * @param $length
+ * @param string $trimmarker
+ * @param bool $encoding
+ * @return string
+ */
 function strimwidthCenter($str, $length, $trimmarker = "", $encoding = false)
 {
     if (!$encoding) {
@@ -207,9 +224,12 @@ function strimwidthCenter($str, $length, $trimmarker = "", $encoding = false)
     return $limited;
 }
 
-//+++++++++++++++++++++++++++++
-// 英数値かチェック
-//+++++++++++++++++++++++++++++
+/**
+ * 英数値かチェック
+ *
+ * @param $text
+ * @return bool
+ */
 function is_Alnum($text)
 {
     if (preg_match("/^[a-zA-Z0-9]+$/", $text)) {
@@ -218,34 +238,48 @@ function is_Alnum($text)
     return FALSE;
 }
 
-//+++++++++++++++++++++++++++++
-// 改行を取り除く
-//+++++++++++++++++++++++++++++
+/**
+ * 改行を取り除く
+ *
+ * @param $text
+ * @return mixed
+ */
 function spritTrim($text)
 {
     return str_replace(array("\r\n", "\n", "\r"), '', $text);
 }
 
-//+++++++++++++++++++++++++++++
-// 前後の改行を取り除く(マルチバイト版)
-//+++++++++++++++++++++++++++++
+/**
+ * 前後の改行を取り除く(マルチバイト版)
+ *
+ * @param $str
+ * @return string
+ */
 function mb_trim($str)
 {
     return mb_ereg_replace('^[[:space:]]*([\s\S]*?)[[:space:]]*$', '\1', $str);
 }
 
-//+++++++++++++++++++++++++++++
-// 機種依存文字の置き換え
-//+++++++++++++++++++++++++++++
+/**
+ * 機種依存文字の置き換え
+ *
+ * @param $str
+ * @return mixed
+ */
 function replace_Dependence_Word($str)
 {
     GLOBAL $G_DEPENDENCE_WORD;
     return str_replace(array_keys($G_DEPENDENCE_WORD), array_values($G_DEPENDENCE_WORD), $str);
 }
 
-//+++++++++++++++++++++++++++++
-// 配列の文字コード変換
-//+++++++++++++++++++++++++++++
+/**
+ * 配列の文字コード変換
+ *
+ * @param $param
+ * @param $to_encoding
+ * @param string $from_encoding
+ * @return array|string
+ */
 function recursive_mb_convert_encoding($param, $to_encoding, $from_encoding = "auto")
 {
     if (empty($from_encoding)) {
@@ -261,9 +295,12 @@ function recursive_mb_convert_encoding($param, $to_encoding, $from_encoding = "a
     return $param;
 }
 
-//+++++++++++++++++++++++++++++
-// 配列の最初のキーを取得
-//+++++++++++++++++++++++++++++
+/**
+ * 配列の最初のキーを取得
+ *
+ * @param $ary
+ * @return int|null|string
+ */
 function firstKey($ary)
 {
     if (is_array($ary)) {
@@ -275,9 +312,12 @@ function firstKey($ary)
     return null;
 }
 
-//+++++++++++++++++++++++++++++
-// 配列の最後のキーを取得
-//+++++++++++++++++++++++++++++
+/**
+ * 配列の最後のキーを取得
+ *
+ * @param $ary
+ * @return mixed
+ */
 function lastKey($ary)
 {
     if (is_array($ary)) {
@@ -286,9 +326,14 @@ function lastKey($ary)
     }
 }
 
-//+++++++++++++++++++++++++++++
-// 配列の任意の位置へ要素を挿入
-//+++++++++++++++++++++++++++++
+/**
+ * 配列の任意の位置へ要素を挿入
+ *
+ * @param $array
+ * @param $insert
+ * @param $pos
+ * @return array
+ */
 function arrayInsert($array, $insert, $pos)
 {
     // 引数$arrayが配列でない場合
@@ -303,17 +348,26 @@ function arrayInsert($array, $insert, $pos)
     return $array;
 }
 
-//+++++++++++++++++++++++++++++
-// 文字・データのバイト数を取得
-//+++++++++++++++++++++++++++++
+/**
+ * 文字・データのバイト数を取得
+ *
+ * @param $data
+ * @return float
+ */
 function getByte($data)
 {
     return strlen(bin2hex($data)) / 2;
 }
 
-//+++++++++++++++++++++++++++++
-// 文字を整形する
-//+++++++++++++++++++++++++++++
+/**
+ * 文字を整形する
+ *
+ * @param $str
+ * @param null $length
+ * @param string $trimmarker
+ * @param string $default
+ * @return string
+ */
 function reWord($str, $length = null, $trimmarker = '', $default = '')
 {
     if ($length > 0) {
@@ -326,9 +380,12 @@ function reWord($str, $length = null, $trimmarker = '', $default = '')
     return $str;
 }
 
-//+++++++++++++++++++++++++++++
-// 文字コードを取得
-//+++++++++++++++++++++++++++++
+/**
+ * 文字コードを取得
+ *
+ * @param $data
+ * @return string
+ */
 function getEncodingType($data)
 {
     $encodingArray = array("ISO-2022-JP", "UTF-8", "Shift_JIS", "EUC", "ASCII");
@@ -342,9 +399,16 @@ function getEncodingType($data)
     return "nil";
 }
 
-//+++++++++++++++++++++++++++++
-// str_pad(マルチバイト版)
-//+++++++++++++++++++++++++++++
+/**
+ * str_pad(マルチバイト版)
+ *
+ * @param $input
+ * @param $pad_length
+ * @param string $pad_string
+ * @param int $pad_type
+ * @param null $encoding
+ * @return string
+ */
 function mb_str_pad($input, $pad_length, $pad_string = " ", $pad_type = STR_PAD_RIGHT, $encoding = NULL)
 {
     if (!$encoding) {
@@ -353,17 +417,24 @@ function mb_str_pad($input, $pad_length, $pad_string = " ", $pad_type = STR_PAD_
     return mb_convert_encoding(str_pad(mb_convert_encoding($input, 'EUC-JP', $encoding), $pad_length, $pad_string, $pad_type), $encoding, 'EUC-JP');
 }
 
-//+++++++++++++++++++++++++++++
-// カナ文字変換
-//+++++++++++++++++++++++++++++
+/**
+ * カナ文字変換
+ *
+ * @param $str
+ * @param $kana
+ * @return string
+ */
 function convertKana($str, $kana)
 {
     return mb_convert_kana($str, $kana, 'auto');
 }
 
-//+++++++++++++++++++++++++++++
-// ユニークなIDを生成する
-//+++++++++++++++++++++++++++++
+/**
+ * ユニークなIDを生成する
+ *
+ * @param $num
+ * @return string
+ */
 function makeUniqId($num)
 {
     $id = "";
@@ -381,9 +452,13 @@ function makeUniqId($num)
     return $id;
 }
 
-//--------------------------------------------
-// 変数をチェックして返す
-//--------------------------------------------
+/**
+ * 変数をチェックして返す
+ *
+ * @param $val
+ * @param int $default
+ * @return int
+ */
 function evaNumeric($val, $default = 0)
 {
     if (isset($val) == false) {
@@ -410,9 +485,16 @@ function evaArray($val, $array, $default = "")
     return $default;
 }
 
-//--------------------------------------------
-// 画像のサイズをリサイズ
-//--------------------------------------------
+/**
+ * 画像のサイズをリサイズ
+ *
+ * @param $owidth
+ * @param $oheight
+ * @param int $max_width
+ * @param int $max_height
+ * @param float $scale
+ * @return array
+ */
 function resizeImageSize($owidth, $oheight, $max_width = 0, $max_height = 0, $scale = 1.0)
 {
     $width = $owidth;
@@ -439,12 +521,12 @@ function resizeImageSize($owidth, $oheight, $max_width = 0, $max_height = 0, $sc
     return array($width, $height, $rate);
 }
 
-//--------------------------------------------
-// 日付関係
-//--------------------------------------------
-//+++++++++++++++++++++++++++++
-// 時間のフォーマット
-//+++++++++++++++++++++++++++++
+/**
+ * 時間のフォーマット
+ *
+ * @param $timestamp
+ * @return string
+ */
 function time_format($timestamp)
 {
     $timestamp -= (($y = floor($timestamp / (3600 * 24 * 30 * 12))) * (3600 * 24 * 30 * 12));
@@ -475,9 +557,17 @@ function time_format($timestamp)
     return $str;
 }
 
-//+++++++++++++++++++++++++++++
-// 日付用数値取得
-//+++++++++++++++++++++++++++++
+/**
+ * 日付用数値取得
+ *
+ * @param int $year
+ * @param int $mon
+ * @param int $day
+ * @param int $hour
+ * @param int $minute
+ * @param int $second
+ * @return int
+ */
 function getTime($year = 0, $mon = 0, $day = 0, $hour = 0, $minute = 0, $second = 0)
 {
     $date = 0;
@@ -501,12 +591,12 @@ function getMicrotime()
     return ((float)$sec + (float)$msec);
 }
 
-//--------------------------------------------
-// サーバー関係
-//--------------------------------------------
-//+++++++++++++++++++++++++++++
-// 拡張子からMIMEタイプを取得
-//+++++++++++++++++++++++++++++
+/**
+ * 拡張子からMIMEタイプを取得
+ *
+ * @param $type
+ * @return string
+ */
 function convertMIMEtoExtention($type)
 {
     GLOBAL $L_MIME_TYPE;
@@ -516,6 +606,10 @@ function convertMIMEtoExtention($type)
     return '';
 }
 
+/**
+ * @param $type
+ * @return string
+ */
 function convertExtentiontoMIME($type)
 {
     GLOBAL $L_MIME_TYPE;
@@ -525,9 +619,14 @@ function convertExtentiontoMIME($type)
     return '';
 }
 
-//+++++++++++++++++++++++++++++
-// MIMEをヘッダーに送信
-//+++++++++++++++++++++++++++++
+/**
+ * MIMEをヘッダーに送信
+ *
+ * @param $type
+ * @param $filename
+ * @param null $size
+ * @return bool
+ */
 function setMIMEHeader($type, $filename, $size = NULL)
 {
     $size = (int)$size;
@@ -542,9 +641,12 @@ function setMIMEHeader($type, $filename, $size = NULL)
     return false;
 }
 
-//+++++++++++++++++++++++++++++
-// パーミッションを取得
-//+++++++++++++++++++++++++++++
+/**
+ * パーミッションを取得
+ *
+ * @param $filename
+ * @return string
+ */
 function getPerms($filename)
 {
     $perms = fileperms($filename);
@@ -595,9 +697,13 @@ function getPerms($filename)
     return $info;
 }
 
-//+++++++++++++++++++++++++++++
-// file_get_contentsの拡張版
-//+++++++++++++++++++++++++++++
+/**
+ * file_get_contentsの拡張版
+ *
+ * @param $server
+ * @param int $timeout
+ * @return bool|string
+ */
 function file_get_contentsEX($server, $timeout = 10)
 {
     $data = '';
@@ -613,9 +719,12 @@ function file_get_contentsEX($server, $timeout = 10)
     return $data;
 }
 
-//+++++++++++++++++++++++++++++
-// HTTPステータスエラー
-//+++++++++++++++++++++++++++++
+/**
+ * HTTPステータスエラー
+ *
+ * @param $code
+ * @return bool
+ */
 function httpError($code)
 {
     switch ($code) {
@@ -657,13 +766,13 @@ function httpError($code)
     return false;
 }
 
-//--------------------------------------------
-// ファイル関係
-//--------------------------------------------
-//+++++++++++++++++++++++++++++
-// 外部ファイルが存在するか調べる
-//      $url     : http://から始まるURL( http://user:pass@host:port/path?query )
-//+++++++++++++++++++++++++++++
+/**
+ * 外部ファイルが存在するか調べる
+ *
+ * @param $url http://から始まるURL( http://user:pass@host:port/path?query )
+ * @param string $userpwd
+ * @return bool|mixed
+ */
 function url_exists($url, $userpwd = "")
 {
 // $header = get_headers($url);
@@ -688,9 +797,12 @@ function url_exists($url, $userpwd = "")
     return $connectable;
 }
 
-//+++++++++++++++++++++++++++++
-// 外部ファイルを取得
-//+++++++++++++++++++++++++++++
+/**
+ * 外部ファイルを取得
+ *
+ * @param $url
+ * @return string
+ */
 function file_get_contents_curl($url)
 {
     $ch = curl_init();
@@ -707,10 +819,15 @@ function file_get_contents_curl($url)
     return $string;
 }
 
-//+++++++++++++++++++++++++++++
-// リクエストを送る
-//+++++++++++++++++++++++++++++
-// file_get_contents版
+/**
+ * リクエストを送る
+ *
+ * @param $method
+ * @param $url
+ * @param array $params
+ * @param array $headers
+ * @return bool|string|void
+ */
 function requestParams_fileGetContents($method, $url, $params = array(), $headers = array())
 {
     if (count($headers) <= 0) {
@@ -743,7 +860,15 @@ function requestParams_fileGetContents($method, $url, $params = array(), $header
     return $contents;
 }
 
-// fsockopen版
+/**
+ * fsockopen版
+ *
+ * @param $method
+ * @param $url
+ * @param array $params
+ * @param array $headers
+ * @return string
+ */
 function requestParams_fsock($method, $url, $params = array(), $headers = array())
 {
     // URLをパース
@@ -767,7 +892,15 @@ function requestParams_fsock($method, $url, $params = array(), $headers = array(
     return $response;
 }
 
-// curl版
+/**
+ * curl版
+ *
+ * @param $method
+ * @param $url
+ * @param array $params
+ * @param array $headers
+ * @return bool|mixed
+ */
 function requestParams_curl($method, $url, $params = array(), $headers = array())
 {
     // URLをパース
@@ -807,9 +940,12 @@ function requestParams_curl($method, $url, $params = array(), $headers = array()
     return $response;
 }
 
-//+++++++++++++++++++++++++++++
-// MIMEタイプを分割
-//+++++++++++++++++++++++++++++
+/**
+ * MIMEタイプを分割
+ *
+ * @param $mime
+ * @return array
+ */
 function getMIME($mime)
 {
     $mime_type = array();
@@ -819,9 +955,12 @@ function getMIME($mime)
     return $mime_type;
 }
 
-//+++++++++++++++++++++++++++++
-// 画像データからファイルタイプを取得
-//+++++++++++++++++++++++++++++
+/**
+ * 画像データからファイルタイプを取得
+ *
+ * @param $image_stream
+ * @return string
+ */
 function getImageTypeForStream($image_stream)
 {
     if (preg_match('/^\x89PNG\x0d\x0a\x1a\x0a/', $image_stream)) {
@@ -834,9 +973,13 @@ function getImageTypeForStream($image_stream)
     return $type;
 }
 
-//+++++++++++++++++++++++++++++
-// ファイルサイズを文字列に変換
-//+++++++++++++++++++++++++++++
+/**
+ * ファイルサイズを文字列に変換
+ *
+ * @param $pattern
+ * @param $size
+ * @return mixed
+ */
 function getFileSizeString($pattern, $size)
 {
     $b = $size;
@@ -851,9 +994,12 @@ function getFileSizeString($pattern, $size)
     return $str;
 }
 
-//+++++++++++++++++++++++++++++
-// ディレクトリの削除
-//+++++++++++++++++++++++++++++
+/**
+ * ディレクトリの削除
+ *
+ * @param $filename
+ * @param bool $delete
+ */
 function deleteDir($filename, $delete = true)
 {
     $strDir = opendir($filename);
@@ -872,9 +1018,12 @@ function deleteDir($filename, $delete = true)
     }
 }
 
-//+++++++++++++++++++++++++++++
-// ディレクトリの一覧を取得
-//+++++++++++++++++++++++++++++
+/**
+ * ディレクトリの一覧を取得
+ *
+ * @param $filename
+ * @return array|null
+ */
 function getDir($filename)
 {
     GLOBAL $G_SYSTEM_SERVER_ENCODE;
@@ -894,9 +1043,12 @@ function getDir($filename)
     return $aut;
 }
 
-//+++++++++++++++++++++++++++++
-// ファイルの権限を取得
-//+++++++++++++++++++++++++++++
+/**
+ * ファイルの権限を取得
+ *
+ * @param $filename
+ * @return array
+ */
 function getAuthority($filename)
 {
     $aut = array();
@@ -906,9 +1058,13 @@ function getAuthority($filename)
     return $aut;
 }
 
-//+++++++++++++++++++++++++++++
-// ファイルのパーミッションの変更
-//+++++++++++++++++++++++++++++
+/**
+ * ファイルのパーミッションの変更
+ *
+ * @param $src
+ * @param $dest
+ * @return bool
+ */
 function fileChmod($src, $dest)
 {
     if (file_exists($src)) {
@@ -920,9 +1076,13 @@ function fileChmod($src, $dest)
     return false;
 }
 
-//+++++++++++++++++++++++++++++
-// ファイルのコピー
-//+++++++++++++++++++++++++++++
+/**
+ * ファイルのコピー
+ *
+ * @param $src
+ * @param $dest
+ * @return bool
+ */
 function fileCopy($src, $dest)
 {
     GLOBAL $G_SYSTEM_SERVER_ENCODE;
@@ -937,9 +1097,13 @@ function fileCopy($src, $dest)
     return false;
 }
 
-//+++++++++++++++++++++++++++++
-// ファイルの作成
-//+++++++++++++++++++++++++++++
+/**
+ * ファイルの作成
+ *
+ * @param $filename
+ * @param null $time
+ * @return bool
+ */
 function fileTouch($filename, $time = NULL)
 {
     if (file_exists($filename)) {
@@ -950,9 +1114,14 @@ function fileTouch($filename, $time = NULL)
     return false;
 }
 
-//+++++++++++++++++++++++++++++
-// ファイルを書き込む
-//+++++++++++++++++++++++++++++
+/**
+ * ファイルを書き込む
+ *
+ * @param $filename
+ * @param null $data
+ * @param int $prm
+ * @return bool
+ */
 function writeFile($filename, $data = NULL, $prm = 0666)
 {
     // ファイルオープン
@@ -973,9 +1142,11 @@ function writeFile($filename, $data = NULL, $prm = 0666)
     return true;
 }
 
-//+++++++++++++++++++++++++++++
-// 連想配列表示
-//+++++++++++++++++++++++++++++
+/**
+ * 連想配列表示
+ *
+ * @param $args
+ */
 function showValue($args)
 {
     echo '<pre>';
@@ -983,9 +1154,12 @@ function showValue($args)
     echo '</pre>';
 }
 
-//+++++++++++++++++++++++++++++
-// ファイルサイズを取得
-//+++++++++++++++++++++++++++++
+/**
+ * ファイルサイズを取得
+ *
+ * @param $path
+ * @return int
+ */
 function getFileSize($path)
 {
     $total_size = 0;
@@ -1011,6 +1185,11 @@ function getFileSize($path)
 }
 
 $GETREMOTELASTMOD_RESULT = 0;
+/**
+ * @param $ch
+ * @param $header
+ * @return int
+ */
 function read_header($ch, $header)
 {
     GLOBAL $GETREMOTELASTMOD_RESULT;
@@ -1021,6 +1200,10 @@ function read_header($ch, $header)
     return $length;
 }
 
+/**
+ * @param $remote_file
+ * @return int
+ */
 function GetRemoteLastModified($remote_file)
 {
     GLOBAL $GETREMOTELASTMOD_RESULT;
@@ -1037,21 +1220,24 @@ function GetRemoteLastModified($remote_file)
     return $GETREMOTELASTMOD_RESULT;
 }
 
-//--------------------------------------------
-// メール関係
-//--------------------------------------------
-//+++++++++++++++++++++++++++++
-// URLか調べる
-//+++++++++++++++++++++++++++++
+/**
+ * URLか調べる
+ *
+ * @param $url
+ * @return int
+ */
 function checkURL($url)
 {
     $preg_str = '/^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/';
     return preg_match($preg_str, $url);
 }
 
-//+++++++++++++++++++++++++++++
-// メールアドレスか調べる
-//+++++++++++++++++++++++++++++
+/**
+ * メールアドレスか調べる
+ *
+ * @param $mail
+ * @return int
+ */
 function checkMail($mail)
 {
     $preg_str = "/^([a-zA-Z0-9])+([a-zA-Z0-9\\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\\._-]+)+$/";

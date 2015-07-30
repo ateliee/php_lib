@@ -94,7 +94,13 @@ function makeNumsOptsExp($code, $start, $max, $skip = 1, $default = "", $default
     for ($i = $start; $i <= $max; $i += $skip) {
         $key = $i;
         $num = $i;
-        if ($code == $i) {
+        $check = false;
+        if(is_array($code)){
+            $check = in_array($i,$code);
+        }else{
+            $check = ($code == $i);
+        }
+        if ($check) {
             $tmp = '<option value="' . $key . '" selected="selected">' . $num . '</option>' . "\n";
         } else {
             $tmp = '<option value="' . $key . '">' . $num . '</option>' . "\n";
@@ -121,7 +127,13 @@ function makeValueOpts($code, $value, $default = "", $default_value = "0")
         $list .= '<option value="' . $default_value . '">' . htmlentities($default, ENT_QUOTES, mb_internal_encoding()) . '</option>' . "\n";
     }
     foreach ($value as $key => $val) {
-        if ($code == $key) {
+        $check = false;
+        if(is_array($code)){
+            $check = in_array($key,$code);
+        }else{
+            $check = ($code == $key);
+        }
+        if ($check) {
             $tmp = '<option value="' . $key . '" selected="selected">' . $val . '</option>' . "\n";
         } else {
             $tmp = '<option value="' . $key . '">' . $val . '</option>' . "\n";
@@ -150,7 +162,13 @@ function makeValueOptGroup($code, $valuelist, $default = "", $default_value = "0
     foreach ($valuelist as $list_key => $value) {
         $list .= '<optgroup label="' . $list_key . '">';
         foreach ($value as $key => $val) {
-            if ($code == $key) {
+            $check = false;
+            if(is_array($code)){
+                $check = in_array($key,$code);
+            }else{
+                $check = ($code == $key);
+            }
+            if ($check) {
                 $tmp = '<option value="' . $key . '" selected="selected">' . $val . '</option>' . "\n";
             } else {
                 $tmp = '<option value="' . $key . '">' . $val . '</option>' . "\n";
@@ -180,7 +198,13 @@ function makeValuelistOpts($code, $value, $value_key, $default = "", $default_va
         $list .= '<option value="' . $default_value . '">' . htmlentities($default, ENT_QUOTES, mb_internal_encoding()) . '</option>' . "\n";
     }
     foreach ($value as $key => $val) {
-        if ($code == $key) {
+        $check = false;
+        if(is_array($code)){
+            $check = in_array($key,$code);
+        }else{
+            $check = ($code == $key);
+        }
+        if ($check) {
             $tmp = '<option value="' . $key . '" selected="selected">' . $val[$value_key] . '</option>' . "\n";
         } else {
             $tmp = '<option value="' . $key . '">' . $val[$value_key] . '</option>' . "\n";
