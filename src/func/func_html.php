@@ -74,6 +74,16 @@ function makeNumsOpts($code, $max, $default = "", $default_value = "0")
 }
 
 /**
+ * @param $key
+ * @param $val
+ * @param bool $selected
+ * @return string
+ */
+function makeOptionTag($key,$val,$selected=false){
+    return '<option value="' . $key . '"'.($selected ? ' selected="selected"' : '').'>' . htmlentities($val, ENT_QUOTES, mb_internal_encoding()) . '</option>' . "\n";
+}
+
+/**
  * 数値のリストを取得(拡張版)
  *
  * @param $code
@@ -89,22 +99,10 @@ function makeNumsOptsExp($code, $start, $max, $skip = 1, $default = "", $default
     // 一覧に設定
     $list = "";
     if ($default != "") {
-        $list .= '<option value="' . $default_value . '">' . htmlentities($default, ENT_QUOTES, mb_internal_encoding()) . '</option>' . "\n";
+        $list .= makeOptionTag($default_value,$default);
     }
     for ($i = $start; $i <= $max; $i += $skip) {
-        $key = $i;
-        $num = $i;
-        $check = false;
-        if(is_array($code)){
-            $check = in_array($i,$code);
-        }else{
-            $check = ($code == $i);
-        }
-        if ($check) {
-            $tmp = '<option value="' . $key . '" selected="selected">' . $num . '</option>' . "\n";
-        } else {
-            $tmp = '<option value="' . $key . '">' . $num . '</option>' . "\n";
-        }
+        $tmp = makeOptionTag($i,$i,is_array($code) ? in_array($i,$code) : ($code == $i));
         $list .= $tmp;
     }
     return $list;
@@ -124,20 +122,10 @@ function makeValueOpts($code, $value, $default = "", $default_value = "0")
     // 一覧に設定
     $list = "";
     if ($default != "") {
-        $list .= '<option value="' . $default_value . '">' . htmlentities($default, ENT_QUOTES, mb_internal_encoding()) . '</option>' . "\n";
+        $list .= makeOptionTag($default_value,$default);
     }
     foreach ($value as $key => $val) {
-        $check = false;
-        if(is_array($code)){
-            $check = in_array($key,$code);
-        }else{
-            $check = ($code == $key);
-        }
-        if ($check) {
-            $tmp = '<option value="' . $key . '" selected="selected">' . $val . '</option>' . "\n";
-        } else {
-            $tmp = '<option value="' . $key . '">' . $val . '</option>' . "\n";
-        }
+        $tmp = makeOptionTag($key,$val,is_array($code) ? in_array($key,$code) : ($code == $key));
         $list .= $tmp;
     }
     return $list;
@@ -157,25 +145,15 @@ function makeValueOptGroup($code, $valuelist, $default = "", $default_value = "0
     // 一覧に設定
     $list = "";
     if ($default != "") {
-        $list .= '<option value="' . $default_value . '">' . htmlentities($default, ENT_QUOTES, mb_internal_encoding()) . '</option>' . "\n";
+        $list .= makeOptionTag($default_value,$default);
     }
     foreach ($valuelist as $list_key => $value) {
-        $list .= '<optgroup label="' . $list_key . '">';
+        $list .= '<optgroup label="' . $list_key . '">'."\n";
         foreach ($value as $key => $val) {
-            $check = false;
-            if(is_array($code)){
-                $check = in_array($key,$code);
-            }else{
-                $check = ($code == $key);
-            }
-            if ($check) {
-                $tmp = '<option value="' . $key . '" selected="selected">' . $val . '</option>' . "\n";
-            } else {
-                $tmp = '<option value="' . $key . '">' . $val . '</option>' . "\n";
-            }
+            $tmp = makeOptionTag($key,$val,is_array($code) ? in_array($key,$code) : ($code == $key));
             $list .= $tmp;
         }
-        $list .= '</optgroup>';
+        $list .= '</optgroup>'."\n";
     }
     return $list;
 }
@@ -195,20 +173,10 @@ function makeValuelistOpts($code, $value, $value_key, $default = "", $default_va
     // 一覧に設定
     $list = "";
     if ($default != "") {
-        $list .= '<option value="' . $default_value . '">' . htmlentities($default, ENT_QUOTES, mb_internal_encoding()) . '</option>' . "\n";
+        $list .= makeOptionTag($default_value,$default);
     }
     foreach ($value as $key => $val) {
-        $check = false;
-        if(is_array($code)){
-            $check = in_array($key,$code);
-        }else{
-            $check = ($code == $key);
-        }
-        if ($check) {
-            $tmp = '<option value="' . $key . '" selected="selected">' . $val[$value_key] . '</option>' . "\n";
-        } else {
-            $tmp = '<option value="' . $key . '">' . $val[$value_key] . '</option>' . "\n";
-        }
+        $tmp = makeOptionTag($key,$val[$value_key],is_array($code) ? in_array($key,$code) : ($code == $key));
         $list .= $tmp;
     }
     return $list;
