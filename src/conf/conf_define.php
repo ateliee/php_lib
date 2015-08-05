@@ -300,7 +300,7 @@ class class_define{
         '38' => 'ehime',
         '39' => 'kochi',
         '40' => 'fukuoka',
-        '41' => 'shiga',
+        '41' => 'saga',
         '42' => 'nagasaki',
         '43' => 'kumamoto',
         '44' => 'oita',
