@@ -24,4 +24,4 @@ include_once(dir(__FILE__)."/php_lib/init_lib.php");
 ```
 
 ## How To Use
-![https://github.com/ateliee/php_lib/wiki](https://github.com/ateliee/php_lib/wiki)
+<https://github.com/ateliee/php_lib/wiki>
