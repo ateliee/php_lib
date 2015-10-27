@@ -5,11 +5,11 @@ PHP LIB is a rapid development framework for PHP.
 support PHP version 4/5
 
 ## Download
-[Version 1.0](https://github.com/ateliee/php_lib/archive/master.zip)
+[Version 2.0.0](https://github.com/ateliee/php_lib/archive/2.0.0.zip)
 
 ## How To Use
-Onry include "init_lib.php" file.
-(setup init_lib.php)
+include "init_lib.php" file.
+and setup init_lib.php
 
 ### download file and include
 ``` php
